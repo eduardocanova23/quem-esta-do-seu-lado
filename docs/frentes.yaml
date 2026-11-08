@@ -12,7 +12,7 @@ frentes:
   fundacao:
     objetivo: repositório pronto e travado antes da primeira linha de produto
     ativa: true
-    proximo_passo: "ligar o vault: alias claude-vault, quebra de linha no git do vault, memória automática desligada e skill /registrar (Fase 0, passo 6)"
+    proximo_passo: "CI mínimo com lint e um teste de exemplo; pre-commit com formatadores e gitleaks (Fase 0, passo 7)"
     marcos:
       - id: repo
         criterio: main protegido, CI verde, CLAUDE.md, hooks e rota funcionando; você explica cada arquivo de configuração
