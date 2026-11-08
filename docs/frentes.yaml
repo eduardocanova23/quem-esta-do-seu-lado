@@ -1,0 +1,103 @@
+# Rota do projeto. `make rota` lê este arquivo, valida e mostra onde trabalhar em seguida.
+#
+# frente         linha de trabalho com objetivo próprio
+# marcos         resultados verificáveis, em ordem; o primeiro não feito é o atual
+# criterio       como saber que o marco está feito
+# depende_de     marcos que precisam estar feitos antes ("frente.marco")
+# status         pendente | andamento | feito
+# ativa          no máximo uma frente de código ativa por vez
+# proximo_passo  a próxima ação concreta da frente, que dá para começar sem pensar
+
+frentes:
+  fundacao:
+    objetivo: repositório pronto e travado antes da primeira linha de produto
+    ativa: true
+    proximo_passo: "ligar o vault: alias claude-vault, quebra de linha no git do vault, memória automática desligada e skill /registrar (Fase 0, passo 6)"
+    marcos:
+      - id: repo
+        criterio: main protegido, CI verde, CLAUDE.md, hooks e rota funcionando; você explica cada arquivo de configuração
+        status: andamento
+
+  produto:
+    objetivo: as três perguntas viram histórias testáveis
+    proximo_passo: migrar as três perguntas e as diretrizes do vault para docs/produto/
+    marcos:
+      - id: perguntas
+        criterio: perguntas, personas, histórias e não-objetivos em docs/produto/
+        depende_de: [fundacao.repo]
+      - id: metricas
+        criterio: dicionário de métricas da pergunta 2 revisado por você
+        depende_de: [produto.perguntas]
+
+  dados:
+    objetivo: pipeline diário, incremental e idempotente
+    proximo_passo: escrever docs/dados/atualizacao.md para as tabelas da pergunta 2
+    marcos:
+      - id: modelo
+        criterio: modelo de dados e tabela de atualização revisados
+        depende_de: [produto.perguntas]
+      - id: contrato_marts
+        criterio: schema dos marts da pergunta 2 fixado, com amostra de dados para o site
+        depende_de: [dados.modelo, produto.metricas]
+      - id: core
+        criterio: ingestão diária de proposições, votos e orientações; teste incremental = completo passa
+        depende_de: [dados.modelo]
+      - id: tramitacao
+        criterio: tramitações coletadas por delta
+        depende_de: [dados.core]
+
+  taxonomia:
+    objetivo: temas que se atualizam sem reestruturar nada
+    proximo_passo: levar temas.yaml e os gabaritos do dag_temas para taxonomia/
+    marcos:
+      - id: incremental
+        criterio: proposição nova ganha ficha e temas na versão vigente; gabaritos rodam como teste
+        depende_de: [dados.core]
+      - id: jardinagem
+        criterio: fila de "nenhum serve" e PR de taxonomia com placar de personas
+        depende_de: [taxonomia.incremental]
+
+  design:
+    objetivo: direção visual escolhida e virando tokens
+    proximo_passo: juntar 15 referências anotadas em docs/design/referencias.md
+    marcos:
+      - id: referencias
+        criterio: 15 a 20 referências com o que pega e o que larga
+        depende_de: [produto.perguntas]
+      - id: wireframes
+        criterio: wireframes das telas da pergunta 2, com dados reais
+        depende_de: [design.referencias]
+      - id: tokens
+        criterio: direção escolhida, tokens no repositório, 5 pessoas testaram
+        depende_de: [design.wireframes]
+
+  infra:
+    objetivo: um merge no main publica tudo sozinho
+    proximo_passo: escrever o ADR da forma de entrega do site
+    marcos:
+      - id: adrs
+        criterio: ADRs de entrega, framework, banco, busca, Airflow e hospedagem escritos
+        depende_de: [fundacao.repo]
+      - id: deploy
+        criterio: merge no main publica o site; backup restaurado uma vez
+        depende_de: [infra.adrs]
+
+  site:
+    objetivo: as três perguntas no ar, uma por vez
+    proximo_passo: esqueleto com a página de um deputado gerada a partir da amostra do contrato
+    marcos:
+      - id: esqueleto
+        criterio: uma página real no ar, gerada pelo build
+        depende_de: [infra.deploy, dados.contrato_marts]
+      - id: pergunta2
+        criterio: critérios de aceitação da pergunta 2 verdes no e2e
+        depende_de: [site.esqueleto, design.tokens, dados.core]
+      - id: pergunta3
+        criterio: critérios de aceitação da pergunta 3 verdes no e2e
+        depende_de: [site.pergunta2]
+      - id: pergunta1
+        criterio: critérios de aceitação da pergunta 1 verdes no e2e
+        depende_de: [site.pergunta2, dados.tramitacao]
+      - id: busca
+        criterio: conjunto de teste de busca acima do limiar
+        depende_de: [site.esqueleto, taxonomia.incremental]

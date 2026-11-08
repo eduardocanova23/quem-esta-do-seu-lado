@@ -6,5 +6,3 @@
 **Quem chama:** você, o `Makefile`, os hooks do Claude Code e o CI.
 
 Regra: só entra script reexecutável e documentado. Experimento vai para o repositório do laboratório.
-
-Vazia até o passo 5 da Fase 0.
