@@ -34,6 +34,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Nenhuma chamada de LLM no caminho de uma requisição do site; saída de LLM sempre validada por schema.
 - Mudança de schema só pela skill /migracao.
 - Se a tarefa parar no meio, anote em docs/estado.md onde parou.
+- Sugira /registrar no fim da tarefa quando ela fechar uma fase ou render lição ou decisão útil fora do projeto; só grave no vault se eu confirmar.
 
 ## Pegadinhas do domínio
 - Nunca compare legislaturas nem governos; deputado em duas legislaturas tem dois perfis.
