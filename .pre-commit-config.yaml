@@ -1,0 +1,37 @@
+# Roda antes de cada commit, só nos arquivos em staging. Instalado por `make setup`.
+# É o aviso rápido na sua máquina; quem barra de verdade é o CI.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+
+  # Hooks locais: usam as versões do uv.lock e o gitleaks de scripts/instalar_gitleaks.sh,
+  # as mesmas do `make ci`. Hooks remotos fixariam uma segunda versão de cada ferramenta.
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: ruff check
+        entry: uv run --locked ruff check --fix --force-exclude
+        language: unsupported
+        types_or: [python, pyi]
+      - id: ruff-format
+        name: ruff format
+        entry: uv run --locked ruff format --force-exclude
+        language: unsupported
+        types_or: [python, pyi]
+      - id: mypy
+        name: mypy
+        entry: uv run --locked mypy
+        language: unsupported
+        types_or: [python, pyi]
+        pass_filenames: false
+      - id: gitleaks
+        name: gitleaks
+        entry: .venv/bin/gitleaks git --pre-commit --redact --staged --verbose
+        language: unsupported
+        pass_filenames: false

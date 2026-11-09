@@ -12,7 +12,7 @@ frentes:
   fundacao:
     objetivo: repositório pronto e travado antes da primeira linha de produto
     ativa: true
-    proximo_passo: "CI mínimo com lint e um teste de exemplo; pre-commit com formatadores e gitleaks (Fase 0, passo 7)"
+    proximo_passo: "/output-style explanatory, conferir os plugins sincronizados em /plugin e instalar o security-guidance (Fase 0, passo 8)"
     marcos:
       - id: repo
         criterio: main protegido, CI verde, CLAUDE.md, hooks e rota funcionando; você explica cada arquivo de configuração

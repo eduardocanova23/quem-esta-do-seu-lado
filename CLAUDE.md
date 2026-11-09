@@ -10,6 +10,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Notebook e experimento não entram aqui: vão para o repositório do laboratório.
 
 ## Comandos
+- Preparar a máquina: make setup
 - Rota: make rota
 - Testes rápidos: make test
 - Tudo, como no CI: make ci

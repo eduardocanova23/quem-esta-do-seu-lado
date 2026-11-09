@@ -1,2 +1,14 @@
 # Preferências locais do Claude Code, fora do git (docs/metodo.md, "Organização")
 .claude/settings.local.json
+
+# Segredos: só o .env.example, sem valores, entra no git
+.env
+.env.*
+!.env.example
+
+# Ambiente e caches do Python
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/

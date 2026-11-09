@@ -11,13 +11,23 @@ permissions:
   contents: read
 
 jobs:
+  # Check obrigatório do ruleset proteger-main: não renomeie sem atualizar o ruleset.
   rota:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-      - run: pip install pyyaml==6.0.2
+      # Fixada no commit da v10.3.3. A versão do uv vem de required-version no pyproject.toml.
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
       - name: Valida docs/frentes.yaml
-        run: python3 scripts/rota.py --check
+        run: make rota-check
+
+  qualidade:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # O gitleaks varre o histórico inteiro, não só o último commit.
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2
+      - run: make setup
+      - run: make ci

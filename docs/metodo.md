@@ -268,7 +268,8 @@ Minha recomendação é **Astro com ilhas React**, TypeScript, Tailwind e compon
 ```
 camara/
 ├── CLAUDE.md
-├── Makefile           make test, make ci, make rota
+├── Makefile           make setup, make test, make ci, make rota
+├── pyproject.toml     dependências Python e configuração das ferramentas (uv.lock ao lado)
 ├── docs/
 │   ├── metodo.md      este doc
 │   ├── frentes.yaml   a rota: frentes, marcos, dependências, próximos passos
@@ -595,7 +596,7 @@ A Fase 0 deixa o repositório pronto e travado antes da primeira linha de produt
 4. `CLAUDE.md` (anexo A), template de PR (anexo B) e `.claude/settings.json` com hooks e permissões (anexo C).
 5. Rota: `docs/frentes.yaml` (anexo D), `scripts/rota.py` (anexo E) e o `--check` no CI.
 6. Vault ligado: o alias `claude-vault`, o ajuste de quebra de linha no git do vault, a memória automática desligada e a skill pessoal `/registrar` (seção do Obsidian).
-7. CI mínimo com lint e um teste de exemplo; pre-commit com formatadores e gitleaks.
+7. CI mínimo com lint, tipos e um teste de exemplo, sobre um ambiente `uv` com lockfile (ADR 0001); pre-commit com formatadores e gitleaks.
 8. `/output-style explanatory`, e `/plugin` para conferir os plugins sincronizados e instalar o `security-guidance`.
 9. Portão: você explica, sem olhar, cada arquivo de configuração criado.
 
@@ -742,7 +743,7 @@ exit 0
       {
         "matcher": "startup|clear|compact",
         "hooks": [
-          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && python3 scripts/rota.py" }
+          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && uv run --locked --quiet python scripts/rota.py" }
         ]
       }
     ],
@@ -872,7 +873,7 @@ frentes:
 
 **Anexo E — `scripts/rota.py`**
 
-`make rota` roda `python3 scripts/rota.py`, e o CI roda `python3 scripts/rota.py --check`. Precisa do PyYAML. O hook que mostra a rota no começo da sessão está no `settings.json` do anexo C.
+`make rota` roda o script pelo `uv`, e o CI roda `make rota-check`. O PyYAML vem do `uv.lock`. O hook que mostra a rota no começo da sessão está no `settings.json` do anexo C.
 
 ```python
 #!/usr/bin/env python3
