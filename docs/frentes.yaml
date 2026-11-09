@@ -12,7 +12,7 @@ frentes:
   fundacao:
     objetivo: repositório pronto e travado antes da primeira linha de produto
     ativa: true
-    proximo_passo: "/output-style explanatory, conferir os plugins sincronizados em /plugin e instalar o security-guidance (Fase 0, passo 8)"
+    proximo_passo: "portão: explicar, sem olhar, cada arquivo de configuração criado (Fase 0, passo 9)"
     marcos:
       - id: repo
         criterio: main protegido, CI verde, CLAUDE.md, hooks e rota funcionando; você explica cada arquivo de configuração
