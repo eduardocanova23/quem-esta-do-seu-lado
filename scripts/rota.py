@@ -1,21 +1,29 @@
 #!/usr/bin/env python3
 """Lê docs/frentes.yaml, valida a rota e mostra onde trabalhar em seguida.
 
-    python3 scripts/rota.py           mostra a rota; sai sempre com 0 (é o que o hook usa)
-    python3 scripts/rota.py --check   só valida; sai com 1 se houver erro (é o que o CI usa)
+python3 scripts/rota.py           mostra a rota; sai sempre com 0 (é o que o hook usa)
+python3 scripts/rota.py --check   só valida; sai com 1 se houver erro (é o que o CI usa)
 """
+
 import sys
 from pathlib import Path
+from typing import Any
 
 import yaml
 
 ARQUIVO = Path(__file__).resolve().parent.parent / "docs" / "frentes.yaml"
 STATUS = {"pendente", "andamento", "feito"}
 
+# O YAML é validado por validar(), não pelo tipo: por isso os valores ficam como Any.
+Frente = dict[str, Any]
+Marco = dict[str, Any]
+# (nome da frente, chave do marco, próximo passo, dependências em aberto, quantos marcos destrava)
+Item = tuple[str, str, Any, list[str], int]
 
-def carregar(caminho):
-    frentes = yaml.safe_load(caminho.read_text(encoding="utf-8"))["frentes"]
-    marcos = {}  # "frente.marco" -> marco
+
+def carregar(caminho: Path) -> tuple[dict[str, Frente], dict[str, Marco]]:
+    frentes: dict[str, Frente] = yaml.safe_load(caminho.read_text(encoding="utf-8"))["frentes"]
+    marcos: dict[str, Marco] = {}  # "frente.marco" -> marco
     for nome, frente in frentes.items():
         for m in frente.get("marcos", []):
             m.setdefault("status", "pendente")
@@ -24,19 +32,20 @@ def carregar(caminho):
     return frentes, marcos
 
 
-def marco_atual(frente):
+def marco_atual(frente: Frente) -> Marco | None:
     """O primeiro marco que ainda não foi feito, ou None se a frente acabou."""
     return next((m for m in frente.get("marcos", []) if m["status"] != "feito"), None)
 
 
-def faltando(m, marcos):
+def faltando(m: Marco, marcos: dict[str, Marco]) -> list[str]:
     return [d for d in m["depende_de"] if marcos.get(d, {}).get("status") != "feito"]
 
 
-def ciclos(marcos):
-    cor, erros = {}, []
+def ciclos(marcos: dict[str, Marco]) -> list[str]:
+    cor: dict[str, str] = {}
+    erros: list[str] = []
 
-    def visita(k, caminho):
+    def visita(k: str, caminho: list[str]) -> None:
         cor[k] = "visitando"
         for dep in marcos[k]["depende_de"]:
             if dep not in marcos:
@@ -53,8 +62,8 @@ def ciclos(marcos):
     return erros
 
 
-def validar(frentes, marcos):
-    erros = []
+def validar(frentes: dict[str, Frente], marcos: dict[str, Marco]) -> list[str]:
+    erros: list[str] = []
     for chave, m in marcos.items():
         if m["status"] not in STATUS:
             erros.append(f"{chave}: status '{m['status']}' não existe")
@@ -75,15 +84,15 @@ def validar(frentes, marcos):
     return erros + ciclos(marcos)
 
 
-def destrava(marcos):
+def destrava(marcos: dict[str, Marco]) -> dict[str, int]:
     """Quantos marcos dependem, direta ou indiretamente, de cada marco."""
-    dependentes = {k: set() for k in marcos}
+    dependentes: dict[str, set[str]] = {k: set() for k in marcos}
     for k, m in marcos.items():
         for dep in m["depende_de"]:
             if dep in dependentes:
                 dependentes[dep].add(k)
 
-    def alcance(k, vistos):
+    def alcance(k: str, vistos: set[str]) -> set[str]:
         for d in dependentes[k] - vistos:
             vistos.add(d)
             alcance(d, vistos)
@@ -92,7 +101,7 @@ def destrava(marcos):
     return {k: len(alcance(k, set())) for k in marcos}
 
 
-def main():
+def main() -> None:
     frentes, marcos = carregar(ARQUIVO)
     erros = validar(frentes, marcos)
     if "--check" in sys.argv:
@@ -101,14 +110,17 @@ def main():
         sys.exit(1 if erros else 0)
 
     peso = destrava(marcos)
-    ativa, livres, bloqueadas, concluidas = None, [], [], []
+    ativa: Item | None = None
+    livres: list[Item] = []
+    bloqueadas: list[Item] = []
+    concluidas: list[str] = []
     for nome, f in frentes.items():
         m = marco_atual(f)
         if m is None:
             concluidas.append(nome)
             continue
         chave = f"{nome}.{m['id']}"
-        item = (nome, chave, f.get("proximo_passo"), faltando(m, marcos), peso[chave])
+        item: Item = (nome, chave, f.get("proximo_passo"), faltando(m, marcos), peso[chave])
         if f.get("ativa"):
             ativa = item
         elif item[3]:
@@ -123,11 +135,11 @@ def main():
         print("\nNenhuma frente ativa: escolha uma das livres e marque ativa: true.")
     if livres:
         print("\nLivres, da que destrava mais para a que destrava menos:")
-        for nome, chave, passo, _, n in sorted(livres, key=lambda i: -i[4]):
+        for _, chave, passo, _, n in sorted(livres, key=lambda i: -i[4]):
             print(f"  {chave} (destrava {n}) | próximo passo: {passo}")
     if bloqueadas:
         print("\nBloqueadas:")
-        for nome, chave, _, falta, _ in bloqueadas:
+        for _, chave, _, falta, _ in bloqueadas:
             print(f"  {chave} espera {', '.join(falta)}")
     if concluidas:
         print(f"\nConcluídas: {', '.join(concluidas)}")

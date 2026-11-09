@@ -6,7 +6,7 @@ Nov 5, 2026 · @Edu
 
 Você é o arquiteto e o revisor; o Claude Code digita. Nada entra no `main` sem que você consiga explicar o que mudou, por quê e com o que aquilo conversa.
 
-**Seis regras**
+**Sete regras**
 
 1. **Documento antes de código.** Requisito, decisão de arquitetura e modelo de dados viram texto no repositório antes de virar código. O Claude lê esses textos no começo de cada sessão; você lê o código contra eles.
 2. **Uma fatia vertical por vez.** Cada pergunta do usuário é construída de ponta a ponta (dado → consulta → tela → teste → deploy) antes de abrir a próxima. Várias frentes abertas ao mesmo tempo foi o que virou colcha de retalhos.
@@ -14,6 +14,7 @@ Você é o arquiteto e o revisor; o Claude Code digita. Nada entra no `main` sem
 4. **O que não pode falhar vira trava automática.** O `CLAUDE.md` é conselho. Commit no `main`, segredo no repositório, teste quebrado e dado ruim publicado são barrados por hook, permissão, CI ou proteção de branch.
 5. **Todo elemento de tela responde a uma pergunta da lista.** Se não responde a nenhuma, sai.
 6. **O ritmo é o da sua compreensão.** PR pequeno, um assunto por sessão, nenhum agente escrevendo em paralelo código que você não vai revisar.
+7. **Construa para o tamanho que já se sabe que vem.** Decisão de fundação se toma pelo que já sabemos que o projeto vai precisar (está neste método, num ADR ou na rota), não pelo tamanho dele hoje. "Dá menos trabalho agora" não é argumento. O teste: se é só "talvez um dia", não faz; se deixar para depois obriga a refazer ou migrar, faz direito agora; se dá para acrescentar depois sem retrabalho, pode esperar.
 
 **O ciclo de cada tarefa**
 
@@ -41,6 +42,7 @@ O Capivara não falhou por falta de capacidade técnica: faltou um processo que 
 | Framework virou teto de design: Streamlit, depois FastAPI + Jinja2 + Plotly; a área de membros em React nunca foi ao ar | Escolha por conveniência, sem critérios escritos nem protótipo, e deploy deixado para depois | ADR com critérios, spike descartável e uma página real no ar já na Fase 3 |
 | Cara de dashboard | O ponto de partida era "mostrar os dados", não "responder à pergunta" | Design content-first: a frase-resposta vem antes do gráfico; checklist de tela |
 | Dúvida se aguenta muitos usuários | Nunca foi medido nem projetado para isso | Páginas geradas depois do pipeline e servidas por CDN; teste de carga antes do lançamento |
+| Atalhos conscientes | Mesmo sabendo que o projeto cresceria, decisões ruins foram tomadas "porque daria menos trabalho" | Regra 7: decisão de fundação se toma pelo tamanho que já se sabe que vem |
 
 **O que funcionou e fica.** O padrão de coleta da v1 (CSV anual mais enriquecimento por id, rede em paralelo e gravação em série, upsert por chave natural, retry em 504), a lógica de delta do `6_atualizar.py`, o trio `plano.md` / `progresso.md` / `decisoes.md` do `dag_temas`, o teto de gasto, os gabaritos com segundo passe cego, o conjunto de teste congelado e as 38 personas. As notas do vault em `Conhecimento/`, `Domínio/` e `Decisões/` são a documentação de partida; os arquivos da v1 entram como referência, não como código copiado.
 
@@ -266,7 +268,8 @@ Minha recomendação é **Astro com ilhas React**, TypeScript, Tailwind e compon
 ```
 camara/
 ├── CLAUDE.md
-├── Makefile           make test, make ci, make rota
+├── Makefile           make setup, make test, make ci, make rota
+├── pyproject.toml     dependências Python e configuração das ferramentas (uv.lock ao lado)
 ├── docs/
 │   ├── metodo.md      este doc
 │   ├── frentes.yaml   a rota: frentes, marcos, dependências, próximos passos
@@ -593,7 +596,7 @@ A Fase 0 deixa o repositório pronto e travado antes da primeira linha de produt
 4. `CLAUDE.md` (anexo A), template de PR (anexo B) e `.claude/settings.json` com hooks e permissões (anexo C).
 5. Rota: `docs/frentes.yaml` (anexo D), `scripts/rota.py` (anexo E) e o `--check` no CI.
 6. Vault ligado: o alias `claude-vault`, o ajuste de quebra de linha no git do vault, a memória automática desligada e a skill pessoal `/registrar` (seção do Obsidian).
-7. CI mínimo com lint e um teste de exemplo; pre-commit com formatadores e gitleaks.
+7. CI mínimo com lint, tipos e um teste de exemplo, sobre um ambiente `uv` com lockfile (ADR 0001); pre-commit com formatadores e gitleaks.
 8. `/output-style explanatory`, e `/plugin` para conferir os plugins sincronizados e instalar o `security-guidance`.
 9. Portão: você explica, sem olhar, cada arquivo de configuração criado.
 
@@ -740,7 +743,7 @@ exit 0
       {
         "matcher": "startup|clear|compact",
         "hooks": [
-          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && python3 scripts/rota.py" }
+          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && uv run --locked --quiet python scripts/rota.py" }
         ]
       }
     ],
@@ -870,7 +873,7 @@ frentes:
 
 **Anexo E — `scripts/rota.py`**
 
-`make rota` roda `python3 scripts/rota.py`, e o CI roda `python3 scripts/rota.py --check`. Precisa do PyYAML. O hook que mostra a rota no começo da sessão está no `settings.json` do anexo C.
+`make rota` roda o script pelo `uv`, e o CI roda `make rota-check`. O PyYAML vem do `uv.lock`. O hook que mostra a rota no começo da sessão está no `settings.json` do anexo C.
 
 ```python
 #!/usr/bin/env python3

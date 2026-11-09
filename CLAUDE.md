@@ -10,6 +10,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Notebook e experimento não entram aqui: vão para o repositório do laboratório.
 
 ## Comandos
+- Preparar a máquina: make setup
 - Rota: make rota
 - Testes rápidos: make test
 - Tudo, como no CI: make ci
@@ -26,6 +27,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Trabalhe na frente ativa da rota; trocar de frente só com o meu ok.
 - Explique o que cada parte faz e por quê; mostre opções e trade-offs antes de decisões de arquitetura.
 - Plano antes de mexer em mais de um arquivo, com alternativas e riscos.
+- Decida pelo tamanho que já se sabe que vem, não pelo de hoje: "dá menos trabalho agora" não é argumento. Se é só "talvez um dia", não faça; se adiar obriga a refazer, faça direito agora.
 - Teste primeiro: mostre a saída falhando e depois passando.
 - Escrever não é rodar: coleta, notebook e chamada paga só quando eu pedir, com estimativa de custo e --max-custo.
 - Depois de implementar, diga o que testar: URLs (caminho feliz e um erro), consultas SQL, arquivos esperados.
