@@ -563,7 +563,7 @@ O maior risco deste projeto não é invasão, é publicar dado errado sobre um d
 **Revisão de segurança com o Claude**
 
 - **Plugin `security-guidance`** (`/plugin install security-guidance@claude-plugins-official`). Procura padrões perigosos a cada edição, sem custo, e revisa o diff no fim de cada vez e a cada commit com um Claude separado. Não bloqueia nada, e as revisões com modelo gastam uso; cada camada pode ser desligada por variável.
-- **`.claude/claude-security-guidance.md`**: a tabela acima em forma de checklist (SQL parametrizado, nada de `set:html` com dado, nada de `verify=False`, saída de LLM validada). O revisor do plugin lê esse arquivo.
+- **`.claude/claude-security-guidance.md`**: a tabela acima em forma de checklist (SQL parametrizado, nada de `set:html` com dado, nada de `verify=False`, saída de LLM validada). A revisão de fim de turno do plugin lê esse arquivo; a revisão de commit não.
 - **`/security-review`** antes de cada release, numa passada pelo branch inteiro.
 - **Camada paga, quando vier:** as lições da nota "Segurança web - lições da v1" (JWT em cookie HttpOnly e SameSite, path traversal, XSS em atributo) entram no mesmo checklist.
 

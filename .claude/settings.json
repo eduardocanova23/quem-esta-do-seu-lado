@@ -1,16 +1,36 @@
 {
-  "autoMemoryEnabled": false,
   "permissions": {
-    "allow": ["Bash(make test)", "Bash(make ci)", "Bash(make rota)", "Bash(git status *)", "Bash(git diff *)", "Bash(git add *)", "Bash(git commit *)"],
-    "ask": ["Bash(git push *)", "Bash(gh pr create *)", "Bash(git add -A*)", "Bash(git add .)", "Bash(python -m pipeline*)"],
-    "deny": ["Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)"]
+    "allow": [
+      "Bash(make test)",
+      "Bash(make ci)",
+      "Bash(make rota)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(gh pr create *)",
+      "Bash(git add -A*)",
+      "Bash(git add .)",
+      "Bash(python -m pipeline*)"
+    ]
   },
   "hooks": {
     "SessionStart": [
       {
         "matcher": "startup|clear|compact",
         "hooks": [
-          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && uv run --locked --quiet python scripts/rota.py" }
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && uv run --locked --quiet python scripts/rota.py"
+          }
         ]
       }
     ],
@@ -18,9 +38,19 @@
       {
         "matcher": "Bash",
         "hooks": [
-          { "type": "command", "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protege-main.sh" }
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protege-main.sh"
+          }
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "security-guidance@claude-plugins-official": true,
+    "brightdata-plugin@synced": false,
+    "cowork-plugin-management@synced": false
+  },
+  "autoMemoryEnabled": false,
+  "outputStyle": "Explanatory"
 }
