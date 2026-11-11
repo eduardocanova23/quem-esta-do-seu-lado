@@ -465,7 +465,7 @@ O repositório guarda a especificação do projeto: o que o sistema é agora. O 
 | --- | --- | --- |
 | Especificação do Câmara v2: requisitos, ADRs, modelo de dados, rota, estado da sessão | Repositório, `docs/` | Muda junto com o código que explica, no mesmo PR |
 | Memória do Câmara v2: visão, estado datado no fim de cada fase, retrospectivas, pesquisa | Vault, `Projetos/Câmara v2/` | Conta o que aconteceu e o que se aprendeu; qualquer sessão, aqui ou no Claude Code, sabe onde o projeto está sem abrir o código |
-| As três perguntas e as diretrizes | Vault até a Fase 1; depois a versão viva vai para `docs/produto/` | A nota do vault fica como origem, com uma linha apontando para o repositório, e não é mais editada |
+| As três perguntas e as diretrizes | Repositório, `docs/produto/perguntas.md` e `diretrizes.md` (migradas na Fase 1, passo 1) | A nota do vault fica como origem, com uma linha apontando para o repositório, e não é mais editada |
 | Decisão que vale para mais de um projeto | Vault, `Decisões/` | Como "Onde guardar cada dado", que já está lá |
 | Lição técnica e nota de estudo | Vault, `Conhecimento/` | Valem para o Clipping e para o próximo projeto, e estão nas suas palavras |
 | APIs e dados públicos | Vault, `Domínio/` | Servem a mais de um projeto |
