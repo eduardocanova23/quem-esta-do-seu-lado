@@ -11,15 +11,14 @@
 frentes:
   fundacao:
     objetivo: repositório pronto e travado antes da primeira linha de produto
-    ativa: true
-    proximo_passo: "portão: explicar, sem olhar, cada arquivo de configuração criado (Fase 0, passo 9)"
     marcos:
       - id: repo
         criterio: main protegido, CI verde, CLAUDE.md, hooks e rota funcionando; você explica cada arquivo de configuração
-        status: andamento
+        status: feito
 
   produto:
     objetivo: as três perguntas viram histórias testáveis
+    ativa: true
     proximo_passo: migrar as três perguntas e as diretrizes do vault para docs/produto/
     marcos:
       - id: perguntas

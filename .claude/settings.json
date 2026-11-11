@@ -19,7 +19,7 @@
       "Bash(gh pr create *)",
       "Bash(git add -A*)",
       "Bash(git add .)",
-      "Bash(python -m pipeline*)"
+      "Bash(*python -m pipeline*)"
     ]
   },
   "hooks": {
@@ -41,6 +41,27 @@
           {
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protege-main.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/formata.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/testes.sh"
           }
         ]
       }
