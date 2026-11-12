@@ -4,7 +4,7 @@ Site que responde, em linguagem comum, as três perguntas de docs/produto/pergun
 Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no meio: docs/estado.md.
 
 ## Onde está cada coisa
-- docs/produto/: perguntas, personas, histórias e não-objetivos. Leia antes de mexer em qualquer tela.
+- docs/produto/: perguntas, diretrizes, personas, histórias e não-objetivos. Leia antes de mexer em qualquer tela.
 - docs/decisoes/: ADRs. Não contrarie um ADR sem propor outro.
 - docs/dados/atualizacao.md: toda tabela nova ganha uma linha aqui antes do schema.
 - Notebook e experimento não entram aqui: vão para o repositório do laboratório.
@@ -39,6 +39,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Sugira /registrar no fim da tarefa quando ela fechar uma fase ou render lição ou decisão útil fora do projeto; só grave no vault se eu confirmar.
 
 ## Pegadinhas do domínio
+Resumo; a fonte é docs/produto/diretrizes.md.
 - Nunca compare legislaturas nem governos; deputado em duas legislaturas tem dois perfis.
 - Partido é o da época do ato (tabela de filiação), nunca o atual.
 - Ids de tema são estáveis: nunca renumere nem reaproveite.

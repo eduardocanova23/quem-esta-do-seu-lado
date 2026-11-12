@@ -19,7 +19,7 @@ frentes:
   produto:
     objetivo: as três perguntas viram histórias testáveis
     ativa: true
-    proximo_passo: migrar as três perguntas e as diretrizes do vault para docs/produto/
+    proximo_passo: escrever docs/produto/personas.md com os quatro perfis de uso do método e as perguntas que cada um faz
     marcos:
       - id: perguntas
         criterio: perguntas, personas, histórias e não-objetivos em docs/produto/
