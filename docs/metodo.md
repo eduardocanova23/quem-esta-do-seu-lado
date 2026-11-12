@@ -9,24 +9,24 @@ Você é o arquiteto e o revisor; o Claude Code digita. Nada entra no `main` sem
 **Sete regras**
 
 1. **Documento antes de código.** Requisito, decisão de arquitetura e modelo de dados viram texto no repositório antes de virar código. O Claude lê esses textos no começo de cada sessão; você lê o código contra eles.
-2. **Uma fatia vertical por vez.** Cada pergunta do usuário é construída de ponta a ponta (dado → consulta → tela → teste → deploy) antes de abrir a próxima. Várias frentes abertas ao mesmo tempo foi o que virou colcha de retalhos.
-3. **Atualização é requisito desde o dia 1.** Toda tabela e todo derivado (ficha, tema, eixo, agregado) nasce com a resposta escrita para "como isso se atualiza amanhã?".
-4. **O que não pode falhar vira trava automática.** O `CLAUDE.md` é conselho. Commit no `main`, segredo no repositório, teste quebrado e dado ruim publicado são barrados por hook, permissão, CI ou proteção de branch.
-5. **Todo elemento de tela responde a uma pergunta da lista.** Se não responde a nenhuma, sai.
-6. **O ritmo é o da sua compreensão.** PR pequeno, um assunto por sessão, nenhum agente escrevendo em paralelo código que você não vai revisar.
-7. **Construa para o tamanho que já se sabe que vem.** Decisão de fundação se toma pelo que já sabemos que o projeto vai precisar (está neste método, num ADR ou na rota), não pelo tamanho dele hoje. "Dá menos trabalho agora" não é argumento. O teste: se é só "talvez um dia", não faz; se deixar para depois obriga a refazer ou migrar, faz direito agora; se dá para acrescentar depois sem retrabalho, pode esperar.
+2. **Uma fatia por vez, completa.** Cada pergunta vai ao ar de ponta a ponta (dado → consulta → página → metodologia → texto de lançamento) antes de abrir a próxima. Várias frentes de produto abertas ao mesmo tempo foi o que virou colcha de retalhos.
+3. **Simples não é improvisado.** A primeira fatia já nasce no framework definitivo e com a direção de design escolhida. Fica para depois só o que faz falta com o site crescendo: Airflow, teste de carga, testes visuais.
+4. **Atualização é requisito desde o dia 1.** Toda tabela e todo derivado (ficha, tema, eixo, agregado) nasce com a resposta escrita para "como isso se atualiza amanhã?". A coleta é feita de comandos que o Airflow vai chamar depois, sem reescrever nada.
+5. **O que não pode falhar vira trava automática.** O `CLAUDE.md` é conselho. Commit no `main`, segredo no repositório, teste quebrado e número errado publicado são barrados por hook, permissão, CI ou proteção de branch.
+6. **Todo elemento de tela responde a uma pergunta da lista.** Se não responde a nenhuma, sai.
+7. **Entendimento onde ele conta.** O código que gera um número publicado e as decisões de arquitetura você entende inteiros e defende em público, com metodologia assinada. Do resto (configuração, estilo, estrutura), basta saber o que cada parte faz.
 
 **O ciclo de cada tarefa**
 
 1. **Issue.** A tarefa existe no GitHub, ligada a uma história de usuário com critérios de aceitação.
 2. **Plano.** Em plan mode, o Claude lê os docs e propõe arquivos, alternativas, riscos e testes. Você pergunta até entender, depois aprova ou recusa.
-3. **Testes primeiro.** Numa branch, o Claude escreve testes que falham traduzindo os critérios; depois, o código mínimo que os faz passar.
-4. **Verificação.** Testes, lint e tipos rodam; se é tela, o Claude abre no navegador e confere o que renderizou.
-5. **Walkthrough.** O PR traz o que mudou, por quê, como se liga ao resto e por qual arquivo começar a ler.
-6. **Teach-back.** O Claude te faz três perguntas sobre a mudança e você responde sem olhar. Errou, estuda aquele ponto antes do merge.
-7. **Merge.** CI verde, squash, docs e ADR atualizados no mesmo PR, issue fechada e próximo passo da frente escrito no frentes.yaml.
+3. **Testes primeiro no que gera ou mostra número.** Numa branch, o Claude escreve testes que falham traduzindo os critérios; depois, o código mínimo que os faz passar.
+4. **Verificação.** Testes e lint rodam; se é tela, o Claude abre o build e confere o que renderizou.
+5. **Walkthrough.** O PR traz o que mudou, por quê e por qual arquivo começar a ler.
+6. **Teach-back, quando a mudança gera número publicado ou mexe na arquitetura.** O Claude te faz três perguntas e você responde sem olhar. Errou, estuda aquele ponto antes do merge.
+7. **Merge.** CI verde, squash, docs, metodologia e ADR atualizados no mesmo PR, issue fechada e próximo passo da frente escrito no frentes.yaml.
 
-Nas primeiras semanas o ciclo é lento de propósito. Se você adotar o plugin Superpowers, ele conduz os passos 2 a 4 e o 7; o 5 e o 6 ficam com a skill /explicar (seção Claude Code).
+Em configuração, estilo e estrutura, os passos 1, 2, 5 e 7 bastam. Se você usar o plugin Superpowers, ele conduz os passos 2 a 4 e o 7; o 5 e o 6 ficam com a skill /explicar (seção Claude Code).
 
 ## O que deu errado no Capivara
 
@@ -36,23 +36,26 @@ O Capivara não falhou por falta de capacidade técnica: faltou um processo que 
 | --- | --- | --- |
 | Colcha de retalhos: painel, roda temática, nuvens de palavras e de adjetivos, resumo por IA, clipping e remuneração no mesmo site | Uma feature entrava porque era possível, não porque respondia a uma pergunta | As três perguntas do vault como base e rastreabilidade: toda tela aponta para uma delas; o resto vai para os não-objetivos |
 | Laboratório misturado com produto (notebooks, `exploracoes/`, `testar_*`) | Experimento e código de produção no mesmo repositório | Laboratório em repositório separado; o produto só recebe o que chega por PR, com teste. É a regra da pasta `definitivo/` aplicada ao repositório inteiro |
-| Banco defasado em silêncio: deputados meses sem atualizar, discursos novos nunca coletados | Orquestração à mão e checkpoint que guardava "quem", não "até quando". Havia uma regra no CLAUDE.md para registrar cada script nos orquestradores, e etapas ficaram de fora mesmo assim | Pipeline incremental e idempotente, dependências explícitas no Airflow e um teste que falha se o dado tem mais de 2 dias |
+| Banco defasado em silêncio: deputados meses sem atualizar, discursos novos nunca coletados | Orquestração à mão e checkpoint que guardava "quem", não "até quando". Havia uma regra no CLAUDE.md para registrar cada script nos orquestradores, e etapas ficaram de fora mesmo assim | Pipeline incremental e idempotente, dependências declaradas num lugar só (que o Airflow lê depois) e um teste que falha se o dado tem mais de 2 dias |
 | O mesmo erro cinco vezes: o proxy do Vite engolia rotas novas, mesmo depois de anotado | Lembrar não funciona | Checagem que importa vira script, hook ou teste: auditoria mecânica no fim, não memória no meio |
-| Lacunas de compreensão | Código aceito sem revisão funda, sessões longas misturando assuntos | Walkthrough e teach-back antes do merge; mapa do sistema atualizado em todo PR |
-| Framework virou teto de design: Streamlit, depois FastAPI + Jinja2 + Plotly; a área de membros em React nunca foi ao ar | Escolha por conveniência, sem critérios escritos nem protótipo, e deploy deixado para depois | ADR com critérios, spike descartável e uma página real no ar já na Fase 3 |
+| Lacunas de compreensão | Código aceito sem revisão funda, sessões longas misturando assuntos | Walkthrough em todo PR, teach-back no código que gera número publicado e mapa do sistema atualizado quando a arquitetura muda |
+| Framework virou teto de design: Streamlit, depois FastAPI + Jinja2 + Plotly; a área de membros em React nunca foi ao ar | Escolha por conveniência, sem critérios escritos nem protótipo, e deploy deixado para depois | ADR com critérios, spike descartável e a primeira fatia no ar cedo, já no framework definitivo |
 | Cara de dashboard | O ponto de partida era "mostrar os dados", não "responder à pergunta" | Design content-first: a frase-resposta vem antes do gráfico; checklist de tela |
 | Dúvida se aguenta muitos usuários | Nunca foi medido nem projetado para isso | Páginas geradas depois do pipeline e servidas por CDN; teste de carga antes do lançamento |
-| Atalhos conscientes | Mesmo sabendo que o projeto cresceria, decisões ruins foram tomadas "porque daria menos trabalho" | Regra 7: decisão de fundação se toma pelo tamanho que já se sabe que vem |
 
-**O que funcionou e fica.** O padrão de coleta da v1 (CSV anual mais enriquecimento por id, rede em paralelo e gravação em série, upsert por chave natural, retry em 504), a lógica de delta do `6_atualizar.py`, o trio `plano.md` / `progresso.md` / `decisoes.md` do `dag_temas`, o teto de gasto, os gabaritos com segundo passe cego, os conjuntos de teste congelados e as 58 personas (38 originais e dois conjuntos independentes de 10). As notas do vault em `Conhecimento/`, `Domínio/` e `Decisões/` são a documentação de partida; os arquivos da v1 entram como referência, não como código copiado.
+**O que funcionou e fica.** O padrão de coleta da v1 (CSV anual mais enriquecimento por id, rede em paralelo e gravação em série, upsert por chave natural, retry em 504), a lógica de delta do `6_atualizar.py`, o trio `plano.md` / `progresso.md` / `decisoes.md` do `dag_temas`, o teto de gasto, os gabaritos com segundo passe cego, o conjunto de teste congelado e as 38 personas. As notas do vault em `Conhecimento/`, `Domínio/` e `Decisões/` são a documentação de partida; os arquivos da v1 entram como referência, não como código copiado.
 
 ## Fases e portões
 
-O projeto anda em seis fases, e cada uma só começa quando o critério da anterior está cumprido. Depois do Produto, Dados e Design correm lado a lado e se encontram no esqueleto.
+O projeto anda em seis fases, e cada uma só começa quando o critério da anterior está cumprido. Depois do Produto, dados, design e infraestrutura correm lado a lado e se encontram na primeira fatia, que vai ao ar completa. Airflow, busca e teste de carga ficam para a Fase 5, quando o site já existe e precisa crescer.
 
 &#91;embedded content: fases e portões do projeto\]
 
 Dados e Design andam juntos porque usam modos diferentes: o pipeline se faz no Claude Code, o design em conversa e protótipo aqui no app. Não há datas, o ritmo é o seu; o único marco externo é a troca de legislatura em 1/2/2027. As fatias seguem a nota das três perguntas: primeiro a 2 (o deputado está do meu lado), que usa só dados que já existem; a 1 depende de coletar a tramitação.
+
+**O que cada fatia publica.** As páginas de consulta, para a pessoa tirar a própria conclusão; uma página de metodologia assinada por você, com cada métrica, a fonte, as escolhas e os limites; e um texto de lançamento com um achado que a ferramenta revela. O que a pessoa conclui depende de como você mediu, e a metodologia publicada é o que mostra que essas escolhas são suas.
+
+**Simples, mas no lugar certo.** A fatia 1 pode ser inteiramente estática: páginas geradas no build a partir dos marts, com filtros que rodam no navegador. Ela já usa o framework do ADR e os tokens da direção de design escolhida, então nada dela é jogado fora depois. A API de busca chega com o marco de busca, depois da fatia 1.
 
 ## Frentes e rota: o processo que se desenrola
 
@@ -63,7 +66,7 @@ A rota mora num arquivo, `docs/frentes.yaml`, que um script lê no começo de ca
 | Frente | Linha de trabalho com objetivo próprio | `dados`: pipeline diário, incremental e idempotente |
 | Marco | Resultado verificável dentro da frente, com critério de pronto; o primeiro não feito é o atual | `dados.core`: ingestão diária com o teste incremental = completo passando |
 | Dependência | Marco que precisa estar feito antes de outro começar | `site.pergunta1` depende de `dados.tramitacao` |
-| Contrato | Marco que fixa uma interface cedo, para outra frente andar sem esperar a implementação | `dados.contrato_marts`: schema dos marts mais uma amostra de dados, e o esqueleto do site já pode começar |
+| Contrato | Marco que fixa uma interface cedo, para outra frente andar sem esperar a implementação | `dados.contrato_marts`: schema dos marts mais uma amostra de dados, e as páginas da fatia 1 já podem começar |
 | Próximo passo | A ação concreta seguinte da frente, que dá para começar sem pensar | "escrever docs/dados/atualizacao.md para as tabelas da pergunta 2" |
 | Ativa | A única frente de código em andamento; as outras ficam pausadas, com o próximo passo escrito | — |
 
@@ -71,26 +74,28 @@ A rota mora num arquivo, `docs/frentes.yaml`, que um script lê no começo de ca
 
 1. **A sessão abre.** O hook `SessionStart` roda `make rota`, e a saída entra no contexto do Claude: a frente ativa e o próximo passo dela, as frentes livres ordenadas pelo quanto destravam e as bloqueadas, com o que falta para cada uma. Roda também depois de `/clear` e da compactação.
 2. **Você decide.** Por padrão, segue o próximo passo da frente ativa. Trocar de frente só vale para uma livre, e a que sai fica pausada com o próximo passo escrito.
-3. **A tarefa roda** pelo ciclo da primeira seção: issue, plano, testes, código, walkthrough, teach-back.
+3. **A tarefa roda** pelo ciclo da primeira seção: issue, plano, testes, código, walkthrough e, quando a mudança gera número publicado, teach-back.
 4. **O PR fecha o laço.** No mesmo PR, o Claude propõe o novo próximo passo, ou marca o marco como feito e escreve a primeira ação do marco seguinte. Você aprova junto com o código.
 5. **O CI confere.** `rota.py --check` falha se houver marco aberto sem próximo passo, dependência que não existe, ciclo, mais de uma frente ativa, frente ativa bloqueada ou marco em andamento com dependência por fazer.
 
-Saída real do script com a Fase 0 concluída:
+Saída real do script com a rota revisada, no meio da Fase 1:
 
 ```text
 ROTA (docs/frentes.yaml)
 
 Ativa: produto, marco produto.perguntas
-  próximo passo: migrar as três perguntas e as diretrizes do vault para docs/produto/
+  próximo passo: conferir docs/produto/ contra a ordem das fatias e seguir de onde parou
 
 Livres, da que destrava mais para a que destrava menos:
-  infra.adrs (destrava 6) | próximo passo: escrever o ADR da forma de entrega do site
+  infra.adrs (destrava 10) | próximo passo: escrever o ADR da forma de entrega do site
 
 Bloqueadas:
   dados.modelo espera produto.perguntas
   taxonomia.incremental espera dados.core
   design.referencias espera produto.perguntas
-  site.esqueleto espera infra.deploy, dados.contrato_marts
+  site.fatia1 espera infra.deploy, dados.contrato_marts, dados.core, design.tokens
+  analise.metodologia1 espera produto.metricas, dados.contrato_marts
+  escala.airflow espera analise.lancamento1
 
 Concluídas: fundacao
 ```
@@ -101,13 +106,13 @@ Concluídas: fundacao
 - **Replanejar.** Marco novo, dependência que mudou ou frente que surgiu entram num PR só disso.
 - **A qualidade do próximo passo.** "Melhorar o pipeline" não passa; "escrever o teste de idempotência das votações" passa.
 
-O `frentes.yaml` guarda para onde ir. O `docs/estado.md` vira só a anotação de passagem quando uma tarefa para no meio, e o que já foi feito fica no histórico de PRs. O arquivo inicial e o script estão nos anexos D e E.
+O `frentes.yaml` guarda para onde ir. O `docs/estado.md` vira só a anotação de passagem quando uma tarefa para no meio, e o que já foi feito fica no histórico de PRs. O arquivo revisado e o script estão nos anexos D e E.
 
 ## Requisitos: da pergunta à tela
 
 O MVP é o menor conjunto de telas que responde bem às quatro perguntas centrais. Tudo sai de um banco de perguntas escrito antes de qualquer tela, e cada elo da cadeia aponta para o anterior: pergunta → história → critério de aceitação → teste → tela.
 
-**1. Perfis de uso.** As 58 personas e as lentes do `dag_temas` continuam como critério de classificação, que é diretriz inegociável do vault. Para o app, bastam quatro ou cinco perfis definidos por como a pessoa chega e do que precisa:
+**1. Perfis de uso.** As 38 personas e as lentes do `dag_temas` continuam como critério de classificação, que é diretriz inegociável do vault. Para o app, bastam quatro ou cinco perfis definidos por como a pessoa chega e do que precisa:
 
 | Perfil | Como chega | Quer saber | Precisa de |
 | --- | --- | --- | --- |
@@ -200,7 +205,14 @@ O banco é o produto, e ele é desenhado de trás para frente: para cada tabela,
 7. Os gabaritos ouro A e B viram teste de regressão: se a acurácia cair abaixo do limiar, a execução não publica.
 8. O site nunca chama LLM na hora do acesso; tudo que vem de modelo é pré-calculado, com teto de gasto por execução.
 
-**Airflow orquestra; a lógica mora em Python comum.** Cada passo é uma função com CLI e testes (`python -m pipeline.ingestao --data 2026-11-05`), e a DAG só chama essas funções na ordem. Você aprende Airflow sem prender o projeto a ele e roda qualquer passo à mão.
+**Airflow depois, sem retrabalho.** Até a Fase 5, a atualização roda à mão com `make atualizar`. Quatro regras fazem o Airflow entrar depois sem reescrever nada:
+
+- **Cada passo é um comando Python com testes** (`python -m pipeline.ingestao --data 2026-11-05`), que recebe a data lógica e é idempotente: rodar de novo para o mesmo dia dá o mesmo estado. É o que o Airflow faz em cada tarefa, e é o que permite reprocessar o passado.
+- **A lista de passos mora num arquivo só**, `pipeline/passos.py`: nome, comando e de quais passos cada um depende. O `make atualizar` roda essa lista na ordem. Na Fase 5, as DAGs leem a mesma lista e criam uma tarefa por passo. Passo novo nunca nasce fora dela.
+- **Cada passo guarda até que data processou**, não quem processou. Foi o checkpoint por "quem" que deixou o banco da v1 defasado em silêncio.
+- **Os passos já se agrupam como as DAGs da tabela abaixo**, então a fronteira entre elas não muda quando o Airflow chega.
+
+Quando ele entrar, o trabalho é escrever DAGs finas, subir o Airflow no servidor e ligar os alertas. Os passos e os testes ficam como estão. As DAGs previstas:
 
 | DAG | Quando | Faz |
 | --- | --- | --- |
@@ -235,11 +247,13 @@ Toda escolha cara de reverter vira um ADR com alternativas, critérios e consequ
 
 1. ADR em `docs/decisoes/NNNN-titulo.md`: contexto, opções, critérios com peso, decisão, consequências e quando revisitar. A skill `architecture` do plugin Engineering faz o rascunho; a decisão você reescreve com as suas palavras.
 2. Spike: protótipo descartável numa branch `spike/...`, com prazo de um dia e uma pergunta só ("consigo fazer a página do deputado com X?"). O código vai fora; o aprendizado vai para o ADR.
-3. Os ADRs saem nesta ordem, porque cada um restringe o seguinte: forma de entrega do site, framework, banco, busca em produção, Airflow em produção, hospedagem do site e, depois do MVP, autenticação e camada paga.
+3. Os ADRs saem nesta ordem, porque cada um restringe o seguinte: forma de entrega do site, framework, banco e hospedagem do site antes da fatia 1; busca e Airflow em produção na Fase 5; depois disso, autenticação e camada paga.
 
 **A decisão que resolve a dúvida de carga.** Os dados mudam uma vez por dia, então quase todo o site pode ser gerado logo depois do pipeline e servido por CDN. Uma página pronta na CDN não consulta o banco no acesso, e um pico de visitas não derruba nada. Só a busca e os filtros que não dá para pré-gerar precisam de servidor.
 
 &#91;embedded content: arquitetura · fluxo noturno e acesso\]
+
+O diagrama mostra o sistema da Fase 5. Até lá, o mesmo fluxo roda com `make atualizar` no lugar do Airflow, e a API de busca ainda não existe: a fatia 1 é só página gerada e servida pela CDN.
 
 A CDN entrega as páginas sem tocar no banco. Só a API de busca consulta o Postgres, com um papel que não consegue escrever. Isso encolhe a superfície de ataque; as lições de segurança da v1 (path traversal, XSS, JWT em cookie HttpOnly) voltam a valer quando vier a camada paga.
 
@@ -268,8 +282,7 @@ Minha recomendação é **Astro com ilhas React**, TypeScript, Tailwind e compon
 ```
 camara/
 ├── CLAUDE.md
-├── Makefile           make setup, make test, make ci, make rota
-├── pyproject.toml     dependências Python e configuração das ferramentas (uv.lock ao lado)
+├── Makefile           make test, make ci, make rota, make atualizar
 ├── docs/
 │   ├── metodo.md      este doc
 │   ├── frentes.yaml   a rota: frentes, marcos, dependências, próximos passos
@@ -452,7 +465,7 @@ Escolha uma metodologia de base. Se for o Superpowers, não crie uma skill sua q
 - **Sim** para três coisas:
   1. Pesquisa: "use um subagente para investigar X" lê dezenas de arquivos num contexto separado e devolve só o resumo.
   2. Revisão independente: `/code-review` revisa o diff num subagente que não viu o raciocínio de quem escreveu. Peça só o que afeta correção ou requisito, porque um revisor mandado achar problema sempre acha algum.
-  3. Frentes independentes, mais tarde: duas sessões em worktrees separadas (pipeline e design, por exemplo) quando o esqueleto estiver estável e você der conta de revisar as duas.
+  3. Frentes independentes, mais tarde: duas sessões em worktrees separadas (pipeline e design, por exemplo) quando a fatia 1 estiver no ar e você der conta de revisar as duas.
 - Agent teams são experimentais, vêm desligados e custam bem mais tokens. Dispensáveis aqui.
 
 Fontes: [boas práticas](https://code.claude.com/docs/en/best-practices.md), [skills](https://code.claude.com/docs/en/skills.md), [hooks](https://code.claude.com/docs/en/hooks-guide.md), [permissões](https://code.claude.com/docs/en/permissions.md), [output styles](https://code.claude.com/docs/en/output-styles.md), [plugins](https://code.claude.com/docs/en/plugins/install.md), [Chrome](https://code.claude.com/docs/en/chrome.md), [agent teams](https://code.claude.com/docs/en/agent-teams.md), [shadcn MCP](https://ui.shadcn.com/docs/mcp), [guia do Superpowers](https://www.developersdigest.tech/blog/claude-code-superpowers-plugin-guide).
@@ -465,7 +478,7 @@ O repositório guarda a especificação do projeto: o que o sistema é agora. O 
 | --- | --- | --- |
 | Especificação do Câmara v2: requisitos, ADRs, modelo de dados, rota, estado da sessão | Repositório, `docs/` | Muda junto com o código que explica, no mesmo PR |
 | Memória do Câmara v2: visão, estado datado no fim de cada fase, retrospectivas, pesquisa | Vault, `Projetos/Câmara v2/` | Conta o que aconteceu e o que se aprendeu; qualquer sessão, aqui ou no Claude Code, sabe onde o projeto está sem abrir o código |
-| As três perguntas e as diretrizes | Repositório, `docs/produto/perguntas.md` e `diretrizes.md` (migradas na Fase 1, passo 1) | A nota do vault fica como origem, com uma linha apontando para o repositório, e não é mais editada |
+| As três perguntas e as diretrizes | Vault até a Fase 1; depois a versão viva vai para `docs/produto/` | A nota do vault fica como origem, com uma linha apontando para o repositório, e não é mais editada |
 | Decisão que vale para mais de um projeto | Vault, `Decisões/` | Como "Onde guardar cada dado", que já está lá |
 | Lição técnica e nota de estudo | Vault, `Conhecimento/` | Valem para o Clipping e para o próximo projeto, e estão nas suas palavras |
 | APIs e dados públicos | Vault, `Domínio/` | Servem a mais de um projeto |
@@ -519,7 +532,7 @@ O `main` é protegido no GitHub e toda mudança entra por PR com CI verde. As re
 - O backlog são as issues do GitHub num quadro do GitHub Projects; cada história de `docs/produto/` vira uma issue. O Claude lê e cria issues com `gh`.
 - Toda biblioteca nova tem uma linha no PR dizendo o que faz, por que não dá sem ela e o que ela faz por baixo (a sua regra contra biblioteca mágica). O Dependabot abre os PRs de atualização.
 
-**CI no GitHub Actions, a cada PR:** lint e tipos, testes unitários, testes de integração com Postgres num serviço do próprio Actions, build do site, testes end-to-end e de acessibilidade contra o build, e varredura de segredos (gitleaks). O mesmo gitleaks roda no pre-commit, junto dos formatadores.
+**CI no GitHub Actions, a cada PR:** lint, testes do pipeline e das métricas (com Postgres num serviço do próprio Actions), build do site, um teste de fumaça contra o build, `rota.py --check` e varredura de segredos (gitleaks). O mesmo gitleaks roda no pre-commit, junto dos formatadores. Testes end-to-end completos, de acessibilidade, visuais e de carga entram na Fase 5.
 
 O template de PR e o script do hook estão nos anexos.
 
@@ -527,20 +540,24 @@ O template de PR e o script do hook estão nos anexos.
 
 Cada camada tem o seu tipo de teste, e o mais importante deste projeto não é de código: é o que impede dado ruim de chegar ao site. Os marts são montados num schema de rascunho, testados e só então trocados pelo publicado; se um teste falha, o site continua com os dados de ontem e você recebe um alerta.
 
-| Camada | O que testar | Ferramenta | Quando roda |
-| --- | --- | --- | --- |
-| Funções do pipeline | Parsers e transformações, com arquivos reais da Câmara salvos como fixtures | pytest | A cada commit |
-| Pipeline integrado | Idempotência (rodar duas vezes dá o mesmo estado) e incremental igual a completo (carregar o dia 1 e depois o dia 2 dá o mesmo que carregar os dois de uma vez) | pytest com Postgres em contêiner | CI |
-| Qualidade de dados | Chaves únicas, integridade referencial, nulos proibidos, contagens na faixa esperada, dado com no máximo 2 dias, distribuição de temas sem salto | Consultas SQL de asserção | Dentro do pipeline, antes de publicar |
-| Classificador | Gabaritos ouro A e B com limiar de acurácia, mais o placar de personas no conjunto independente congelado (commit + SHA256) | Script de avaliação do `dag_temas` | A cada mudança de taxonomia, prompt ou modelo |
-| API de busca | Consultas do seu conjunto de teste ("saidinha", "jogo do tigrinho") achando o tema certo | pytest com cliente HTTP | CI |
-| Lógica do site | Formatação de números e datas, modelos de frase | Vitest | A cada commit |
-| Fluxos do site | Os critérios de aceitação das histórias, num navegador de verdade | Playwright | CI, contra o build |
-| Acessibilidade | Violações automáticas de WCAG | axe-core dentro do Playwright | CI |
-| Visual | Screenshot de cada página-chave comparado com o último aprovado | Comparação de screenshot do Playwright | CI; você aprova cada mudança visual |
-| Desempenho e carga | LCP e peso das páginas; carga na API de busca | Lighthouse CI; k6 | Antes de cada release |
+O critério para um teste entrar agora é um só: ele protege um número publicado? Os que protegem o site crescendo esperam a Fase 5.
 
-**TDD com o Claude.** O teste vem antes do código, e o Claude mostra a saída do teste falhando antes de implementar e passando depois. A documentação do Claude Code insiste nisso: peça evidência, não afirmação de que funcionou. A skill de TDD do Superpowers impõe a ordem, e o hook `Stop` impede o Claude de encerrar a vez com teste rápido quebrado.
+| Camada | O que testar | Ferramenta | Quando entra |
+| --- | --- | --- | --- |
+| Funções do pipeline | Parsers e transformações, com arquivos reais da Câmara salvos como fixtures | pytest | Agora, a cada commit |
+| Pipeline integrado | Idempotência (rodar duas vezes dá o mesmo estado) e incremental igual a completo (carregar o dia 1 e depois o dia 2 dá o mesmo que carregar os dois de uma vez) | pytest com Postgres em contêiner | Agora, no CI |
+| Qualidade de dados | Chaves únicas, integridade referencial, nulos proibidos, contagens na faixa esperada, dado com no máximo 2 dias, distribuição de temas sem salto | Consultas SQL de asserção | Agora, dentro do `make atualizar`, antes de publicar |
+| Métricas publicadas | Cada número da metodologia recalculado num caso pequeno feito à mão (um deputado, poucas votações) | pytest | Agora, no CI |
+| Classificador | Gabaritos ouro A e B com limiar de acurácia, mais o placar de personas no conjunto independente congelado (commit + SHA256) | Script de avaliação do `dag_temas` | A cada mudança de taxonomia, prompt ou modelo |
+| Lógica do site | Formatação de números e datas, modelos de frase | Vitest | Agora, a cada commit |
+| Fumaça do site | As páginas da fatia abrem no build com dado real | Playwright, um teste por fatia | Agora, no CI |
+| API de busca | Consultas do seu conjunto de teste ("saidinha", "jogo do tigrinho") achando o tema certo | pytest com cliente HTTP | Com o marco de busca |
+| Fluxos do site | Os critérios de aceitação das histórias, num navegador de verdade | Playwright | Fase 5 |
+| Acessibilidade | Violações automáticas de WCAG | axe-core dentro do Playwright | Fase 5 |
+| Visual | Screenshot de cada página-chave comparado com o último aprovado | Comparação de screenshot do Playwright | Fase 5 |
+| Desempenho e carga | LCP e peso das páginas; carga na API de busca | Lighthouse CI; k6 | Fase 5, antes do lançamento grande |
+
+**TDD com o Claude.** No pipeline e nas métricas, o teste vem antes do código, e o Claude mostra a saída do teste falhando antes de implementar e passando depois. A documentação do Claude Code insiste nisso: peça evidência, não afirmação de que funcionou. A skill de TDD do Superpowers impõe a ordem, e o hook `Stop` impede o Claude de encerrar a vez com teste rápido quebrado.
 
 **Dentro do WSL**, o Claude confere telas com screenshots do Playwright salvos em arquivo, já que a integração com o Chrome não funciona ali.
 
@@ -563,7 +580,7 @@ O maior risco deste projeto não é invasão, é publicar dado errado sobre um d
 **Revisão de segurança com o Claude**
 
 - **Plugin `security-guidance`** (`/plugin install security-guidance@claude-plugins-official`). Procura padrões perigosos a cada edição, sem custo, e revisa o diff no fim de cada vez e a cada commit com um Claude separado. Não bloqueia nada, e as revisões com modelo gastam uso; cada camada pode ser desligada por variável.
-- **`.claude/claude-security-guidance.md`**: a tabela acima em forma de checklist (SQL parametrizado, nada de `set:html` com dado, nada de `verify=False`, saída de LLM validada). A revisão de fim de turno do plugin lê esse arquivo; a revisão de commit não.
+- **`.claude/claude-security-guidance.md`**: a tabela acima em forma de checklist (SQL parametrizado, nada de `set:html` com dado, nada de `verify=False`, saída de LLM validada). O revisor do plugin lê esse arquivo.
 - **`/security-review`** antes de cada release, numa passada pelo branch inteiro.
 - **Camada paga, quando vier:** as lições da nota "Segurança web - lições da v1" (JWT em cookie HttpOnly e SameSite, path traversal, XSS em atributo) entram no mesmo checklist.
 
@@ -571,22 +588,21 @@ Fontes: [plugin security-guidance](https://code.claude.com/docs/en/security-guid
 
 ## Rotina anti-caixa-preta
 
-Entender o projeto vira algo que se verifica, não uma sensação. São seis rituais com frequência fixa, e qualquer linha que você não saiba justificar é tratada como bug: vira uma issue com o rótulo `entender`.
+Entender o projeto vira algo que se verifica, não uma sensação, mas só onde conta: no código que gera número publicado e nas decisões de arquitetura. Ali, qualquer linha que você não saiba justificar é tratada como bug e vira uma issue com o rótulo `entender`. No resto, basta saber o que cada parte faz.
 
 | Ritual | Quando | Como |
 | --- | --- | --- |
-| Teach-back | Todo PR | `/explicar` gera o walkthrough e três perguntas; você responde sem olhar. Errou, estuda antes do merge |
-| Mapa do sistema | Todo PR que muda a arquitetura | `docs/arquitetura/mapa.md` com o diagrama dos componentes e do fluxo de dados em Mermaid, atualizado no mesmo PR |
+| Teach-back | PR que gera número publicado ou muda a arquitetura | `/explicar` gera o walkthrough e três perguntas; você responde sem olhar. Errou, estuda antes do merge |
+| Metodologia | PR que muda uma métrica | A página de metodologia é atualizada no mesmo PR, com a fórmula, a fonte e os limites em linguagem comum. Se você não consegue escrever, ainda não entendeu |
+| Mapa do sistema | PR que muda a arquitetura | `docs/arquitetura/mapa.md` com o diagrama dos componentes e do fluxo de dados em Mermaid, atualizado no mesmo PR |
 | README por pasta | Toda pasta nova | Cinco a dez linhas: o que faz, o que recebe, o que entrega, quem chama |
-| Arquivo sorteado | Toda semana | Um script sorteia um arquivo do repositório; você explica o que faz, quem chama e por que existe, e só então confere |
-| Quadro branco | A cada duas semanas | Sem olhar nada, desenhe o caminho do dado da Câmara até a tela e compare com o mapa. As lacunas viram estudo |
-| Retrospectiva | A cada duas semanas | O que fugiu do controle? A regra que evita isso vira hook, skill ou linha no CLAUDE.md; a lição que serve fora do projeto vira nota no vault |
+| Retrospectiva | No fim de cada fatia | O que fugiu do controle? A regra que evita isso vira hook, skill ou linha no CLAUDE.md; a lição que serve fora do projeto vira nota no vault |
 
 **Estudo dirigido.** Antes de usar um conceito novo (data lógica do Airflow, componente de servidor, índice no Postgres), leia a página de conceitos da documentação oficial e escreva uma nota no vault com as suas palavras. Depois peça ao Claude que te argua sobre a nota. É o mesmo teach-back, aplicado ao conceito em vez do código.
 
 ## Primeiros passos, decisões em aberto e anexos
 
-A Fase 0 deixa o repositório pronto e travado antes da primeira linha de produto. Depois do passo 1, crie a pasta do projeto dentro do WSL (\~/projetos/camara) e exporte este doc como Markdown para `docs/metodo.md`: é a referência que o Claude vai ler. Rode git init ali e abra o Claude Code nessa pasta: daí em diante, as perguntas do projeto vão para essa sessão.
+A Fase 0 deixou o repositório pronto e travado antes da primeira linha de produto, e a lista abaixo fica como registro. A referência que o Claude lê é o `docs/metodo.md` do repositório, exportado deste doc, e as perguntas que mexem no projeto vão para a sessão do Claude Code aberta na pasta dele.
 
 **Fase 0, passo a passo**
 
@@ -596,13 +612,13 @@ A Fase 0 deixa o repositório pronto e travado antes da primeira linha de produt
 4. `CLAUDE.md` (anexo A), template de PR (anexo B) e `.claude/settings.json` com hooks e permissões (anexo C).
 5. Rota: `docs/frentes.yaml` (anexo D), `scripts/rota.py` (anexo E) e o `--check` no CI.
 6. Vault ligado: o alias `claude-vault`, o ajuste de quebra de linha no git do vault, a memória automática desligada e a skill pessoal `/registrar` (seção do Obsidian).
-7. CI mínimo com lint, tipos e um teste de exemplo, sobre um ambiente `uv` com lockfile (ADR 0001); pre-commit com formatadores e gitleaks.
+7. CI mínimo com lint e um teste de exemplo; pre-commit com formatadores e gitleaks.
 8. `/output-style explanatory`, e `/plugin` para conferir os plugins sincronizados e instalar o `security-guidance`.
 9. Portão: você explica, sem olhar, cada arquivo de configuração criado.
 
-**O primeiro prompt**, pequeno de propósito:
+**Para levar uma revisão do método ao repositório.** Exporte este doc como Markdown e, numa sessão nova do Claude Code, em plan mode:
 
-> Leia docs/metodo.md, seção "Primeiros passos". Vamos fazer só o passo 2 da Fase 0. Em plan mode, liste os comandos que vai rodar e explique cada um antes de executar.
+> Substitua docs/metodo.md pelo Markdown que eu exportei (está em /mnt/c/Users/Utilisateur/Downloads). Reestruture docs/frentes.yaml como o anexo D do novo método, mantendo os status e os próximos passos que já estão no arquivo. Ajuste o CLAUDE.md e o template de PR aos anexos A e B. Rode make rota e rota.py --check, me mostre o diff de cada arquivo e só abra o PR quando eu pedir.
 
 **Onde perguntar**
 
@@ -613,13 +629,15 @@ A Fase 0 deixa o repositório pronto e travado antes da primeira linha de produt
 **Decisões em aberto que só você toma**
 
 - A camada paga continua no plano? Muda autenticação e talvez o framework.
-- Repositório público ou privado? Público deixa a metodologia auditável, o que pesa num projeto de transparência; privado protege o que for da camada paga.
 - Onde fica o laboratório: repositório separado, que é o que eu recomendo, ou uma pasta que o CI ignora.
 - Teto mensal para infraestrutura e para LLM.
-- Lançar antes ou depois de 1/2/2027? Um balanço da 57ª legislatura, com ela fechada, é um marco natural, e a 58ª já entra com atualização diária.
-- Nome e domínio.
+- Lançar a fatia 1 antes ou depois de 1/2/2027? Com a 57ª legislatura fechada, a pergunta 2 tem um conjunto completo de votações, um bom gancho para o texto de lançamento.
+- Onde o texto de lançamento sai além do site: blog próprio, LinkedIn ou proposta a uma redação.
+- Nome e domínio: "Quem está do seu lado" é provisório, e o domínio não foi conferido.
 
-**Anexo A — CLAUDE.md inicial**
+Já decidido: repositório público, com o `main` protegido (nota em `Decisões/` no vault).
+
+**Anexo A — CLAUDE.md**
 
 ```markdown
 # Câmara v2
@@ -631,12 +649,14 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - docs/produto/: perguntas, personas, histórias e não-objetivos. Leia antes de mexer em qualquer tela.
 - docs/decisoes/: ADRs. Não contrarie um ADR sem propor outro.
 - docs/dados/atualizacao.md: toda tabela nova ganha uma linha aqui antes do schema.
+- pipeline/passos.py: a lista de passos da coleta e de quem depende de quem.
 - Notebook e experimento não entram aqui: vão para o repositório do laboratório.
 
 ## Comandos
 - Rota: make rota
 - Testes rápidos: make test
 - Tudo, como no CI: make ci
+- Atualizar os dados: make atualizar
 - Ambiente local: docker compose -f infra/compose.yml up -d
 
 ## Git
@@ -648,9 +668,11 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 
 ## Como trabalhar
 - Trabalhe na frente ativa da rota; trocar de frente só com o meu ok.
-- Explique o que cada parte faz e por quê; mostre opções e trade-offs antes de decisões de arquitetura.
+- Explique em detalhe o código que gera número publicado e as decisões de arquitetura, com opções e trade-offs. No resto, diga em uma linha o que cada parte faz.
 - Plano antes de mexer em mais de um arquivo, com alternativas e riscos.
-- Teste primeiro: mostre a saída falhando e depois passando.
+- No pipeline e nas métricas, teste primeiro: mostre a saída falhando e depois passando.
+- Passo novo da coleta entra em pipeline/passos.py, como comando idempotente que recebe a data lógica; nunca num script solto.
+- Mudou uma métrica, atualize a página de metodologia no mesmo PR.
 - Escrever não é rodar: coleta, notebook e chamada paga só quando eu pedir, com estimativa de custo e --max-custo.
 - Depois de implementar, diga o que testar: URLs (caminho feliz e um erro), consultas SQL, arquivos esperados.
 - Nenhuma dependência nova sem justificativa no PR e sem explicar a camada de baixo.
@@ -680,9 +702,10 @@ Closes #
 ## Como testar
 
 ## Checklist
-- [ ] Consigo explicar cada arquivo alterado sem ajuda
+- [ ] Consigo explicar sem ajuda o que gera número publicado; do resto, sei o que cada arquivo faz
 - [ ] Os testes cobrem os critérios de aceitação da issue
 - [ ] Próximo passo da frente atualizado em docs/frentes.yaml
+- [ ] Metodologia atualizada, se mudou uma métrica
 - [ ] Docs, ADR e mapa do sistema atualizados, se for o caso
 - [ ] Migração tem volta e linha em docs/dados/atualizacao.md, se for o caso
 - [ ] Screenshots no celular e no desktop, se mexe em tela
@@ -743,7 +766,7 @@ exit 0
       {
         "matcher": "startup|clear|compact",
         "hooks": [
-          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && uv run --locked --quiet python scripts/rota.py" }
+          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && python3 scripts/rota.py" }
         ]
       }
     ],
@@ -763,7 +786,9 @@ A ordem de avaliação é deny, depois ask, depois allow, e a primeira que casa 
 
 O hook `Stop` dos testes rápidos e o `PostToolUse` do formatador seguem o mesmo formato. Peça ao Claude para escrevê-los a partir da [documentação de hooks](https://code.claude.com/docs/en/hooks-guide.md) e confira que o `Stop` respeita o campo `stop_hook_active`, senão ele entra em laço.
 
-**Anexo D — `docs/frentes.yaml` inicial**
+**Anexo D — `docs/frentes.yaml` revisado**
+
+Ao trocar o arquivo no repositório, mantenha os status e os próximos passos que já estão no seu: o que muda é a estrutura (fatias, frente de análise e frente de escala). O `rota.py` do anexo E não muda.
 
 ```yaml
 # Rota do projeto. `make rota` lê este arquivo, valida e mostra onde trabalhar em seguida.
@@ -779,26 +804,26 @@ O hook `Stop` dos testes rápidos e o `PostToolUse` do formatador seguem o mesmo
 frentes:
   fundacao:
     objetivo: repositório pronto e travado antes da primeira linha de produto
-    ativa: true
-    proximo_passo: criar o repositório no GitHub e proteger o main
     marcos:
       - id: repo
         criterio: main protegido, CI verde, CLAUDE.md, hooks e rota funcionando; você explica cada arquivo de configuração
-        status: andamento
+        status: feito
 
   produto:
     objetivo: as três perguntas viram histórias testáveis
-    proximo_passo: migrar as três perguntas e as diretrizes do vault para docs/produto/
+    ativa: true
+    proximo_passo: conferir docs/produto/ contra a ordem das fatias e seguir de onde parou
     marcos:
       - id: perguntas
         criterio: perguntas, personas, histórias e não-objetivos em docs/produto/
         depende_de: [fundacao.repo]
+        status: andamento
       - id: metricas
         criterio: dicionário de métricas da pergunta 2 revisado por você
         depende_de: [produto.perguntas]
 
   dados:
-    objetivo: pipeline diário, incremental e idempotente
+    objetivo: coleta incremental e idempotente, pronta para o Airflow sem reescrever nada
     proximo_passo: escrever docs/dados/atualizacao.md para as tabelas da pergunta 2
     marcos:
       - id: modelo
@@ -808,7 +833,7 @@ frentes:
         criterio: schema dos marts da pergunta 2 fixado, com amostra de dados para o site
         depende_de: [dados.modelo, produto.metricas]
       - id: core
-        criterio: ingestão diária de proposições, votos e orientações; teste incremental = completo passa
+        criterio: proposições, votos e orientações atualizados com make atualizar, a partir de pipeline/passos.py; teste incremental = completo passa
         depende_de: [dados.modelo]
       - id: tramitacao
         criterio: tramitações coletadas por delta
@@ -826,7 +851,7 @@ frentes:
         depende_de: [taxonomia.incremental]
 
   design:
-    objetivo: direção visual escolhida e virando tokens
+    objetivo: direção visual própria, sem cara de painel feito por IA, antes da primeira página
     proximo_passo: juntar 15 referências anotadas em docs/design/referencias.md
     marcos:
       - id: referencias
@@ -836,44 +861,69 @@ frentes:
         criterio: wireframes das telas da pergunta 2, com dados reais
         depende_de: [design.referencias]
       - id: tokens
-        criterio: direção escolhida, tokens no repositório, 5 pessoas testaram
+        criterio: direção escolhida, tokens e componentes de base no repositório, 5 pessoas testaram
         depende_de: [design.wireframes]
 
   infra:
-    objetivo: um merge no main publica tudo sozinho
+    objetivo: um merge no main publica o site sozinho
     proximo_passo: escrever o ADR da forma de entrega do site
     marcos:
       - id: adrs
-        criterio: ADRs de entrega, framework, banco, busca, Airflow e hospedagem escritos
+        criterio: ADRs de entrega, framework, banco e hospedagem escritos
         depende_de: [fundacao.repo]
       - id: deploy
         criterio: merge no main publica o site; backup restaurado uma vez
         depende_de: [infra.adrs]
 
   site:
-    objetivo: as três perguntas no ar, uma por vez
-    proximo_passo: esqueleto com a página de um deputado gerada a partir da amostra do contrato
+    objetivo: as três perguntas no ar, uma fatia por vez
+    proximo_passo: página de um deputado gerada pelo build a partir da amostra do contrato
     marcos:
-      - id: esqueleto
-        criterio: uma página real no ar, gerada pelo build
-        depende_de: [infra.deploy, dados.contrato_marts]
-      - id: pergunta2
-        criterio: critérios de aceitação da pergunta 2 verdes no e2e
-        depende_de: [site.esqueleto, design.tokens, dados.core]
-      - id: pergunta3
-        criterio: critérios de aceitação da pergunta 3 verdes no e2e
-        depende_de: [site.pergunta2]
-      - id: pergunta1
-        criterio: critérios de aceitação da pergunta 1 verdes no e2e
-        depende_de: [site.pergunta2, dados.tramitacao]
+      - id: fatia1
+        criterio: páginas de consulta da pergunta 2 geradas pelo build a partir dos marts; teste de fumaça passa
+        depende_de: [infra.deploy, dados.contrato_marts, dados.core, design.tokens]
+      - id: fatia2
+        criterio: páginas de consulta da pergunta 3 no ar
+        depende_de: [analise.lancamento1]
+      - id: fatia3
+        criterio: páginas de consulta da pergunta 1 no ar
+        depende_de: [analise.lancamento2, dados.tramitacao]
       - id: busca
         criterio: conjunto de teste de busca acima do limiar
-        depende_de: [site.esqueleto, taxonomia.incremental]
+        depende_de: [site.fatia1, taxonomia.incremental]
+
+  analise:
+    objetivo: cada fatia sai com metodologia assinada e um achado
+    proximo_passo: rascunhar a metodologia da pergunta 2 a partir do dicionário de métricas
+    marcos:
+      - id: metodologia1
+        criterio: página de metodologia da pergunta 2 assinada; cada número sai de um comando que você roda e explica
+        depende_de: [produto.metricas, dados.contrato_marts]
+      - id: lancamento1
+        criterio: fatia 1 publicada com a metodologia e o texto de lançamento
+        depende_de: [analise.metodologia1, site.fatia1]
+      - id: lancamento2
+        criterio: fatia 2 publicada com metodologia e texto
+        depende_de: [site.fatia2]
+      - id: lancamento3
+        criterio: fatia 3 publicada com metodologia e texto
+        depende_de: [site.fatia3]
+
+  escala:
+    objetivo: o site se atualiza sozinho e aguenta pico de acesso
+    proximo_passo: escrever o ADR de onde o Airflow roda em produção
+    marcos:
+      - id: airflow
+        criterio: DAGs geradas a partir de pipeline/passos.py rodando no servidor, com alerta de falha
+        depende_de: [analise.lancamento1]
+      - id: carga
+        criterio: teste de carga, Lighthouse e testes de acessibilidade e visuais no CI
+        depende_de: [analise.lancamento1]
 ```
 
 **Anexo E — `scripts/rota.py`**
 
-`make rota` roda o script pelo `uv`, e o CI roda `make rota-check`. O PyYAML vem do `uv.lock`. O hook que mostra a rota no começo da sessão está no `settings.json` do anexo C.
+`make rota` roda `python3 scripts/rota.py`, e o CI roda `python3 scripts/rota.py --check`. Precisa do PyYAML. O hook que mostra a rota no começo da sessão está no `settings.json` do anexo C.
 
 ```python
 #!/usr/bin/env python3
