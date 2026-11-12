@@ -13,7 +13,7 @@ Você é o arquiteto e o revisor; o Claude Code digita. Nada entra no `main` sem
 3. **Simples não é improvisado.** A primeira fatia já nasce no framework definitivo e com a direção de design escolhida. Fica para depois só o que faz falta com o site crescendo: Airflow, teste de carga, testes visuais.
 4. **Atualização é requisito desde o dia 1.** Toda tabela e todo derivado (ficha, tema, eixo, agregado) nasce com a resposta escrita para "como isso se atualiza amanhã?". A coleta é feita de comandos que o Airflow vai chamar depois, sem reescrever nada.
 5. **O que não pode falhar vira trava automática.** O `CLAUDE.md` é conselho. Commit no `main`, segredo no repositório, teste quebrado e número errado publicado são barrados por hook, permissão, CI ou proteção de branch.
-6. **Todo elemento de tela responde a uma pergunta da lista.** Se não responde a nenhuma, sai.
+6. **Tudo no site serve a pelo menos uma das três perguntas.** O que não serve a nenhuma, sai. Uma página não precisa responder sozinha a uma pergunta; o site como um todo responde às três.
 7. **Entendimento onde ele conta.** O código que gera um número publicado e as decisões de arquitetura você entende inteiros e defende em público, com metodologia assinada. Do resto (configuração, estilo, estrutura), basta saber o que cada parte faz.
 
 **O ciclo de cada tarefa**

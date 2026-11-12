@@ -4,4 +4,4 @@ O que o site responde e para quem. Tudo sai daqui, na cadeia pergunta → histó
 
 - `perguntas.md`, `diretrizes.md`, `personas.md`, `historias.md`, `metricas.md`, `nao-objetivos.md`.
 
-Muda antes de qualquer tela nova. Toda tela aponta para uma pergunta deste diretório; o que não aponta, sai.
+Muda antes de qualquer tela nova. Tudo no site serve a pelo menos uma das três perguntas de `perguntas.md`; o que não serve a nenhuma, sai.
