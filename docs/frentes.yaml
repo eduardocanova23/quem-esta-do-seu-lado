@@ -19,11 +19,12 @@ frentes:
   produto:
     objetivo: as três perguntas viram histórias testáveis
     ativa: true
-    proximo_passo: escrever docs/produto/historias.md com as histórias da pergunta 2 e critérios de aceitação testáveis
+    proximo_passo: escrever docs/produto/metricas.md com as métricas que as histórias da pergunta 2 citam (k de n, quase unânime, maioria do partido, ausência, n mínimo, autoria)
     marcos:
       - id: perguntas
         criterio: perguntas, personas, histórias e não-objetivos em docs/produto/
         depende_de: [fundacao.repo]
+        status: feito
       - id: metricas
         criterio: dicionário de métricas da pergunta 2 revisado por você
         depende_de: [produto.perguntas]
