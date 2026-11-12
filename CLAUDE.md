@@ -7,6 +7,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - docs/produto/: perguntas, diretrizes, personas, histórias e não-objetivos. Leia antes de mexer em qualquer tela.
 - docs/decisoes/: ADRs. Não contrarie um ADR sem propor outro.
 - docs/dados/atualizacao.md: toda tabela nova ganha uma linha aqui antes do schema.
+- pipeline/passos.py: a lista de passos da coleta e de quem depende de quem (nasce com o marco dados.core).
 - Notebook e experimento não entram aqui: vão para o repositório do laboratório.
 
 ## Comandos
@@ -14,6 +15,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Rota: make rota
 - Testes rápidos: make test
 - Tudo, como no CI: make ci
+- Atualizar os dados: make atualizar (nasce com o marco dados.core)
 - Ambiente local: docker compose -f infra/compose.yml up -d
 
 ## Git
@@ -25,10 +27,12 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 
 ## Como trabalhar
 - Trabalhe na frente ativa da rota; trocar de frente só com o meu ok.
-- Explique o que cada parte faz e por quê; mostre opções e trade-offs antes de decisões de arquitetura.
+- Explique em detalhe o código que gera número publicado e as decisões de arquitetura, com opções e trade-offs. No resto, diga em uma linha o que cada parte faz.
 - Plano antes de mexer em mais de um arquivo, com alternativas e riscos.
 - Decida pelo tamanho que já se sabe que vem, não pelo de hoje: "dá menos trabalho agora" não é argumento. Se é só "talvez um dia", não faça; se adiar obriga a refazer, faça direito agora.
-- Teste primeiro: mostre a saída falhando e depois passando.
+- No pipeline e nas métricas, teste primeiro: mostre a saída falhando e depois passando.
+- Passo novo da coleta entra em pipeline/passos.py, como comando idempotente que recebe a data lógica; nunca num script solto.
+- Mudou uma métrica, atualize a página de metodologia no mesmo PR.
 - Escrever não é rodar: coleta, notebook e chamada paga só quando eu pedir, com estimativa de custo e --max-custo.
 - Depois de implementar, diga o que testar: URLs (caminho feliz e um erro), consultas SQL, arquivos esperados.
 - Nenhuma dependência nova sem justificativa no PR e sem explicar a camada de baixo.

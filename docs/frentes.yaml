@@ -29,7 +29,7 @@ frentes:
         depende_de: [produto.perguntas]
 
   dados:
-    objetivo: pipeline diário, incremental e idempotente
+    objetivo: coleta incremental e idempotente, pronta para o Airflow sem reescrever nada
     proximo_passo: escrever docs/dados/atualizacao.md para as tabelas da pergunta 2
     marcos:
       - id: modelo
@@ -39,7 +39,7 @@ frentes:
         criterio: schema dos marts da pergunta 2 fixado, com amostra de dados para o site
         depende_de: [dados.modelo, produto.metricas]
       - id: core
-        criterio: ingestão diária de proposições, votos e orientações; teste incremental = completo passa
+        criterio: proposições, votos e orientações atualizados com make atualizar, a partir de pipeline/passos.py; teste incremental = completo passa
         depende_de: [dados.modelo]
       - id: tramitacao
         criterio: tramitações coletadas por delta
@@ -57,7 +57,7 @@ frentes:
         depende_de: [taxonomia.incremental]
 
   design:
-    objetivo: direção visual escolhida e virando tokens
+    objetivo: direção visual própria, sem cara de painel feito por IA, antes da primeira página
     proximo_passo: juntar 15 referências anotadas em docs/design/referencias.md
     marcos:
       - id: referencias
@@ -67,36 +67,61 @@ frentes:
         criterio: wireframes das telas da pergunta 2, com dados reais
         depende_de: [design.referencias]
       - id: tokens
-        criterio: direção escolhida, tokens no repositório, 5 pessoas testaram
+        criterio: direção escolhida, tokens e componentes de base no repositório, 5 pessoas testaram
         depende_de: [design.wireframes]
 
   infra:
-    objetivo: um merge no main publica tudo sozinho
+    objetivo: um merge no main publica o site sozinho
     proximo_passo: escrever o ADR da forma de entrega do site
     marcos:
       - id: adrs
-        criterio: ADRs de entrega, framework, banco, busca, Airflow e hospedagem escritos
+        criterio: ADRs de entrega, framework, banco e hospedagem escritos
         depende_de: [fundacao.repo]
       - id: deploy
         criterio: merge no main publica o site; backup restaurado uma vez
         depende_de: [infra.adrs]
 
   site:
-    objetivo: as três perguntas no ar, uma por vez
-    proximo_passo: esqueleto com a página de um deputado gerada a partir da amostra do contrato
+    objetivo: as três perguntas no ar, uma fatia por vez
+    proximo_passo: página de um deputado gerada pelo build a partir da amostra do contrato
     marcos:
-      - id: esqueleto
-        criterio: uma página real no ar, gerada pelo build
-        depende_de: [infra.deploy, dados.contrato_marts]
-      - id: pergunta2
-        criterio: critérios de aceitação da pergunta 2 verdes no e2e
-        depende_de: [site.esqueleto, design.tokens, dados.core]
-      - id: pergunta3
-        criterio: critérios de aceitação da pergunta 3 verdes no e2e
-        depende_de: [site.pergunta2]
-      - id: pergunta1
-        criterio: critérios de aceitação da pergunta 1 verdes no e2e
-        depende_de: [site.pergunta2, dados.tramitacao]
+      - id: fatia1
+        criterio: páginas de consulta da pergunta 2 geradas pelo build a partir dos marts; teste de fumaça passa
+        depende_de: [infra.deploy, dados.contrato_marts, dados.core, design.tokens]
+      - id: fatia2
+        criterio: páginas de consulta da pergunta 3 no ar
+        depende_de: [analise.lancamento1]
+      - id: fatia3
+        criterio: páginas de consulta da pergunta 1 no ar
+        depende_de: [analise.lancamento2, dados.tramitacao]
       - id: busca
         criterio: conjunto de teste de busca acima do limiar
-        depende_de: [site.esqueleto, taxonomia.incremental]
+        depende_de: [site.fatia1, taxonomia.incremental]
+
+  analise:
+    objetivo: cada fatia sai com metodologia assinada e um achado
+    proximo_passo: rascunhar a metodologia da pergunta 2 a partir do dicionário de métricas
+    marcos:
+      - id: metodologia1
+        criterio: página de metodologia da pergunta 2 assinada; cada número sai de um comando que você roda e explica
+        depende_de: [produto.metricas, dados.contrato_marts]
+      - id: lancamento1
+        criterio: fatia 1 publicada com a metodologia e o texto de lançamento
+        depende_de: [analise.metodologia1, site.fatia1]
+      - id: lancamento2
+        criterio: fatia 2 publicada com metodologia e texto
+        depende_de: [site.fatia2]
+      - id: lancamento3
+        criterio: fatia 3 publicada com metodologia e texto
+        depende_de: [site.fatia3]
+
+  escala:
+    objetivo: o site se atualiza sozinho e aguenta pico de acesso
+    proximo_passo: escrever o ADR de onde o Airflow roda em produção
+    marcos:
+      - id: airflow
+        criterio: DAGs geradas a partir de pipeline/passos.py rodando no servidor, com alerta de falha
+        depende_de: [analise.lancamento1]
+      - id: carga
+        criterio: teste de carga, Lighthouse e testes de acessibilidade e visuais no CI
+        depende_de: [analise.lancamento1]
