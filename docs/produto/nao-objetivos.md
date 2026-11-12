@@ -27,5 +27,5 @@ Um item sai desta lista só por PR, dizendo que pergunta ele passa a responder. 
 | Página própria sobre "como a Câmara funciona" | Não responde a nenhuma das três perguntas. O estudante é atendido com explicação no lugar ([personas](personas.md#estudante-ou-professor)) | Se virar pergunta no banco |
 | Login, conta e camada paga | Não respondem a nenhuma pergunta do MVP | Depois do MVP, por ADR |
 | Senado | As três perguntas são sobre a Câmara | Pergunta nova no banco |
-| Busca por tema como porta de entrada | Marco `site.busca`, que vem depois da fatia 1 | Marco `site.busca` |
+| Tema e proposição na caixa de busca da página inicial (H0.4, H0.5) | Precisam da taxonomia que se atualiza sozinha e de um servidor de busca; na primeira publicação a caixa acha deputado e partido | Marco `site.busca` |
 | Exportação de dados para jornalista | Necessidade registrada em [personas](personas.md#jornalista-ou-pesquisador), sem história ainda | História própria |
