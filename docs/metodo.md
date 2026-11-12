@@ -43,7 +43,7 @@ O Capivara não falhou por falta de capacidade técnica: faltou um processo que 
 | Cara de dashboard | O ponto de partida era "mostrar os dados", não "responder à pergunta" | Design content-first: a frase-resposta vem antes do gráfico; checklist de tela |
 | Dúvida se aguenta muitos usuários | Nunca foi medido nem projetado para isso | Páginas geradas depois do pipeline e servidas por CDN; teste de carga antes do lançamento |
 
-**O que funcionou e fica.** O padrão de coleta da v1 (CSV anual mais enriquecimento por id, rede em paralelo e gravação em série, upsert por chave natural, retry em 504), a lógica de delta do `6_atualizar.py`, o trio `plano.md` / `progresso.md` / `decisoes.md` do `dag_temas`, o teto de gasto, os gabaritos com segundo passe cego, o conjunto de teste congelado e as 38 personas. As notas do vault em `Conhecimento/`, `Domínio/` e `Decisões/` são a documentação de partida; os arquivos da v1 entram como referência, não como código copiado.
+**O que funcionou e fica.** O padrão de coleta da v1 (CSV anual mais enriquecimento por id, rede em paralelo e gravação em série, upsert por chave natural, retry em 504), a lógica de delta do `6_atualizar.py`, o trio `plano.md` / `progresso.md` / `decisoes.md` do `dag_temas`, o teto de gasto, os gabaritos com segundo passe cego, os conjuntos de teste congelados e as 58 personas (38 originais e dois conjuntos independentes de 10). As notas do vault em `Conhecimento/`, `Domínio/` e `Decisões/` são a documentação de partida; os arquivos da v1 entram como referência, não como código copiado.
 
 ## Fases e portões
 
@@ -112,7 +112,7 @@ O `frentes.yaml` guarda para onde ir. O `docs/estado.md` vira só a anotação d
 
 O MVP é o menor conjunto de telas que responde bem às quatro perguntas centrais. Tudo sai de um banco de perguntas escrito antes de qualquer tela, e cada elo da cadeia aponta para o anterior: pergunta → história → critério de aceitação → teste → tela.
 
-**1. Perfis de uso.** As 38 personas e as lentes do `dag_temas` continuam como critério de classificação, que é diretriz inegociável do vault. Para o app, bastam quatro ou cinco perfis definidos por como a pessoa chega e do que precisa:
+**1. Perfis de uso.** As 58 personas e as lentes do `dag_temas` continuam como critério de classificação, que é diretriz inegociável do vault. Para o app, bastam quatro ou cinco perfis definidos por como a pessoa chega e do que precisa:
 
 | Perfil | Como chega | Quer saber | Precisa de |
 | --- | --- | --- | --- |
@@ -282,7 +282,8 @@ Minha recomendação é **Astro com ilhas React**, TypeScript, Tailwind e compon
 ```
 camara/
 ├── CLAUDE.md
-├── Makefile           make test, make ci, make rota, make atualizar
+├── Makefile           make setup, make test, make ci, make rota, make atualizar
+├── pyproject.toml     dependências Python e configuração das ferramentas (uv.lock ao lado)
 ├── docs/
 │   ├── metodo.md      este doc
 │   ├── frentes.yaml   a rota: frentes, marcos, dependências, próximos passos
@@ -478,7 +479,7 @@ O repositório guarda a especificação do projeto: o que o sistema é agora. O 
 | --- | --- | --- |
 | Especificação do Câmara v2: requisitos, ADRs, modelo de dados, rota, estado da sessão | Repositório, `docs/` | Muda junto com o código que explica, no mesmo PR |
 | Memória do Câmara v2: visão, estado datado no fim de cada fase, retrospectivas, pesquisa | Vault, `Projetos/Câmara v2/` | Conta o que aconteceu e o que se aprendeu; qualquer sessão, aqui ou no Claude Code, sabe onde o projeto está sem abrir o código |
-| As três perguntas e as diretrizes | Vault até a Fase 1; depois a versão viva vai para `docs/produto/` | A nota do vault fica como origem, com uma linha apontando para o repositório, e não é mais editada |
+| As três perguntas e as diretrizes | Repositório, `docs/produto/perguntas.md` e `diretrizes.md` (migradas na Fase 1, passo 1) | A nota do vault fica como origem, com uma linha apontando para o repositório, e não é mais editada |
 | Decisão que vale para mais de um projeto | Vault, `Decisões/` | Como "Onde guardar cada dado", que já está lá |
 | Lição técnica e nota de estudo | Vault, `Conhecimento/` | Valem para o Clipping e para o próximo projeto, e estão nas suas palavras |
 | APIs e dados públicos | Vault, `Domínio/` | Servem a mais de um projeto |
@@ -612,7 +613,7 @@ A Fase 0 deixou o repositório pronto e travado antes da primeira linha de produ
 4. `CLAUDE.md` (anexo A), template de PR (anexo B) e `.claude/settings.json` com hooks e permissões (anexo C).
 5. Rota: `docs/frentes.yaml` (anexo D), `scripts/rota.py` (anexo E) e o `--check` no CI.
 6. Vault ligado: o alias `claude-vault`, o ajuste de quebra de linha no git do vault, a memória automática desligada e a skill pessoal `/registrar` (seção do Obsidian).
-7. CI mínimo com lint e um teste de exemplo; pre-commit com formatadores e gitleaks.
+7. CI mínimo com lint, tipos e um teste de exemplo, sobre um ambiente `uv` com lockfile (ADR 0001); pre-commit com formatadores e gitleaks.
 8. `/output-style explanatory`, e `/plugin` para conferir os plugins sincronizados e instalar o `security-guidance`.
 9. Portão: você explica, sem olhar, cada arquivo de configuração criado.
 
@@ -766,7 +767,7 @@ exit 0
       {
         "matcher": "startup|clear|compact",
         "hooks": [
-          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && python3 scripts/rota.py" }
+          { "type": "command", "command": "cd \"$CLAUDE_PROJECT_DIR\" && uv run --locked --quiet python scripts/rota.py" }
         ]
       }
     ],
@@ -923,7 +924,7 @@ frentes:
 
 **Anexo E — `scripts/rota.py`**
 
-`make rota` roda `python3 scripts/rota.py`, e o CI roda `python3 scripts/rota.py --check`. Precisa do PyYAML. O hook que mostra a rota no começo da sessão está no `settings.json` do anexo C.
+`make rota` roda o script pelo `uv`, e o CI roda `make rota-check`. O PyYAML vem do `uv.lock`. O hook que mostra a rota no começo da sessão está no `settings.json` do anexo C.
 
 ```python
 #!/usr/bin/env python3
