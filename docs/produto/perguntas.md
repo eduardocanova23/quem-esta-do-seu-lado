@@ -6,13 +6,13 @@ Estas três perguntas são a base do produto. Toda feature, dado coletado ou mé
 
 Origem: nota do vault "As três perguntas que o produto responde" (03/11/2026). A versão viva é esta.
 
-| # | Pergunta | Inclui | Prioridade | Dado que responde |
-| --- | --- | --- | --- | --- |
-| 2 | Este deputado está do meu lado? | O que o deputado X faz e defende: como vota, o que propõe e se isso interessa | 1ª (MVP) | Votos nominais de mérito com eixo, orientação de bancada, autoria e temas |
-| 3 | Quem é o mais aliado e o mais inimigo? | "E o partido?", vista por bancada | 2ª | O mesmo da pergunta 2, aplicado a todos os deputados |
-| 1 | Quais assuntos a Câmara prioriza e quais abandona? | O que a Câmara fez; quais temas demoram | 3ª | Proposições por tema e eventos de tramitação (ainda não coletados) |
+| # | Pergunta | Inclui | Perfis | Prioridade | Dado que responde |
+| --- | --- | --- | --- | --- | --- |
+| 2 | Este deputado está do meu lado? | O que o deputado X faz e defende: como vota, o que propõe e se isso interessa | **Eleitor curioso, quem acompanha uma causa**; jornalista, estudante | 1ª (MVP) | Votos nominais de mérito com eixo, orientação de bancada, autoria e temas |
+| 3 | Quem é o mais aliado e o mais inimigo? | "E o partido?", vista por bancada | **Quem acompanha uma causa, jornalista**; eleitor curioso, estudante | 2ª | O mesmo da pergunta 2, aplicado a todos os deputados |
+| 1 | Quais assuntos a Câmara prioriza e quais abandona? | O que a Câmara fez; quais temas demoram | **Quem acompanha uma causa, jornalista, estudante** | 3ª | Proposições por tema e eventos de tramitação (ainda não coletados) |
 
-Os perfis que fazem cada pergunta entram com [personas.md](personas.md).
+Os perfis estão em [personas.md](personas.md); em negrito, o público principal de cada pergunta.
 
 ## Viabilidade
 

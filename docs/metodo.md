@@ -44,7 +44,7 @@ O Capivara não falhou por falta de capacidade técnica: faltou um processo que 
 | Dúvida se aguenta muitos usuários | Nunca foi medido nem projetado para isso | Páginas geradas depois do pipeline e servidas por CDN; teste de carga antes do lançamento |
 | Atalhos conscientes | Mesmo sabendo que o projeto cresceria, decisões ruins foram tomadas "porque daria menos trabalho" | Regra 7: decisão de fundação se toma pelo tamanho que já se sabe que vem |
 
-**O que funcionou e fica.** O padrão de coleta da v1 (CSV anual mais enriquecimento por id, rede em paralelo e gravação em série, upsert por chave natural, retry em 504), a lógica de delta do `6_atualizar.py`, o trio `plano.md` / `progresso.md` / `decisoes.md` do `dag_temas`, o teto de gasto, os gabaritos com segundo passe cego, o conjunto de teste congelado e as 38 personas. As notas do vault em `Conhecimento/`, `Domínio/` e `Decisões/` são a documentação de partida; os arquivos da v1 entram como referência, não como código copiado.
+**O que funcionou e fica.** O padrão de coleta da v1 (CSV anual mais enriquecimento por id, rede em paralelo e gravação em série, upsert por chave natural, retry em 504), a lógica de delta do `6_atualizar.py`, o trio `plano.md` / `progresso.md` / `decisoes.md` do `dag_temas`, o teto de gasto, os gabaritos com segundo passe cego, os conjuntos de teste congelados e as 58 personas (38 originais e dois conjuntos independentes de 10). As notas do vault em `Conhecimento/`, `Domínio/` e `Decisões/` são a documentação de partida; os arquivos da v1 entram como referência, não como código copiado.
 
 ## Fases e portões
 
@@ -107,7 +107,7 @@ O `frentes.yaml` guarda para onde ir. O `docs/estado.md` vira só a anotação d
 
 O MVP é o menor conjunto de telas que responde bem às quatro perguntas centrais. Tudo sai de um banco de perguntas escrito antes de qualquer tela, e cada elo da cadeia aponta para o anterior: pergunta → história → critério de aceitação → teste → tela.
 
-**1. Perfis de uso.** As 38 personas e as lentes do `dag_temas` continuam como critério de classificação, que é diretriz inegociável do vault. Para o app, bastam quatro ou cinco perfis definidos por como a pessoa chega e do que precisa:
+**1. Perfis de uso.** As 58 personas e as lentes do `dag_temas` continuam como critério de classificação, que é diretriz inegociável do vault. Para o app, bastam quatro ou cinco perfis definidos por como a pessoa chega e do que precisa:
 
 | Perfil | Como chega | Quer saber | Precisa de |
 | --- | --- | --- | --- |
