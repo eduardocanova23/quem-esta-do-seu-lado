@@ -6,7 +6,7 @@ Nov 5, 2026 · @Edu
 
 Você é o arquiteto e o revisor; o Claude Code digita. Nada entra no `main` sem que você consiga explicar o que mudou, por quê e com o que aquilo conversa.
 
-**Sete regras**
+**Oito regras**
 
 1. **Documento antes de código.** Requisito, decisão de arquitetura e modelo de dados viram texto no repositório antes de virar código. O Claude lê esses textos no começo de cada sessão; você lê o código contra eles.
 2. **Uma fatia por vez, completa.** Cada pergunta vai ao ar de ponta a ponta (dado → consulta → página → metodologia → texto de lançamento) antes de abrir a próxima. Várias frentes de produto abertas ao mesmo tempo foi o que virou colcha de retalhos.
@@ -15,6 +15,7 @@ Você é o arquiteto e o revisor; o Claude Code digita. Nada entra no `main` sem
 5. **O que não pode falhar vira trava automática.** O `CLAUDE.md` é conselho. Commit no `main`, segredo no repositório, teste quebrado e número errado publicado são barrados por hook, permissão, CI ou proteção de branch.
 6. **Todo elemento de tela responde a uma pergunta da lista.** Se não responde a nenhuma, sai.
 7. **Entendimento onde ele conta.** O código que gera um número publicado e as decisões de arquitetura você entende inteiros e defende em público, com metodologia assinada. Do resto (configuração, estilo, estrutura), basta saber o que cada parte faz.
+8. **Construa para o tamanho que já se sabe que vem.** Decisão de fundação se toma pelo que já sabemos que o projeto vai precisar (está neste método, num ADR ou na rota), não pelo tamanho dele hoje. "Dá menos trabalho agora" não é argumento. O teste: se é só "talvez um dia", não faz; se deixar para depois obriga a refazer ou migrar, faz direito agora; se dá para acrescentar depois sem retrabalho, pode esperar. É por esse teste que o Airflow espera a Fase 5 e a coleta já nasce em `pipeline/passos.py`.
 
 **O ciclo de cada tarefa**
 
@@ -41,6 +42,7 @@ O Capivara não falhou por falta de capacidade técnica: faltou um processo que 
 | Lacunas de compreensão | Código aceito sem revisão funda, sessões longas misturando assuntos | Walkthrough em todo PR, teach-back no código que gera número publicado e mapa do sistema atualizado quando a arquitetura muda |
 | Framework virou teto de design: Streamlit, depois FastAPI + Jinja2 + Plotly; a área de membros em React nunca foi ao ar | Escolha por conveniência, sem critérios escritos nem protótipo, e deploy deixado para depois | ADR com critérios, spike descartável e a primeira fatia no ar cedo, já no framework definitivo |
 | Cara de dashboard | O ponto de partida era "mostrar os dados", não "responder à pergunta" | Design content-first: a frase-resposta vem antes do gráfico; checklist de tela |
+| Atalhos conscientes | Mesmo sabendo que o projeto cresceria, decisões ruins foram tomadas "porque daria menos trabalho" | Regra 8: decisão de fundação se toma pelo tamanho que já se sabe que vem |
 | Dúvida se aguenta muitos usuários | Nunca foi medido nem projetado para isso | Páginas geradas depois do pipeline e servidas por CDN; teste de carga antes do lançamento |
 
 **O que funcionou e fica.** O padrão de coleta da v1 (CSV anual mais enriquecimento por id, rede em paralelo e gravação em série, upsert por chave natural, retry em 504), a lógica de delta do `6_atualizar.py`, o trio `plano.md` / `progresso.md` / `decisoes.md` do `dag_temas`, o teto de gasto, os gabaritos com segundo passe cego, os conjuntos de teste congelados e as 58 personas (38 originais e dois conjuntos independentes de 10). As notas do vault em `Conhecimento/`, `Domínio/` e `Decisões/` são a documentação de partida; os arquivos da v1 entram como referência, não como código copiado.
