@@ -647,17 +647,18 @@ Site que responde, em linguagem comum, as três perguntas de docs/produto/pergun
 Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no meio: docs/estado.md.
 
 ## Onde está cada coisa
-- docs/produto/: perguntas, personas, histórias e não-objetivos. Leia antes de mexer em qualquer tela.
+- docs/produto/: perguntas, diretrizes, personas, histórias e não-objetivos. Leia antes de mexer em qualquer tela.
 - docs/decisoes/: ADRs. Não contrarie um ADR sem propor outro.
 - docs/dados/atualizacao.md: toda tabela nova ganha uma linha aqui antes do schema.
-- pipeline/passos.py: a lista de passos da coleta e de quem depende de quem.
+- pipeline/passos.py: a lista de passos da coleta e de quem depende de quem (nasce com o marco dados.core).
 - Notebook e experimento não entram aqui: vão para o repositório do laboratório.
 
 ## Comandos
+- Preparar a máquina: make setup
 - Rota: make rota
 - Testes rápidos: make test
 - Tudo, como no CI: make ci
-- Atualizar os dados: make atualizar
+- Atualizar os dados: make atualizar (nasce com o marco dados.core)
 - Ambiente local: docker compose -f infra/compose.yml up -d
 
 ## Git
@@ -671,6 +672,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Trabalhe na frente ativa da rota; trocar de frente só com o meu ok.
 - Explique em detalhe o código que gera número publicado e as decisões de arquitetura, com opções e trade-offs. No resto, diga em uma linha o que cada parte faz.
 - Plano antes de mexer em mais de um arquivo, com alternativas e riscos.
+- Decida pelo tamanho que já se sabe que vem, não pelo de hoje: "dá menos trabalho agora" não é argumento. Se é só "talvez um dia", não faça; se adiar obriga a refazer, faça direito agora.
 - No pipeline e nas métricas, teste primeiro: mostre a saída falhando e depois passando.
 - Passo novo da coleta entra em pipeline/passos.py, como comando idempotente que recebe a data lógica; nunca num script solto.
 - Mudou uma métrica, atualize a página de metodologia no mesmo PR.
@@ -681,8 +683,10 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Nenhuma chamada de LLM no caminho de uma requisição do site; saída de LLM sempre validada por schema.
 - Mudança de schema só pela skill /migracao.
 - Se a tarefa parar no meio, anote em docs/estado.md onde parou.
+- Sugira /registrar no fim da tarefa quando ela fechar uma fase ou render lição ou decisão útil fora do projeto; só grave no vault se eu confirmar.
 
 ## Pegadinhas do domínio
+Resumo; a fonte é docs/produto/diretrizes.md.
 - Nunca compare legislaturas nem governos; deputado em duas legislaturas tem dois perfis.
 - Partido é o da época do ato (tabela de filiação), nunca o atual.
 - Ids de tema são estáveis: nunca renumere nem reaproveite.

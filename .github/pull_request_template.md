@@ -9,9 +9,10 @@ Closes #
 ## Como testar
 
 ## Checklist
-- [ ] Consigo explicar cada arquivo alterado sem ajuda
+- [ ] Consigo explicar sem ajuda o que gera número publicado; do resto, sei o que cada arquivo faz
 - [ ] Os testes cobrem os critérios de aceitação da issue
 - [ ] Próximo passo da frente atualizado em docs/frentes.yaml
+- [ ] Metodologia atualizada, se mudou uma métrica
 - [ ] Docs, ADR e mapa do sistema atualizados, se for o caso
 - [ ] Migração tem volta e linha em docs/dados/atualizacao.md, se for o caso
 - [ ] Screenshots no celular e no desktop, se mexe em tela
