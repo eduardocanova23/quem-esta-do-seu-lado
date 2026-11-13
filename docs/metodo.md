@@ -13,7 +13,7 @@ Você é o arquiteto e o revisor; o Claude Code digita. Nada entra no `main` sem
 3. **Simples não é improvisado.** A primeira fatia já nasce no framework definitivo e com a direção de design escolhida. Fica para depois só o que faz falta com o site crescendo: Airflow, teste de carga, testes visuais.
 4. **Atualização é requisito desde o dia 1.** Toda tabela e todo derivado (ficha, tema, eixo, agregado) nasce com a resposta escrita para "como isso se atualiza amanhã?". A coleta é feita de comandos que o Airflow vai chamar depois, sem reescrever nada.
 5. **O que não pode falhar vira trava automática.** O `CLAUDE.md` é conselho. Commit no `main`, segredo no repositório, teste quebrado e número errado publicado são barrados por hook, permissão, CI ou proteção de branch.
-6. **Todo elemento de tela responde a uma pergunta da lista.** Se não responde a nenhuma, sai.
+6. **Tudo no site serve a pelo menos uma das três perguntas.** O que não serve a nenhuma, sai. Uma página não precisa responder sozinha a uma pergunta; o site como um todo responde às três.
 7. **Entendimento onde ele conta.** O código que gera um número publicado e as decisões de arquitetura você entende inteiros e defende em público, com metodologia assinada. Do resto (configuração, estilo, estrutura), basta saber o que cada parte faz.
 8. **Construa para o tamanho que já se sabe que vem.** Decisão de fundação se toma pelo que já sabemos que o projeto vai precisar (está neste método, num ADR ou na rota), não pelo tamanho dele hoje. "Dá menos trabalho agora" não é argumento. O teste: se é só "talvez um dia", não faz; se deixar para depois obriga a refazer ou migrar, faz direito agora; se dá para acrescentar depois sem retrabalho, pode esperar. É por esse teste que o Airflow espera a Fase 5 e a coleta já nasce em `pipeline/passos.py`.
 
@@ -49,7 +49,7 @@ O Capivara não falhou por falta de capacidade técnica: faltou um processo que 
 
 ## Fases e portões
 
-O projeto anda em seis fases, e cada uma só começa quando o critério da anterior está cumprido. Depois do Produto, dados, design e infraestrutura correm lado a lado e se encontram na primeira fatia, que vai ao ar completa. Airflow, busca e teste de carga ficam para a Fase 5, quando o site já existe e precisa crescer.
+O projeto anda em seis fases, e cada uma só começa quando o critério da anterior está cumprido. Depois do Produto, dados, design e infraestrutura correm lado a lado e se encontram na primeira fatia, que vai ao ar completa. Airflow e teste de carga ficam para a Fase 5, quando o site já existe e precisa crescer. A busca não espera: a caixa da página inicial acha tudo desde a primeira publicação.
 
 &#91;embedded content: fases e portões do projeto\]
 
@@ -57,7 +57,7 @@ Dados e Design andam juntos porque usam modos diferentes: o pipeline se faz no C
 
 **O que cada fatia publica.** As páginas de consulta, para a pessoa tirar a própria conclusão; uma página de metodologia assinada por você, com cada métrica, a fonte, as escolhas e os limites; e um texto de lançamento com um achado que a ferramenta revela. O que a pessoa conclui depende de como você mediu, e a metodologia publicada é o que mostra que essas escolhas são suas.
 
-**Simples, mas no lugar certo.** A fatia 1 pode ser inteiramente estática: páginas geradas no build a partir dos marts, com filtros que rodam no navegador. Ela já usa o framework do ADR e os tokens da direção de design escolhida, então nada dela é jogado fora depois. A API de busca chega com o marco de busca, depois da fatia 1.
+**Simples, mas no lugar certo.** Fora a busca, a fatia 1 é estática: páginas geradas no build a partir dos marts, com filtros que rodam no navegador. Ela já usa o framework do ADR e os tokens da direção de design escolhida, então nada dela é jogado fora depois. A API de busca entra antes da fatia 1, no marco de busca, porque a caixa da página inicial acha deputado, partido, tema e proposição desde o primeiro dia (decisão de 13/11/2026).
 
 ## Frentes e rota: o processo que se desenrola
 
@@ -249,13 +249,13 @@ Toda escolha cara de reverter vira um ADR com alternativas, critérios e consequ
 
 1. ADR em `docs/decisoes/NNNN-titulo.md`: contexto, opções, critérios com peso, decisão, consequências e quando revisitar. A skill `architecture` do plugin Engineering faz o rascunho; a decisão você reescreve com as suas palavras.
 2. Spike: protótipo descartável numa branch `spike/...`, com prazo de um dia e uma pergunta só ("consigo fazer a página do deputado com X?"). O código vai fora; o aprendizado vai para o ADR.
-3. Os ADRs saem nesta ordem, porque cada um restringe o seguinte: forma de entrega do site, framework, banco e hospedagem do site antes da fatia 1; busca e Airflow em produção na Fase 5; depois disso, autenticação e camada paga.
+3. Os ADRs saem nesta ordem, porque cada um restringe o seguinte: forma de entrega do site, framework, banco, hospedagem do site e busca antes da fatia 1; Airflow em produção na Fase 5; depois disso, autenticação e camada paga.
 
 **A decisão que resolve a dúvida de carga.** Os dados mudam uma vez por dia, então quase todo o site pode ser gerado logo depois do pipeline e servido por CDN. Uma página pronta na CDN não consulta o banco no acesso, e um pico de visitas não derruba nada. Só a busca e os filtros que não dá para pré-gerar precisam de servidor.
 
 &#91;embedded content: arquitetura · fluxo noturno e acesso\]
 
-O diagrama mostra o sistema da Fase 5. Até lá, o mesmo fluxo roda com `make atualizar` no lugar do Airflow, e a API de busca ainda não existe: a fatia 1 é só página gerada e servida pela CDN.
+O diagrama mostra o sistema da Fase 5. Até lá, o mesmo fluxo roda com `make atualizar` no lugar do Airflow. A API de busca já existe desde a fatia 1; o resto do site é página gerada e servida pela CDN.
 
 A CDN entrega as páginas sem tocar no banco. Só a API de busca consulta o Postgres, com um papel que não consegue escrever. Isso encolhe a superfície de ataque; as lições de segurança da v1 (path traversal, XSS, JWT em cookie HttpOnly) voltam a valer quando vier a camada paga.
 
@@ -554,7 +554,7 @@ O critério para um teste entrar agora é um só: ele protege um número publica
 | Classificador | Gabaritos ouro A e B com limiar de acurácia, mais o placar de personas no conjunto independente congelado (commit + SHA256) | Script de avaliação do `dag_temas` | A cada mudança de taxonomia, prompt ou modelo |
 | Lógica do site | Formatação de números e datas, modelos de frase | Vitest | Agora, a cada commit |
 | Fumaça do site | As páginas da fatia abrem no build com dado real | Playwright, um teste por fatia | Agora, no CI |
-| API de busca | Consultas do seu conjunto de teste ("saidinha", "jogo do tigrinho") achando o tema certo | pytest com cliente HTTP | Com o marco de busca |
+| API de busca | Consultas do seu conjunto de teste ("saidinha", "jogo do tigrinho") achando o tema certo | pytest com cliente HTTP | Com o marco de busca, antes da fatia 1 |
 | Fluxos do site | Os critérios de aceitação das histórias, num navegador de verdade | Playwright | Fase 5 |
 | Acessibilidade | Violações automáticas de WCAG | axe-core dentro do Playwright | Fase 5 |
 | Visual | Screenshot de cada página-chave comparado com o último aprovado | Comparação de screenshot do Playwright | Fase 5 |
@@ -876,7 +876,7 @@ frentes:
     proximo_passo: escrever o ADR da forma de entrega do site
     marcos:
       - id: adrs
-        criterio: ADRs de entrega, framework, banco e hospedagem escritos
+        criterio: ADRs de entrega, framework, banco, hospedagem e busca escritos
         depende_de: [fundacao.repo]
       - id: deploy
         criterio: merge no main publica o site; backup restaurado uma vez
@@ -886,18 +886,18 @@ frentes:
     objetivo: as três perguntas no ar, uma fatia por vez
     proximo_passo: página de um deputado gerada pelo build a partir da amostra do contrato
     marcos:
+      - id: busca
+        criterio: a caixa da página inicial acha deputado, partido, tema e proposição; conjunto de teste de busca acima do limiar
+        depende_de: [infra.deploy, taxonomia.incremental]
       - id: fatia1
-        criterio: páginas de consulta da pergunta 2 geradas pelo build a partir dos marts; teste de fumaça passa
-        depende_de: [infra.deploy, dados.contrato_marts, dados.core, design.tokens]
+        criterio: páginas de consulta da pergunta 2 geradas pelo build a partir dos marts, com a busca no ar; teste de fumaça passa
+        depende_de: [site.busca, dados.contrato_marts, design.tokens]
       - id: fatia2
         criterio: páginas de consulta da pergunta 3 no ar
         depende_de: [analise.lancamento1]
       - id: fatia3
         criterio: páginas de consulta da pergunta 1 no ar
         depende_de: [analise.lancamento2, dados.tramitacao]
-      - id: busca
-        criterio: conjunto de teste de busca acima do limiar
-        depende_de: [site.fatia1, taxonomia.incremental]
 
   analise:
     objetivo: cada fatia sai com metodologia assinada e um achado
