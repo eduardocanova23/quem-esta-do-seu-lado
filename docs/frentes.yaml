@@ -76,7 +76,7 @@ frentes:
     proximo_passo: escrever o ADR da forma de entrega do site
     marcos:
       - id: adrs
-        criterio: ADRs de entrega, framework, banco e hospedagem escritos
+        criterio: ADRs de entrega, framework, banco, hospedagem e busca escritos
         depende_de: [fundacao.repo]
       - id: deploy
         criterio: merge no main publica o site; backup restaurado uma vez
@@ -86,18 +86,18 @@ frentes:
     objetivo: as três perguntas no ar, uma fatia por vez
     proximo_passo: página de um deputado gerada pelo build a partir da amostra do contrato
     marcos:
+      - id: busca
+        criterio: a caixa da página inicial acha deputado, partido, tema e proposição; conjunto de teste de busca acima do limiar
+        depende_de: [infra.deploy, taxonomia.incremental]
       - id: fatia1
-        criterio: páginas de consulta da pergunta 2 geradas pelo build a partir dos marts; teste de fumaça passa
-        depende_de: [infra.deploy, dados.contrato_marts, dados.core, design.tokens]
+        criterio: páginas de consulta da pergunta 2 geradas pelo build a partir dos marts, com a busca no ar; teste de fumaça passa
+        depende_de: [site.busca, dados.contrato_marts, design.tokens]
       - id: fatia2
         criterio: páginas de consulta da pergunta 3 no ar
         depende_de: [analise.lancamento1]
       - id: fatia3
         criterio: páginas de consulta da pergunta 1 no ar
         depende_de: [analise.lancamento2, dados.tramitacao]
-      - id: busca
-        criterio: conjunto de teste de busca acima do limiar
-        depende_de: [site.fatia1, taxonomia.incremental]
 
   analise:
     objetivo: cada fatia sai com metodologia assinada e um achado

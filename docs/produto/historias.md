@@ -42,14 +42,14 @@ Perfis: todos. Quem acompanha uma causa ● (chega pelo assunto), eleitor curios
 - **H0.1** A página inicial tem quase nada além de uma caixa de texto grande no centro, com o convite "Digite um deputado, um partido ou um assunto". Em cima, quatro abas: Principal, Temas, Deputados, Partidos. `fumaça`
 - **H0.2** A caixa acha deputado pelo nome civil ou parlamentar, sem diferenciar acento nem maiúscula e tolerando erro de digitação. `site`
 - **H0.3** A caixa acha partido pela sigla e pelo nome. `site`
-- **H0.4** A caixa acha tema por busca híbrida (significado + palavra exata), a que venceu o teste de busca de 03/11/2026, incluindo apelidos populares: "saidinha", "6x1", "bets", "jogo do tigrinho". `e2e` e o conjunto de teste de busca da v1 acima do limiar (marco `site.busca`)
+- **H0.4** A caixa acha tema por busca híbrida (significado + palavra exata), a que venceu o teste de busca de 03/11/2026, incluindo apelidos populares: "saidinha", "6x1", "bets", "jogo do tigrinho". `e2e` e o conjunto de teste de busca da v1 acima do limiar
 - **H0.5** A caixa acha proposição pela sigla e número ("PL 1234/2023") e pelo apelido ("marco temporal"). `site` para a sigla; apelido junto com H0.4
 - **H0.6** Os resultados vêm agrupados por tipo (deputados, partidos, temas, proposições). Deputado aparece com partido da época e UF. Clicar leva à página daquele resultado. `site`
 - **H0.7** A busca nunca termina vazia: sem resultado, a página diz o que a caixa procura, mostra exemplos clicáveis e oferece a lista de deputados. `site`
 - **H0.8** Busca sem resultado é guardada sem identificar quem buscou (sem IP, sem cookie), para virar apelido novo ou tema que falta. `e2e`
 - **H0.9** No celular, a caixa ocupa a largura da tela e abre o teclado com um toque. `e2e`
 
-**Ordem de entrada.** A página inicial com a caixa e as abas sai já na primeira publicação. Nela, a caixa acha deputado e partido (H0.2, H0.3, H0.6, H0.7), o que roda no navegador, sem servidor. Tema e proposição (H0.4, H0.5, H0.8) entram no marco `site.busca`, que depende da taxonomia que se atualiza sozinha e de um servidor de busca. As abas Temas e Partidos levam a páginas que chegam com as perguntas 1 e 3.
+**Ordem de entrada.** A caixa acha tudo desde a primeira publicação (decisão de 13/11/2026): H0.1 a H0.9 entram juntas. Por isso o marco `site.busca` vem antes de `site.fatia1`, com um servidor de busca e a taxonomia que se atualiza sozinha já prontos. As abas Temas e Partidos levam a páginas que chegam com as perguntas 1 e 3; até lá, o que a primeira publicação mostra ao clicar num tema ou num partido é decidido nos wireframes.
 
 ## Pergunta 2: este deputado está do meu lado?
 
