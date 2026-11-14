@@ -31,12 +31,12 @@ frentes:
   dados:
     objetivo: coleta incremental e idempotente, pronta para o Airflow sem reescrever nada
     ativa: true
-    proximo_passo: Eduardo revisa docs/dados/modelo.md e atualizacao.md; com o ok, dados.modelo fica feito
+    proximo_passo: fixar em docs/dados/dicionario.md o schema dos marts da pergunta 2, coluna a coluna, a partir de modelo.md e metricas.md
     marcos:
       - id: modelo
         criterio: modelo de dados e tabela de atualização revisados
         depende_de: [produto.perguntas]
-        status: andamento
+        status: feito
       - id: contrato_marts
         criterio: schema dos marts da pergunta 2 fixado, com amostra de dados para o site
         depende_de: [dados.modelo, produto.metricas]
