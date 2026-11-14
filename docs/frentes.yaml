@@ -31,7 +31,7 @@ frentes:
   dados:
     objetivo: coleta incremental e idempotente, pronta para o Airflow sem reescrever nada
     ativa: true
-    proximo_passo: escrever docs/dados/atualizacao.md para as tabelas da pergunta 2
+    proximo_passo: escrever docs/dados/modelo.md (camadas, entidades e relações) a partir de atualizacao.md
     marcos:
       - id: modelo
         criterio: modelo de dados e tabela de atualização revisados
