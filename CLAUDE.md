@@ -40,7 +40,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Nenhuma chamada de LLM no caminho de uma requisição do site; saída de LLM sempre validada por schema.
 - Mudança de schema só pela skill /migracao.
 - Se a tarefa parar no meio, anote em docs/estado.md onde parou.
-- Sugira /registrar no fim da tarefa quando ela fechar uma fase ou render lição ou decisão útil fora do projeto; só grave no vault se eu confirmar.
+- Registre no vault com /registrar, sem perguntar, quando a tarefa fechar uma fase ou render decisão, lição ou configuração útil; diga no fim o que entrou e o hash do commit.
 
 ## Pegadinhas do domínio
 Resumo; a fonte é docs/produto/diretrizes.md.
