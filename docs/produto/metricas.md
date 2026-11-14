@@ -111,7 +111,7 @@ Não votou numa votação em que estava no exercício do mandato.
 Registrou "Obstrução" em vez de votar. É uma tática para impedir que a votação tenha quórum.
 
 - **Aparece à parte, com o nome "obstrução"**, ao lado das abstenções e das ausências: "votou 6 vezes por ampliar, 2 por reduzir e obstruiu 1".
-- **Não conta como Não** nem como ausência. Quem obstrui quase sempre quer derrubar a proposta, mas não deu o voto.
+- **Não conta como Não** nem como ausência. Quem obstrui quase sempre quer derrubar a proposta, mas às vezes a obstrução é contra a pauta do dia, não contra o conteúdo (a oposição obstrui tudo para travar o Plenário). Por isso, nos eixos, ela fica à parte até o teste de sensibilidade medir quanto muda se contar como Não. Na divergência ela conta como voto contra (ver [Divergência da bancada](#divergência-da-bancada)).
 - **"Como calculamos" explica a tática** no lugar em que ela aparece (H6.4).
 - **Histórias:** H2.4.
 
@@ -167,6 +167,7 @@ O teste roda com dado real, antes da metodologia ser assinada (marco `analise.me
 | --- | --- | --- |
 | Consenso | Governo e Oposição iguais; 80%, 90%, 95% do Plenário | Quantas votações mudam de classe e quais |
 | Divergência | Orientação da bancada; só orientação própria do partido; obstrução como contra ou fora da conta; maioria dos colegas a 50%, 60%, 70%, 80% | Quantos deputados mudam de posição no total de divergências (correlação de postos) e quantos ficam sem nenhuma votação com orientação |
+| Obstrução nos eixos | À parte; como Não (direção `−s`) | Quantos deputados mudam de polo dominante em algum eixo e em quantas votações a obstrução foi da bancada inteira no mesmo dia |
 | Lado (base ou oposição) | 40%, 50%, 60% de alinhamento com o Governo | Quantos deputados mudam de lado |
 | Tendência no eixo | Com e sem a votação de conflito | Quantas votações de conflito mudam |
 | Ausência | Janela de 7, 15 e 30 dias | Quantas ausências mudam |
