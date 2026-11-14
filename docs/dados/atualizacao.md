@@ -68,5 +68,13 @@ Calcula só o que falta. Cada linha guarda versão da taxonomia, modelo, versão
 
 ## Em aberto
 
-- **Orientação de bloco na divergência.** A métrica de divergência (`docs/produto/metricas.md`) compara o voto com a orientação do partido, que os partidos de bloco quase nunca dão. Saber a qual bloco o partido pertencia em cada data exige a composição com data: a partir do início da coleta de `bloco_partido` ela existe; para o passado da 57ª, um spike do marco `dados.modelo` mede se a sigla cortada (`Bl PlUniPpPsd...`) e o `uriBancada` bastam para reconstruí-la. A métrica é revista com o resultado, no mesmo PR que atualiza `metricas.md`.
+- **Orientação de bloco na divergência.** A métrica de divergência (`docs/produto/metricas.md`) compara o voto com a orientação do partido, que os partidos de bloco quase nunca dão. A revisão da métrica fica para um PR próprio, que atualiza `metricas.md`. O spike de 14/11/2026 respondeu se dá para reconstruir a composição do passado da 57ª (orientações e votos de Plenário de 2023 a 2026, 1.127 votações com orientação):
+  - **`uriBancada` vem vazio para todo bloco.** O id não ajuda.
+  - **A API guarda só parte dos blocos.** `/blocos/{id}` de 570 a 590 devolve blocos da 55ª, 56ª e 57ª, mas dos nove nomes de bloco que aparecem nas orientações da 57ª só os dois atuais têm composição completa (589 e 590).
+  - **Cada mudança de composição gera uma sigla nova.** São nove na 57ª, de `Bl MdbPsdRepPodePsc` (2023) a `Bl UniPpPsd...` (desde 29/10/2025). A composição só importa no dia de cada votação, e a sigla presente naquela votação já diz qual bloco valia.
+  - **Os membros escondidos nas reticências saem por eliminação.** Partido de bloco nunca orienta sozinho. Numa mesma combinação de blocos, o partido que votou em todas as votações sem orientação própria nem de federação está no bloco cortado. Em cada combinação há no máximo um bloco cortado de composição desconhecida, então a resposta é única.
+  - **Validação:** a eliminação reproduz exatamente as duas composições que a API publica (589: União, PP, PSD, Republicanos, MDB, Federação PSDB-Cidadania e Podemos; 590: Avante, Solidariedade e PRD).
+  - **Resíduo:** cinco votações de março de 2023 com a sigla genérica `Bloco Parlamentar`, e deputados sem partido (`S.PART.`), que não têm bancada.
+
+  Conclusão: dá para saber a bancada de cada deputado em cada votação da 57ª (partido, federação ou bloco), por regra reproduzível no pipeline, sem tabela feita à mão. Daqui para a frente a foto diária de `bloco_partido` confirma a regra.
 - **Período de exercício no lugar da janela de 15 dias.** `mandato` guarda os períodos de exercício do histórico. Se forem completos, a ausência deixa de ser aproximação; o teste vem com o dado real.
