@@ -4,7 +4,7 @@ _Todo número exibido no site: nome, definição em uma frase, fórmula, denomin
 
 Hoje cobre a pergunta 2. As histórias que usam cada métrica estão em [historias.md](historias.md). Os nomes de tabela são provisórios até o marco `dados.modelo`.
 
-**Versão de 14/11/2026.** O ponto de partida foi o protótipo da v1 (`definitivo/dag_temas/pergunta2.py`, de 03/11/2026). As decisões do Eduardo estão em [Decisões de 14/11/2026](#decisões-de-14112026); o que depende de teste com dado real está em [Testes de sensibilidade](#testes-de-sensibilidade).
+**Versão de 14/11/2026, revisada pelo Eduardo.** O ponto de partida foi o protótipo da v1 (`definitivo/dag_temas/pergunta2.py`, de 03/11/2026). As decisões estão em [Decisões de 14/11/2026](#decisões-de-14112026); as definições de consenso e de divergência só valem depois dos [testes de sensibilidade](#testes-de-sensibilidade) com dado real.
 
 ## Regras que valem para todas
 
@@ -65,7 +65,7 @@ A base de quase tudo. Cada proposição com eixo tem sinal `s`: `+1` se puxa par
 
 Votação em que os dois lados da Câmara votaram juntos. Conta na contagem do deputado, mas aparece marcada: diz pouco sobre ele e às vezes diz muito sobre o Plenário.
 
-**Proposta, a confirmar com o teste de sensibilidade:** uma votação é de consenso quando **o Governo e a Oposição orientaram o mesmo voto** (os dois Sim ou os dois Não).
+**Definição (confirmada em 14/11/2026, sujeita ao teste de sensibilidade):** uma votação é de consenso quando **o Governo e a Oposição orientaram o mesmo voto** (os dois Sim ou os dois Não).
 
 Por que não um percentual fixo, como os 90% da v1:
 - **O tamanho das bancadas distorce o percentual.** 90% do Plenário pode ser só o centro e o governo juntos, com a oposição inteira contra; e uma oposição pequena some num número só.
@@ -81,7 +81,7 @@ O teste compara essa regra com o percentual (80%, 90%, 95%), olhando quais vota�
 
 "Votou diferente do que o partido orientou em 12 das 80 votações em que o partido orientou."
 
-**Proposta, a confirmar com o teste de sensibilidade:** comparar o voto com a **orientação oficial do partido** naquela votação, publicada pela Câmara, e não com a maioria calculada dos colegas.
+**Definição (confirmada em 14/11/2026, sujeita ao teste de sensibilidade):** comparar o voto com a **orientação oficial do partido** naquela votação, publicada pela Câmara, e não com a maioria calculada dos colegas.
 
 - **Fórmula:** `k` = votos Sim ou Não diferentes da orientação do partido; `n` = votos Sim ou Não em votações em que o partido orientou Sim ou Não. "Liberado" e "sem orientação" não contam.
 - **Por que trocar:** a maioria calculada exige um corte (a v1 usava 60%), e o resultado pode mudar muito com o corte. A orientação é um fato publicado, sem corte nenhum.
@@ -170,6 +170,6 @@ Se a variação mudar a posição de muitos deputados, a página não publica o 
 
 1. **Destaques e emendas de Plenário:** fora da fatia 1, com volta por spike.
 2. **Sem n mínimo:** todo voto aparece e conta, com o n à vista. Atuação é atuação, inclusive no começo do mandato.
-3. **Consenso e divergência:** sem percentual fixo escolhido no escuro. A proposta (orientação de Governo e Oposição; orientação oficial do partido) passa pelo teste de sensibilidade antes de valer.
+3. **Consenso e divergência:** sem percentual fixo escolhido no escuro. Consenso é Governo e Oposição orientando igual; divergência é votar contra a orientação oficial do partido. As duas passam pelo teste de sensibilidade antes de valer.
 4. **Obstrução:** à parte, com nome próprio.
 5. **Governo e oposição:** alinhamento e votações de conflito entram na fatia 1 (história H8). Depois do teste com 5 pessoas, revê-se se a página ficou poluída ou se diz pouco.

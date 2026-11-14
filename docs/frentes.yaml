@@ -18,8 +18,6 @@ frentes:
 
   produto:
     objetivo: as três perguntas viram histórias testáveis
-    ativa: true
-    proximo_passo: revisar docs/produto/metricas.md e confirmar as propostas de consenso e de divergência do partido
     marcos:
       - id: perguntas
         criterio: perguntas, personas, histórias e não-objetivos em docs/produto/
@@ -28,6 +26,7 @@ frentes:
       - id: metricas
         criterio: dicionário de métricas da pergunta 2 revisado por você
         depende_de: [produto.perguntas]
+        status: feito
 
   dados:
     objetivo: coleta incremental e idempotente, pronta para o Airflow sem reescrever nada
