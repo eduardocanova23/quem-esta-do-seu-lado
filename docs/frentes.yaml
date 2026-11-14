@@ -19,7 +19,7 @@ frentes:
   produto:
     objetivo: as três perguntas viram histórias testáveis
     ativa: true
-    proximo_passo: escrever docs/produto/metricas.md com as métricas que as histórias da pergunta 2 citam (k de n, quase unânime, maioria do partido, ausência, n mínimo, autoria)
+    proximo_passo: revisar docs/produto/metricas.md e confirmar as propostas de consenso e de divergência do partido
     marcos:
       - id: perguntas
         criterio: perguntas, personas, histórias e não-objetivos em docs/produto/
@@ -104,7 +104,7 @@ frentes:
     proximo_passo: rascunhar a metodologia da pergunta 2 a partir do dicionário de métricas
     marcos:
       - id: metodologia1
-        criterio: página de metodologia da pergunta 2 assinada; cada número sai de um comando que você roda e explica
+        criterio: página de metodologia da pergunta 2 assinada; cada número sai de um comando que você roda e explica; testes de sensibilidade de metricas.md rodados e publicados
         depende_de: [produto.metricas, dados.contrato_marts]
       - id: lancamento1
         criterio: fatia 1 publicada com a metodologia e o texto de lançamento
