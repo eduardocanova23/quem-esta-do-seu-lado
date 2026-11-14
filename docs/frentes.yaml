@@ -31,7 +31,7 @@ frentes:
   dados:
     objetivo: coleta incremental e idempotente, pronta para o Airflow sem reescrever nada
     ativa: true
-    proximo_passo: escrever docs/dados/modelo.md (camadas, entidades e relações) a partir de atualizacao.md
+    proximo_passo: Eduardo revisa docs/dados/modelo.md e atualizacao.md; com o ok, dados.modelo fica feito
     marcos:
       - id: modelo
         criterio: modelo de dados e tabela de atualização revisados
