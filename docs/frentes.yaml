@@ -31,7 +31,7 @@ frentes:
   dados:
     objetivo: coleta incremental e idempotente, pronta para o Airflow sem reescrever nada
     ativa: true
-    proximo_passo: fixar em docs/dados/dicionario.md o schema dos marts da pergunta 2, coluna a coluna, a partir de modelo.md e metricas.md
+    proximo_passo: gerar a amostra real de 5 deputados em db/marts/amostra/ e passar no validador do contrato
     marcos:
       - id: modelo
         criterio: modelo de dados e tabela de atualização revisados
