@@ -10,7 +10,8 @@ Hoje cobre a pergunta 2. A regra de atualização de cada tabela está em [atual
 2. **Validade no tempo é intervalo de datas com trava contra sobreposição.** Filiação, exercício do mandato e composição de federação e bloco guardam um `periodo` do tipo `daterange`, com uma restrição de exclusão (`EXCLUDE USING gist`, extensão `btree_gist`, que vem com o Postgres) que impede dois períodos sobrepostos para a mesma chave. Um deputado em dois partidos no mesmo dia é recusado pelo banco, em vez de aparecer no número publicado.
 3. **A bancada de cada voto é uma tabela própria, com a origem de cada linha.** É inferência (partido, senão federação, senão bloco; o bloco às vezes reconstruído por eliminação), e o número de divergência depende dela. Numa tabela própria ela tem teste, aparece no "como calculamos" e serve à pergunta 3 sem refazer a conta.
 4. **O perfil é deputado × legislatura.** A página, o endereço e todo agregado partem do `mandato` (deputado, legislatura), nunca do deputado sozinho. Quem exerceu em duas legislaturas tem dois mandatos, e nada no modelo junta os dois.
-5. **O site só lê os marts.** O papel `app` tem `SELECT` só no schema `marts`; `core` e `ia` são do pipeline. O site não consegue montar por conta própria um número que não passou pelos testes de dados.
+5. **Nenhuma chave natural tem coluna que pode ser nula.** No Postgres, `NULL` nunca é igual a `NULL`, então uma chave única com coluna nula não impede duplicata. Na v1, `tema_prop` chegou a 1.051.786 linhas para 112.597 pares distintos (9,3 vezes) por isso. Onde a fonte não dá um campo, a chave usa outro que ela sempre dá.
+6. **O site só lê os marts.** O papel `app` tem `SELECT` só no schema `marts`; `core` e `ia` são do pipeline. O site não consegue montar por conta própria um número que não passou pelos testes de dados.
 
 ## As camadas
 
@@ -46,7 +47,7 @@ Toda linha de `core` tem `hash_origem` (da linha que a gerou), `atualizada_em` e
 | --- | --- | --- |
 | `proposicao` | `id` | Sigla, número, ano, ementa, situação atual, `principal_id` (apensada aponta para a principal) |
 | `proposicao_tema_camara` | `proposicao_id`, `cod_tema` | Tema oficial da Câmara. Não é a nossa taxonomia; serve de sinal e de conferência |
-| `autoria` | `proposicao_id`, `uri_autor` | Autor, `deputado_id` (vazio quando não é deputado), ordem de assinatura e se é proponente. Autor principal: ordem 1 e proponente |
+| `autoria` | `proposicao_id`, `ordem_assinatura` | Autor, `uri_autor` e `deputado_id` (vazios quando não há: em 2025, 2.131 linhas de senador vêm sem URI), tipo e se é proponente. Autor principal: ordem 1 e proponente. O mesmo deputado pode aparecer em duas ordens da mesma proposição (682 casos em 2025), então a contagem de autoria conta a proposição uma vez por deputado |
 
 ### Votações
 
@@ -61,6 +62,7 @@ Toda linha de `core` tem `hash_origem` (da linha que a gerou), `atualizada_em` e
 
 | Tabela | Chave | O que é |
 | --- | --- | --- |
+| `votacao_classificada` | `votacao_id` | O tipo da votação e a proposição cujo texto foi votado, cada um com a `origem` da resposta. Tipo: mérito, regime de tramitação (urgência), requerimento, redação final, destaque ou emenda de Plenário, emenda do Senado, outro; sai da descrição por regra com teste. Proposição votada: o objeto, quando é um só; senão a afetada com o número citado na descrição; senão a primeira de um tipo com texto (PL, PEC, PLP, MPV, PDL), a regra que a v1 usava em `12_coletar_votacoes_plenario.py`. Em 2025, das 2.041 votações de Plenário, só 918 têm um objeto só, e 454 são de regime de tramitação. É o que decide quais votações entram na pergunta 2 (H2.6) e de qual proposição sai a direção do voto |
 | `bancada_voto` | `votacao_id`, `deputado_id` | A bancada do deputado naquela votação (partido, federação ou bloco), a orientação dela e a `origem` da resposta (`orientacao_propria`, `federacao`, `bloco_api`, `bloco_foto`, `bloco_eliminacao`). Vazia para deputado sem partido e para votação sem orientação. É a base da divergência ([metricas.md](../produto/metricas.md#divergência-da-bancada)) |
 
 Derivada fica em `core`, e não em `marts`, porque é fato reconstruído e não número de tela: recalcula inteira a cada execução, a partir de `orientacao`, `filiacao` e `agrupamento_partido`.
@@ -111,6 +113,26 @@ erDiagram
     proposicao ||--o{ proposicao_eixo : "puxa para"
     proposicao ||--o{ proposicao_tema : "trata de"
 ```
+
+## O que muda em relação à v1
+
+Comparado com `scripts/schema.sql` e `scripts/legislativo/` do repositório `capivara`, em 14/11/2026.
+
+| Na v1 | Problema | Na v2 |
+| --- | --- | --- |
+| `deputado.partido_id`, `in_leg_56`, `in_leg_57`, `condicao_leg_56`, `condicao_leg_57` | Partido atual no lugar do da época; uma coluna nova a cada legislatura | `filiacao` com período; `mandato` por legislatura |
+| `orientacao_votacao` com `partido_id NOT NULL`, preenchida pelo mapa sigla → partido | Orientação de bloco, federação, Governo e Oposição era descartada sem aviso (`if pid is None: continue`) | `orientacao` guarda toda bancada, com o tipo |
+| `partidos.id` serial, chave pela sigla | Sigla muda (PSL e DEM viraram União) | Id do partido da Câmara |
+| `voto` sem partido | O partido da época tinha de ser adivinhado | Sigla publicada no voto, mais `filiacao` para conferir |
+| `votacao.proposicao_id`, uma só, escolhida na coleta | A regra ficava escondida no script de coleta | `votacao_proposicao` guarda todas; `votacao_classificada` escolhe por regra com origem e teste |
+| `tema_prop` com chave única sobre coluna nula | 9,3 vezes de duplicação, achada em 14/09/2026 | Regra 5: chave natural sem coluna nula |
+| `ON CONFLICT DO NOTHING` | Linha que mudou na fonte nunca era atualizada | Upsert por hash de linha |
+| Estado "já processadas" por id | Votação reprocessada só com `--limpar` | Checkpoint por data lógica |
+| `proposicao.partido_autor` | Partido do autor congelado na proposição | Sai de `autoria` e `filiacao` na data |
+
+Ficam como na v1: id texto da votação (`2458405-38`), uma linha por proposição real com a apensada apontando para a principal, chave do discurso por deputado e data e hora (quando entrar), federação com período.
+
+Ficam para depois, sem retrabalho: `orgao` (a pergunta 2 só usa o Plenário, e a chave estrangeira entra quando a pergunta 1 chegar), `tramitacao` (marco `dados.tramitacao`), `discurso`.
 
 ## Papéis no banco
 
