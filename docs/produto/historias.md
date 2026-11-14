@@ -101,7 +101,7 @@ Perfis: jornalista ●, quem acompanha uma causa ○.
 
 - **H4.1** A página lista as votações com eixo em que o voto dele foi diferente da orientação da bancada dele, mostrando quem orientou (partido, federação ou bloco, com nome), a orientação e como os colegas de partido votaram de fato. `métrica`
 - **H4.2** O partido de cada votação é a filiação dele na data daquela votação, e a bancada é a desse partido naquela votação: o partido, se orientou sozinho; senão a federação; senão o bloco em que estava. `métrica`
-- **H4.3** Votação em que a bancada liberou, obstruiu ou não orientou não conta como divergência. Deputado sem partido não tem bancada. `métrica`
+- **H4.3** Obstrução conta como voto contra, do lado do Não: obstruir quando a bancada orientou Sim é divergir, e votar Sim quando ela orientou obstrução também. Votação em que a bancada liberou ou não orientou não conta. Deputado sem partido não tem bancada. `métrica`
 - **H4.4** O total de divergências aparece perto do topo da página, ao lado do total de votações com eixo. `site`
 - **H4.5** Sem nenhuma divergência, a frase é "votou como a bancada orientou em todas as N votações com eixo em que ela orientou". `site`
 

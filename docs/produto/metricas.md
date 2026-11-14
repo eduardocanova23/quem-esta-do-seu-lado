@@ -87,7 +87,8 @@ O teste compara essa regra com o percentual (80%, 90%, 95%), olhando quais vota�
 2. senão, a **federação** do partido (PT-PCdoB-PV, PSOL-REDE, PSDB-Cidadania), que funciona como um partido só;
 3. senão, o **bloco parlamentar** em que o partido estava naquela votação.
 
-- **Fórmula:** `k` = votos Sim ou Não diferentes da orientação da bancada; `n` = votos Sim ou Não em votações em que a bancada orientou Sim ou Não. "Liberado", "Obstrução" e "sem orientação" não contam. Deputado sem partido não tem bancada e fica fora.
+- **Fórmula:** voto e orientação viram dois lados: **a favor** (Sim) e **contra** (Não ou Obstrução). `k` = votos cujo lado é diferente do lado da orientação da bancada; `n` = votos Sim, Não ou Obstrução em votações em que a bancada orientou Sim, Não ou Obstrução. "Liberado" e "sem orientação" não contam, nem abstenção e ausência. Deputado sem partido não tem bancada e fica fora.
+- **Por que obstrução é contra:** obstruir é tentar derrubar a votação tirando o quórum, uma oposição mais forte que votar Não. Bancada que orienta obstrução e deputado que vota Sim divergem; bancada que orienta Sim e deputado que obstrui também. Obstruir quando a bancada orientou Não, ou votar Não quando ela orientou obstrução, é seguir a bancada. A frase da página diz qual foi o voto e qual a orientação, sem juntar os dois sob "Não".
 - **Por que a bancada e não só o partido:** no Plenário da 57ª, quem orienta é quase sempre o bloco. Em 2025, de 419 votações com orientação, PP, PSD, MDB, União e Republicanos orientaram em nome próprio em 1 cada. Comparar só com o partido deixaria metade da Câmara sem divergência nenhuma, por falta de orientação e não por fidelidade.
 - **Por que não a maioria dos colegas:** a maioria calculada exige um corte (a v1 usava 60%), e o resultado pode mudar muito com o corte. A orientação é um fato publicado, sem corte nenhum.
 - **De onde vem o bloco de cada votação:** a Câmara não publica a composição dos blocos com data. Ela é reconstruída por regra: a sigla do bloco presente na votação diz qual composição valia, e os partidos escondidos nas reticências da sigla saem por eliminação, porque partido de bloco não orienta sozinho. A regra reproduz as composições que a API publica. Detalhe e resíduo em [`docs/dados/atualizacao.md`](../dados/atualizacao.md#em-aberto).
@@ -165,7 +166,7 @@ O teste roda com dado real, antes da metodologia ser assinada (marco `analise.me
 | O quê | Variações | O que se mede |
 | --- | --- | --- |
 | Consenso | Governo e Oposição iguais; 80%, 90%, 95% do Plenário | Quantas votações mudam de classe e quais |
-| Divergência | Orientação da bancada; só orientação própria do partido; maioria dos colegas a 50%, 60%, 70%, 80% | Quantos deputados mudam de posição no total de divergências (correlação de postos) e quantos ficam sem nenhuma votação com orientação |
+| Divergência | Orientação da bancada; só orientação própria do partido; obstrução como contra ou fora da conta; maioria dos colegas a 50%, 60%, 70%, 80% | Quantos deputados mudam de posição no total de divergências (correlação de postos) e quantos ficam sem nenhuma votação com orientação |
 | Lado (base ou oposição) | 40%, 50%, 60% de alinhamento com o Governo | Quantos deputados mudam de lado |
 | Tendência no eixo | Com e sem a votação de conflito | Quantas votações de conflito mudam |
 | Ausência | Janela de 7, 15 e 30 dias | Quantas ausências mudam |
