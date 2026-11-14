@@ -22,8 +22,7 @@ Um item sai desta lista só por PR, dizendo que pergunta ele passa a responder. 
 | Autoria personalizada por temas escolhidos | Sem perfil pronto, não existem "os seus temas" ([histórias, decisão 3](historias.md#decisões-da-pergunta-2)) | Se o teste com 5 pessoas pedir um seletor de temas |
 | Lado no link compartilhado | [Histórias, decisão 4](historias.md#decisões-da-pergunta-2) | Não volta sem nova decisão |
 | Placar ajustado (puxado para o partido) na página do deputado | É ferramenta de ranking. Para um deputado só, o k de n com o n à vista é mais honesto | Fatia 2 (pergunta 3), no ranking |
-| Placar resumido nos eixos ralos (aborto, armas, apostas, LGBT, religião, valores na escola) | Têm 1 ou 2 votações cada na 57ª. A página mostra o voto a voto, sem número | Quando um eixo passar do n mínimo |
-| Votações de destaque, de emenda e de comissão | Na comissão, a direção do parecer não se sabe. Destaques e emendas estão em aberto em [perguntas.md](perguntas.md#em-aberto) | Decisão em `metricas.md` |
+| Votações de destaque, de emenda e de comissão | Na comissão, a direção do parecer não se sabe. No destaque e na emenda de Plenário (687 nominais na 57ª), seria preciso classificar a direção de cada trecho, não da proposição inteira ([métricas](metricas.md#que-votações-entram)) | Destaque e emenda: um spike que classifique a direção dos trechos com acurácia de gabarito, para engrossar os eixos ralos. Comissão: não volta sem a direção do parecer |
 | Página própria sobre "como a Câmara funciona" | Não responde a nenhuma das três perguntas. O estudante é atendido com explicação no lugar ([personas](personas.md#estudante-ou-professor)) | Se virar pergunta no banco |
 | Login, conta e camada paga | Não respondem a nenhuma pergunta do MVP | Depois do MVP, por ADR |
 | Senado | As três perguntas são sobre a Câmara | Pergunta nova no banco |

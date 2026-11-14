@@ -73,7 +73,7 @@ O protótipo em Streamlit da v1 (`definitivo/dag_temas/pergunta2.py` e `app_depu
 
 ## Em aberto
 
-- As votações de destaque e de emenda de Plenário (687 nominais) estão fora do placar. Podem engrossar os eixos ralos.
+- ~~As votações de destaque e de emenda de Plenário (687 nominais) estão fora do placar.~~ Decidido em 14/11/2026: fora da fatia 1, com volta por spike ([não-objetivos](nao-objetivos.md)).
 - Votações em comissão: lá se vota o parecer, e a direção dele não se sabe.
 - O peso da autoria × voto quando os dois discordam (o deputado propõe uma coisa e vota outra).
 - `lentes.yaml` precisa de revisão: "Direitos humanos" pede "amplia vigilância", provavelmente invertido.

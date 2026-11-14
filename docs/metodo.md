@@ -135,8 +135,7 @@ Pergunta nova entra no arquivo com o perfil que a faz, a prioridade e o dado que
 
 > *Como eleitor que acompanha um deputado, quero saber se ele vota na minha direção num eixo que me importa.*
 >
-> - Dado um eixo com votos suficientes, a página diz "votou na sua direção em 7 de 9 votações" e lista as votações ao lado.
-> - Abaixo do n mínimo, mostra só as votações, sem percentual.
+> - Dado um eixo, a página diz "votou na sua direção em 7 de 9 votações", sempre com o n à vista, e lista as votações ao lado.
 > - Destaca as votações em que ele divergiu da bancada.
 > - Ausências e obstruções aparecem à parte, fora do placar.
 > - A direção escolhida pelo usuário não é gravada em lugar nenhum.

@@ -2,7 +2,7 @@
 
 _Uma história por necessidade de um perfil, ligada a uma pergunta, com critérios de aceitação testáveis. Cada critério diz a camada de teste que o cobre._
 
-Cadeia: [pergunta](perguntas.md) → história → critério → teste → tela. Os perfis estão em [personas.md](personas.md). Os números de corte (n mínimo, quase unânime, maioria do partido, janela de ausência) ficam em [metricas.md](metricas.md); aqui eles aparecem só pelo nome.
+Cadeia: [pergunta](perguntas.md) → história → critério → teste → tela. Os perfis estão em [personas.md](personas.md). As definições (consenso, divergência do partido, ausência, votações de conflito) ficam em [metricas.md](metricas.md); aqui elas aparecem só pelo nome.
 
 As histórias seguem a ordem das fatias. Hoje só a pergunta 2 tem histórias, porque é a fatia 1. As perguntas 3 e 1 ganham histórias quando a fatia delas abrir.
 
@@ -72,10 +72,10 @@ Perfis: eleitor curioso ●, jornalista ○.
 Perfis: eleitor curioso ●, quem acompanha uma causa ●.
 
 - **H2.1** A página abre sem pedir escolha. Para cada um dos cinco eixos com volume (gasto e benefício, carga tributária, punição, ambiente, trabalho), mostra quantas vezes ele votou em cada polo, com os polos em linguagem comum: "em gasto e benefício, votou 6 vezes por ampliar e 2 por reduzir". `métrica`
-- **H2.2** Cada contagem abre a lista das votações, com data, o que a proposição faz em linguagem comum, o voto dele, a maioria do partido dele e o link para a votação no site da Câmara. `build`
-- **H2.3** Votações quase unânimes entram na contagem, mas aparecem separadas: "2 delas quase unânimes". `métrica`
-- **H2.4** Abstenção, obstrução e ausência ficam fora das contagens e aparecem à parte, com a definição de ausência ao lado. `métrica`
-- **H2.5** Num eixo com menos votações que o mínimo, não há contagem resumida. Aparece a frase "só 2 votações neste eixo: não dá para dizer como ele vota" e a lista das votações. `site`
+- **H2.2** Cada contagem abre a lista das votações, com data, o que a proposição faz em linguagem comum, o voto dele, a orientação do partido dele, como os colegas votaram e o link para a votação no site da Câmara. `build`
+- **H2.3** Votações de consenso entram na contagem, mas aparecem marcadas: "2 delas de consenso entre governo e oposição". `métrica`
+- **H2.4** Abstenção, obstrução e ausência ficam fora das contagens e aparecem à parte, cada uma com o próprio nome e a definição ao lado. `métrica`
+- **H2.5** Não há mínimo de votações: com poucas, a contagem aparece do mesmo jeito, com o n à vista ("votou 1 vez, por ampliar"). Um eixo sem nenhum voto dele diz "nenhuma votação deste eixo nesta legislatura". `site`
 - **H2.6** Entram só votações nominais de mérito no Plenário, de proposições com eixo. O que fica de fora (urgência, emenda do Senado, proposição de sinal misto) está escrito em "como calculamos". `métrica`
 - **H2.7** Nenhuma frase avalia o deputado ("bom", "ruim", nota). O mesmo modelo de frase vale para todo partido. `site`
 
@@ -87,8 +87,8 @@ Perfis: eleitor curioso ●, quem acompanha uma causa ●.
 
 - **H3.1** "Compare com o que você quer" vem depois do resumo neutro. Abrir a comparação não esconde o resumo. `e2e`
 - **H3.2** Cada eixo oferece os dois polos em linguagem comum e "não me importa", que é a opção inicial. `site`
-- **H3.3** Com um polo escolhido e o n do eixo no mínimo ou acima, a página diz "votou na sua direção em 7 de 9 votações" e marca cada votação da lista como na sua direção ou contra. `métrica` para o k e o n, `site` para a frase.
-- **H3.4** Abaixo do mínimo, só as votações marcadas aparecem, sem número resumido. `site`
+- **H3.3** Com um polo escolhido, a página diz "votou na sua direção em 7 de 9 votações" e marca cada votação da lista como na sua direção ou contra. `métrica` para o k e o n, `site` para a frase.
+- **H3.4** Com poucas votações, a frase vem do mesmo jeito, com o n à vista: "votou na sua direção em 1 de 1". `site`
 - **H3.5** Sem nenhum eixo escolhido, não aparece placar. `site`
 - **H3.6** O lado escolhido nunca sai do navegador: nenhuma requisição o carrega, e ele não vai para cookie, `localStorage`, endereço da página nem métrica de acesso. Fechar a página apaga a escolha. `site` e `e2e`
 - **H3.7** A pergunta 2 mostra o placar cru (k de n) com o n à vista. O placar ajustado, puxado para o partido, é ferramenta de ranking da pergunta 3 e não aparece aqui. `site`
@@ -99,11 +99,11 @@ Perfis: eleitor curioso ●, quem acompanha uma causa ●.
 
 Perfis: jornalista ●, quem acompanha uma causa ○.
 
-- **H4.1** A página lista as votações com eixo em que o voto dele foi diferente da maioria do partido, mostrando a maioria e o tamanho dela. `métrica`
+- **H4.1** A página lista as votações com eixo em que o voto dele foi diferente da orientação do partido, mostrando a orientação e como os colegas votaram de fato. `métrica`
 - **H4.2** O partido de cada votação é a filiação dele na data daquela votação. `métrica`
-- **H4.3** Votação em que o partido não teve maioria clara não conta como divergência. `métrica`
+- **H4.3** Votação em que o partido liberou a bancada ou não orientou não conta como divergência. `métrica`
 - **H4.4** O total de divergências aparece perto do topo da página, ao lado do total de votações com eixo. `site`
-- **H4.5** Sem nenhuma divergência, a frase é "votou com a maioria do partido em todas as N votações com eixo". `site`
+- **H4.5** Sem nenhuma divergência, a frase é "votou como o partido orientou em todas as N votações com eixo em que ele orientou". `site`
 
 ### H5. Ver onde ele atua
 
@@ -137,3 +137,15 @@ Perfis: eleitor curioso ●.
 - **H7.1** O endereço da página é o mesmo para todo mundo e não muda quando a pessoa escolhe um lado. `e2e`
 - **H7.2** A prévia do link no WhatsApp traz o nome, o partido da época, a legislatura e uma frase neutra. Ela é gerada no build. `build`
 - **H7.3** O botão de compartilhar usa o compartilhamento do celular, e o texto enviado não leva o lado. `site`
+
+### H8. Ver se ele vota pelo assunto ou pelo lado
+
+> *Como eleitor que quer saber se o deputado é coerente, quero ver quando ele seguiu o governo ou a oposição contra o que ele mesmo costuma votar.*
+
+Perfis: jornalista ●, eleitor curioso ○, quem acompanha uma causa ○.
+
+- **H8.1** A página mostra em quantas votações ele votou como o Governo orientou e em quantas votou como a Oposição orientou, com o n de cada uma e o nome do governo e da legislatura. `métrica`
+- **H8.2** Nenhum número compara governos nem legislaturas. `build`
+- **H8.3** Em cada eixo com tendência, a página lista as votações de conflito (a orientação do lado dele contra a tendência dele) e diz quantas vezes ele seguiu cada um. `métrica`
+- **H8.4** Cada votação de conflito mostra a tendência dele no eixo, a orientação do Governo, a da Oposição, a do partido e o voto dele. Nenhuma frase chama isso de coerência ou incoerência. `site`
+- **H8.5** Sem votação de conflito, a frase é "nenhuma votação em que o lado dele e o que ele costuma votar se opuseram". `site`
