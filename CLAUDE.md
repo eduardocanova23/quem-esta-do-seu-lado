@@ -40,7 +40,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Nenhuma chamada de LLM no caminho de uma requisição do site; saída de LLM sempre validada por schema.
 - Mudança de schema só pela skill /migracao.
 - Se a tarefa parar no meio, anote em docs/estado.md onde parou.
-- Registre no vault com /registrar, sem perguntar, quando a tarefa fechar uma fase ou render decisão, lição ou configuração útil; diga no fim o que entrou e o hash do commit.
+- O vault é a memória do Claude entre sessões: registre com a skill registrar, por conta própria e sem perguntar, tudo que for minimamente útil numa sessão futura, uma vez por tarefa; diga no fim o que entrou e o hash do commit.
 
 ## Pegadinhas do domínio
 Resumo; a fonte é docs/produto/diretrizes.md.
