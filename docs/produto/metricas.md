@@ -77,16 +77,22 @@ O teste compara essa regra com o percentual (80%, 90%, 95%), olhando quais vota�
 - **Correção em relação à v1:** o protótipo media só `Sim / (Sim + Não) ≥ 0,90`, e uma votação com 95% de Não não contava como quase unânime.
 - **Histórias:** H2.3.
 
-### Divergência do partido
+### Divergência da bancada
 
-"Votou diferente do que o partido orientou em 12 das 80 votações em que o partido orientou."
+"Votou diferente do que a bancada dele orientou em 12 das 80 votações em que ela orientou."
 
-**Definição (confirmada em 14/11/2026, sujeita ao teste de sensibilidade):** comparar o voto com a **orientação oficial do partido** naquela votação, publicada pela Câmara, e não com a maioria calculada dos colegas.
+**Definição (revista em 14/11/2026, sujeita ao teste de sensibilidade):** comparar o voto com a **orientação oficial da bancada do deputado** naquela votação, publicada pela Câmara, e não com a maioria calculada dos colegas. A bancada é, nesta ordem:
 
-- **Fórmula:** `k` = votos Sim ou Não diferentes da orientação do partido; `n` = votos Sim ou Não em votações em que o partido orientou Sim ou Não. "Liberado" e "sem orientação" não contam.
-- **Por que trocar:** a maioria calculada exige um corte (a v1 usava 60%), e o resultado pode mudar muito com o corte. A orientação é um fato publicado, sem corte nenhum.
-- **Ressalva a medir:** às vezes a orientação é dada pelo bloco, não pelo partido. O teste mede em quantas votações cada partido tem orientação própria.
-- **Na lista de votações (H2.2)** a página mostra também como os colegas votaram de fato ("o partido orientou Não; 70% dos colegas votaram Não"), sem corte.
+1. o **partido** da época, se ele orientou em nome próprio naquela votação;
+2. senão, a **federação** do partido (PT-PCdoB-PV, PSOL-REDE, PSDB-Cidadania), que funciona como um partido só;
+3. senão, o **bloco parlamentar** em que o partido estava naquela votação.
+
+- **Fórmula:** `k` = votos Sim ou Não diferentes da orientação da bancada; `n` = votos Sim ou Não em votações em que a bancada orientou Sim ou Não. "Liberado", "Obstrução" e "sem orientação" não contam. Deputado sem partido não tem bancada e fica fora.
+- **Por que a bancada e não só o partido:** no Plenário da 57ª, quem orienta é quase sempre o bloco. Em 2025, de 419 votações com orientação, PP, PSD, MDB, União e Republicanos orientaram em nome próprio em 1 cada. Comparar só com o partido deixaria metade da Câmara sem divergência nenhuma, por falta de orientação e não por fidelidade.
+- **Por que não a maioria dos colegas:** a maioria calculada exige um corte (a v1 usava 60%), e o resultado pode mudar muito com o corte. A orientação é um fato publicado, sem corte nenhum.
+- **De onde vem o bloco de cada votação:** a Câmara não publica a composição dos blocos com data. Ela é reconstruída por regra: a sigla do bloco presente na votação diz qual composição valia, e os partidos escondidos nas reticências da sigla saem por eliminação, porque partido de bloco não orienta sozinho. A regra reproduz as composições que a API publica. Detalhe e resíduo em [`docs/dados/atualizacao.md`](../dados/atualizacao.md#em-aberto).
+- **Ressalva:** divergir de um bloco grande diz menos que divergir do próprio partido, porque o bloco junta partidos que discordam entre si. A página sempre nomeia quem orientou ("o bloco de União, PP, PSD, Republicanos, MDB, PSDB-Cidadania e Podemos orientou Não"), nunca só "o partido".
+- **Na lista de votações (H2.2)** a página mostra também como os colegas de partido votaram de fato ("o bloco orientou Não; 70% dos colegas do PSD votaram Não"), sem corte.
 - **Correção em relação à v1:** o protótipo contava o próprio deputado na maioria. Num partido de 3, o voto dele decidia a maioria contra a qual ele era comparado.
 - **Ressalva:** divergir não é bom nem ruim. A página mostra cada votação.
 - **Histórias:** H4.1 a H4.5.
@@ -139,7 +145,7 @@ Registrou "Obstrução" em vez de votar. É uma tática para impedir que a vota�
 - **A tendência vem do voto, não do que ele declara.** A página diz isso.
 - **A tendência inclui a própria votação de conflito.** O teste de sensibilidade compara com a tendência calculada sem ela.
 - **Sem mínimo, mas com o n à vista.** Muitos deputados vão ter 0, 1 ou 2 votações de conflito. Com 0, a frase é "nenhuma votação em que o lado dele e o que ele costuma votar se opuseram".
-- **Sem nota de coerência.** A página mostra cada votação: a tendência, a orientação do lado, a do partido e o voto.
+- **Sem nota de coerência.** A página mostra cada votação: a tendência, a orientação do lado, a da bancada e o voto.
 - **Histórias:** H8.3, H8.4.
 
 ### Placar ajustado
@@ -159,7 +165,7 @@ O teste roda com dado real, antes da metodologia ser assinada (marco `analise.me
 | O quê | Variações | O que se mede |
 | --- | --- | --- |
 | Consenso | Governo e Oposição iguais; 80%, 90%, 95% do Plenário | Quantas votações mudam de classe e quais |
-| Divergência | Orientação oficial do partido; maioria dos colegas a 50%, 60%, 70%, 80% | Quantos deputados mudam de posição no total de divergências (correlação de postos) |
+| Divergência | Orientação da bancada; só orientação própria do partido; maioria dos colegas a 50%, 60%, 70%, 80% | Quantos deputados mudam de posição no total de divergências (correlação de postos) e quantos ficam sem nenhuma votação com orientação |
 | Lado (base ou oposição) | 40%, 50%, 60% de alinhamento com o Governo | Quantos deputados mudam de lado |
 | Tendência no eixo | Com e sem a votação de conflito | Quantas votações de conflito mudam |
 | Ausência | Janela de 7, 15 e 30 dias | Quantas ausências mudam |
@@ -170,6 +176,6 @@ Se a variação mudar a posição de muitos deputados, a página não publica o 
 
 1. **Destaques e emendas de Plenário:** fora da fatia 1, com volta por spike.
 2. **Sem n mínimo:** todo voto aparece e conta, com o n à vista. Atuação é atuação, inclusive no começo do mandato.
-3. **Consenso e divergência:** sem percentual fixo escolhido no escuro. Consenso é Governo e Oposição orientando igual; divergência é votar contra a orientação oficial do partido. As duas passam pelo teste de sensibilidade antes de valer.
+3. **Consenso e divergência:** sem percentual fixo escolhido no escuro. Consenso é Governo e Oposição orientando igual; divergência é votar contra a orientação oficial da bancada (partido, federação ou bloco, nessa ordem; revisto no mesmo dia, depois de ver que os partidos de bloco quase nunca orientam sozinhos). As duas passam pelo teste de sensibilidade antes de valer.
 4. **Obstrução:** à parte, com nome próprio.
 5. **Governo e oposição:** alinhamento e votações de conflito entram na fatia 1 (história H8). Depois do teste com 5 pessoas, revê-se se a página ficou poluída ou se diz pouco.

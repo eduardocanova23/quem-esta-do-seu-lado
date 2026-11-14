@@ -72,7 +72,7 @@ Perfis: eleitor curioso ●, jornalista ○.
 Perfis: eleitor curioso ●, quem acompanha uma causa ●.
 
 - **H2.1** A página abre sem pedir escolha. Para cada um dos cinco eixos com volume (gasto e benefício, carga tributária, punição, ambiente, trabalho), mostra quantas vezes ele votou em cada polo, com os polos em linguagem comum: "em gasto e benefício, votou 6 vezes por ampliar e 2 por reduzir". `métrica`
-- **H2.2** Cada contagem abre a lista das votações, com data, o que a proposição faz em linguagem comum, o voto dele, a orientação do partido dele, como os colegas votaram e o link para a votação no site da Câmara. `build`
+- **H2.2** Cada contagem abre a lista das votações, com data, o que a proposição faz em linguagem comum, o voto dele, a orientação da bancada dele (partido, federação ou bloco, com nome), como os colegas de partido votaram e o link para a votação no site da Câmara. `build`
 - **H2.3** Votações de consenso entram na contagem, mas aparecem marcadas: "2 delas de consenso entre governo e oposição". `métrica`
 - **H2.4** Abstenção, obstrução e ausência ficam fora das contagens e aparecem à parte, cada uma com o próprio nome e a definição ao lado. `métrica`
 - **H2.5** Não há mínimo de votações: com poucas, a contagem aparece do mesmo jeito, com o n à vista ("votou 1 vez, por ampliar"). Um eixo sem nenhum voto dele diz "nenhuma votação deste eixo nesta legislatura". `site`
@@ -99,11 +99,11 @@ Perfis: eleitor curioso ●, quem acompanha uma causa ●.
 
 Perfis: jornalista ●, quem acompanha uma causa ○.
 
-- **H4.1** A página lista as votações com eixo em que o voto dele foi diferente da orientação do partido, mostrando a orientação e como os colegas votaram de fato. `métrica`
-- **H4.2** O partido de cada votação é a filiação dele na data daquela votação. `métrica`
-- **H4.3** Votação em que o partido liberou a bancada ou não orientou não conta como divergência. `métrica`
+- **H4.1** A página lista as votações com eixo em que o voto dele foi diferente da orientação da bancada dele, mostrando quem orientou (partido, federação ou bloco, com nome), a orientação e como os colegas de partido votaram de fato. `métrica`
+- **H4.2** O partido de cada votação é a filiação dele na data daquela votação, e a bancada é a desse partido naquela votação: o partido, se orientou sozinho; senão a federação; senão o bloco em que estava. `métrica`
+- **H4.3** Votação em que a bancada liberou, obstruiu ou não orientou não conta como divergência. Deputado sem partido não tem bancada. `métrica`
 - **H4.4** O total de divergências aparece perto do topo da página, ao lado do total de votações com eixo. `site`
-- **H4.5** Sem nenhuma divergência, a frase é "votou como o partido orientou em todas as N votações com eixo em que ele orientou". `site`
+- **H4.5** Sem nenhuma divergência, a frase é "votou como a bancada orientou em todas as N votações com eixo em que ela orientou". `site`
 
 ### H5. Ver onde ele atua
 
@@ -147,5 +147,5 @@ Perfis: jornalista ●, eleitor curioso ○, quem acompanha uma causa ○.
 - **H8.1** A página mostra em quantas votações ele votou como o Governo orientou e em quantas votou como a Oposição orientou, com o n de cada uma e o nome do governo e da legislatura. `métrica`
 - **H8.2** Nenhum número compara governos nem legislaturas. `build`
 - **H8.3** Em cada eixo com tendência, a página lista as votações de conflito (a orientação do lado dele contra a tendência dele) e diz quantas vezes ele seguiu cada um. `métrica`
-- **H8.4** Cada votação de conflito mostra a tendência dele no eixo, a orientação do Governo, a da Oposição, a do partido e o voto dele. Nenhuma frase chama isso de coerência ou incoerência. `site`
+- **H8.4** Cada votação de conflito mostra a tendência dele no eixo, a orientação do Governo, a da Oposição, a da bancada dele e o voto dele. Nenhuma frase chama isso de coerência ou incoerência. `site`
 - **H8.5** Sem votação de conflito, a frase é "nenhuma votação em que o lado dele e o que ele costuma votar se opuseram". `site`
