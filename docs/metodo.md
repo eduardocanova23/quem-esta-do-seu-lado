@@ -588,6 +588,29 @@ O maior risco deste projeto não é invasão, é publicar dado errado sobre um d
 
 Fontes: [plugin security-guidance](https://code.claude.com/docs/en/security-guidance.md), [diretivas do Astro](https://docs.astro.build/en/reference/directives-reference).
 
+## Afirmar e conferir
+
+O risco maior do projeto é publicar dado errado sobre um deputado, e o caminho mais curto até ele é uma afirmação que ninguém conferiu. Na amostra dos marts (15/11/2026), o Claude errou seis afirmações num dia. Só uma era impossível de saber sem rodar o dado. As outras cinco vieram de três causas:
+
+| Causa | Exemplo | O que segura agora |
+| --- | --- | --- |
+| Afirmar sem abrir a fonte | Ids de tema como inteiros sem abrir a taxonomia; "o arquivo não traz o id da reunião", com o `idEvento` no cabeçalho | Registro de afirmações com evidência, ou marcadas "não conferido" |
+| Tomar sinal fraco por prova | "A eliminação bate 100%" num subconjunto; o 200 de uma página que dá 200 até para id inventado; mutação de `sed` que não aplicou e teste que passou | Lista do que não vale como evidência; URL comparada com id inventado; mutação com `assert` |
+| Vazio permitido escondendo bug | "Ausente" sem partido; votação com proposição e sem rótulo; orientação vazia descartada em silêncio | Vazios recontados e explicados; linhas refeitas da fonte |
+
+Regra escrita sozinha não segurou, então cada causa ganhou um mecanismo:
+
+- **Skill `/conferir`** (`.claude/skills/conferir/`): o roteiro de afirmações, dados e retrospectiva.
+- **`make conferir`** (`scripts/conferir.py`): monta e checa `docs/conferencias/<branch>.md`. As afirmações precisam de evidência ou "não conferido". Quem mexe em `db/marts` precisa refazer ao menos 5 linhas da fonte e explicar cada coluna com vazio, e a amostra tem de passar no contrato. Sem pendência, grava a impressão digital dos dados como conferida.
+- **Hook `Stop` `exige-conferencia.sh`**: a vez não termina com mudança em `db/marts`, `pipeline` ou `docs/dados` que não foi conferida. Mudou um dado depois, a conferência vale de novo.
+- **Hook `Stop` `confere-afirmacoes.sh`**: resposta com palavra de certeza ("bate", "confirmado", "funciona", "responde 200") e sem bloco **Conferência** volta uma vez para o Claude mostrar a prova.
+- **Hook `UserPromptSubmit` `fim-de-sessao.sh`**: quando você fala em encerrar, o Claude roda o `/conferir` completo, com a retrospectiva dos erros da sessão, antes de responder.
+- **Registro de erros** no vault (`Câmara v2 - erros do Claude`): cada erro achado, com a causa. Causa repetida pede mecanismo novo, não mais texto. É a entrada da retrospectiva de cada fatia.
+
+O registro da conferência entra no PR: você lê a evidência, não a afirmação. O `Stop` dispara toda vez que o Claude termina de responder, não no fim da sessão. O fim da sessão não tem hook que consiga fazer o Claude trabalhar, por isso o gatilho é a sua frase.
+
+**Os limites.** Nenhum mecanismo obriga a conferir de verdade: eles obrigam a mostrar a evidência, e julgar se ela é fraca continua sendo seu papel na revisão. O hook de palavras é uma busca por palavras e às vezes dispara à toa. A dispensa (`make conferir-dispensar MOTIVO="..."`) existe para mudança trivial, só com o seu ok, e o motivo fica no registro.
+
 ## Rotina anti-caixa-preta
 
 Entender o projeto vira algo que se verifica, não uma sensação, mas só onde conta: no código que gera número publicado e nas decisões de arquitetura. Ali, qualquer linha que você não saiba justificar é tratada como bug e vira uma issue com o rótulo `entender`. No resto, basta saber o que cada parte faz.

@@ -1,4 +1,4 @@
-.PHONY: setup rota rota-check lint tipos test segredos ci
+.PHONY: setup rota rota-check lint tipos test segredos ci conferir conferir-status conferir-dispensar
 
 # Prepara a máquina: ambiente do uv.lock, gitleaks e hook do pre-commit
 setup:
@@ -32,3 +32,15 @@ segredos:
 
 # Tudo, como no CI: o job qualidade roda exatamente este alvo
 ci: rota-check lint tipos test segredos
+
+# Confere o registro em docs/conferencias/<branch>.md e marca os dados atuais como conferidos (skill /conferir)
+conferir:
+	uv run --locked python scripts/conferir.py
+
+# Sai com erro se a branch mudou dados que não foram conferidos (usado pelo hook Stop)
+conferir-status:
+	@uv run --locked --quiet python scripts/conferir.py --status
+
+# Só com o ok do Eduardo: make conferir-dispensar MOTIVO="..."
+conferir-dispensar:
+	uv run --locked python scripts/conferir.py --dispensar "$(MOTIVO)"

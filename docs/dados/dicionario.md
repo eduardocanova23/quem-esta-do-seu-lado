@@ -65,22 +65,24 @@ Cada número da página sai de uma coluna de mart, calculada no pipeline pela re
 
 | Deputado | Caso que cobre |
 | --- | --- |
-| Sargento Fahur (PR) | Trocou de partido: PSD até 05/03/2026, PL depois. Diverge do bloco do PSD em 333 de 636 votações |
+| Sargento Fahur (PR) | Trocou de partido: PSD até 05/03/2026, PL depois. Votou diferente da bancada em 333 das 636 votações em que ela orientou Sim, Não ou Obstrução e ele votou; só no bloco do PSD, 320 de 556 |
 | Raimundo Santos (PA) | Partido de bloco (PSD) o mandato inteiro |
 | Merlong Solano (PI) | Federação (PT) |
 | Glaycon Franco (MG) | Suplente; trocou do PV (federação) para o PSDB (bloco) |
 | Gilmar Machado (MG) | Suplente com quase nenhuma votação (3) |
 
-Como foi feita (15/11/2026), por script descartável fora do repositório:
+Como foi feita (15/11/2026), pelo script `amostra_marts/` do repositório do laboratório (`camara-lab`, privado):
 
 - **Câmara:** arquivos em lote de votações, votos, orientações e autores de 2023 a 2026; histórico e detalhe dos 5 pela API.
 - **Taxonomia:** a da v1 (DAG v1.1): classe da votação (`merito` e as outras), sinal por eixo e temas. Os ids de eixo e de tema são texto (`punicao`, `t145_2`).
 - **Regras:** as de [metricas.md](../produto/metricas.md) e a bancada pela regra de [atualizacao.md](atualizacao.md#em-aberto). Bloco que aparece na votação sem orientação conta como bancada que não orientou (o bloco que juntou PL e PT em 2025 ficou sem orientar em boa parte das votações).
+- **Texto:** a ementa vem com os espaços juntados num parágrafo só (a fonte traz quebras de linha e espaço sobrando).
 - **`metrica_status`:** só direção do voto e autoria saem como publicáveis; as outras esperam o teste de sensibilidade.
 
 Pendências que a amostra mostrou:
 
 - **Link da votação.** A página oficial da votação precisa do id da reunião, e ele vem no próprio `votacoes-<ano>.csv` (`idEvento`). O candidato é `camara.leg.br/presenca-comissoes/votacao-portal?reuniao={idEvento}&itemVotacao={parte do id depois do hífen}`, mas não está conferido: a página se monta no navegador e responde 200 com o mesmo conteúdo até para um item inventado. Confere-se abrindo no navegador. Até lá, a amostra usa a ficha de tramitação da proposição, que mostra a proposição certa (o 200 sozinho não prova nada: id inventado também responde 200).
+- **Votação de mérito sem proposição ligada vira `outro`.** A v1 tem 10 votações de mérito da 57ª sem `prop_id`. Sem proposição, não há sinal de eixo, e a amostra as trata como `outro`. Exemplo: 2603342-42, que aprova o PDL 50/2026, fica fora do placar. A API traz a proposição afetada (`proposicoesAfetadas`; a 2487358-48 aponta para o PRC 27/2025), e `votacao_proposicao` em `dados.core` lê dela, não da v1.
 - **O rótulo da proposição muda.** O id 106701 era o PL 347/2003 e hoje a API o chama de PL 5809/2025; a descrição da votação de 05/11/2025 ainda diz "PL 347, de 2003". Quem procurar pelo número antigo não acha. Guardar os rótulos anteriores entra com `proposicao` em `dados.core`.
-- **Votação de proposição antiga fica sem rótulo.** 4 votações da amostra têm `proposicao_id` e não têm rótulo, ementa nem resumo: a proposição é de um ano que o script não leu. É o caso "proposição antiga é votada hoje" de [atualizacao.md](atualizacao.md). O validador não pegou porque o rótulo pode ser vazio; falta a ele regra entre colunas (rótulo vazio só quando `proposicao_id` é vazio).
+- **Votação de proposição antiga fica sem rótulo.** 4 votações da amostra têm `proposicao_id` e não têm rótulo, ementa nem resumo: as proposições (PL 3905/2021, PL 364/2019 e PL 10273/2018) estão fora do universo de proposições da v1, de onde a amostra tira rótulo e ementa. É o caso "proposição antiga é votada hoje" de [atualizacao.md](atualizacao.md). O validador não pegou porque o rótulo pode ser vazio; falta a ele regra entre colunas (rótulo vazio só quando `proposicao_id` é vazio).
 - **Condição na legislatura.** Sai do primeiro `condicaoEleitoral` do histórico; "efetivado" se algum evento fala em efetivação. A regra definitiva entra com `mandato` em `dados.core`.
