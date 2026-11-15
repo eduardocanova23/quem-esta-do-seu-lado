@@ -34,6 +34,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Passo novo da coleta entra em pipeline/passos.py, como comando idempotente que recebe a data lógica; nunca num script solto.
 - Mudou uma métrica, atualize a página de metodologia no mesmo PR.
 - Escrever não é rodar: coleta, notebook e chamada paga só quando eu pedir, com estimativa de custo e --max-custo.
+- Antes de afirmar que algo está certo, e antes de PR que mexe em db/marts, pipeline ou docs/dados, rode a skill /conferir (docs/metodo.md, "Afirmar e conferir"). Evidência é comando e saída; o que não conferiu, diga "não conferido".
 - Depois de implementar, diga o que testar: URLs (caminho feliz e um erro), consultas SQL, arquivos esperados.
 - Nenhuma dependência nova sem justificativa no PR e sem explicar a camada de baixo.
 - Sem filtros manuais sobre método estatístico: explique o mecanismo em vez de esconder o resultado.
