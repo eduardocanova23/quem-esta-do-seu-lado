@@ -61,4 +61,24 @@ Cada número da página sai de uma coluna de mart, calculada no pipeline pela re
 
 ## Amostra
 
-`db/marts/amostra/` traz os marts de 5 deputados reais da 57ª, escolhidos para cobrir os casos difíceis: troca de partido, suplente, partido de bloco, federação e quase nenhuma votação. Serve para o site e os wireframes trabalharem com dado de verdade antes do pipeline. É gerada uma vez, por script descartável, e não é publicada.
+[`db/marts/amostra/`](../../db/marts/amostra/) traz os 15 marts de 5 deputados reais da 57ª, com dados até 15/10/2026, para o site e os wireframes trabalharem com dado de verdade antes do pipeline. Não é publicada. O CI confere a amostra contra o contrato (`test_amostra_do_repositorio_passa_no_contrato`).
+
+| Deputado | Caso que cobre |
+| --- | --- |
+| Sargento Fahur (PR) | Trocou de partido: PSD até 05/03/2026, PL depois. Diverge do bloco do PSD em 333 de 636 votações |
+| Raimundo Santos (PA) | Partido de bloco (PSD) o mandato inteiro |
+| Merlong Solano (PI) | Federação (PT) |
+| Glaycon Franco (MG) | Suplente; trocou do PV (federação) para o PSDB (bloco) |
+| Gilmar Machado (MG) | Suplente com quase nenhuma votação (3) |
+
+Como foi feita (15/11/2026), por script descartável fora do repositório:
+
+- **Câmara:** arquivos em lote de votações, votos, orientações e autores de 2023 a 2026; histórico e detalhe dos 5 pela API.
+- **Taxonomia:** a da v1 (DAG v1.1): classe da votação (`merito` e as outras), sinal por eixo e temas. Os ids de eixo e de tema são texto (`punicao`, `t145_2`).
+- **Regras:** as de [metricas.md](../produto/metricas.md) e a bancada pela regra de [atualizacao.md](atualizacao.md#em-aberto). Bloco que aparece na votação sem orientação conta como bancada que não orientou (o bloco que juntou PL e PT em 2025 ficou sem orientar em boa parte das votações).
+- **`metrica_status`:** só direção do voto e autoria saem como publicáveis; as outras esperam o teste de sensibilidade.
+
+Pendências que a amostra mostrou:
+
+- **Link da votação.** A Câmara não tem página por votação que se monte só com o id; o link precisa do id da reunião. A amostra usa a ficha de tramitação da proposição, onde a votação aparece. O link direto entra com `dados.core`.
+- **Condição na legislatura.** Sai do primeiro `condicaoEleitoral` do histórico; "efetivado" se algum evento fala em efetivação. A regra definitiva entra com `mandato` em `dados.core`.

@@ -1,0 +1,14 @@
+eixo_id,nome,polo_positivo,polo_negativo,descricao
+aborto,aborto,restringe,amplia o acesso ao aborto legal,restringe ou amplia o acesso ao aborto legal
+ambiente,ambiente,amplia proteção ambiental,flexibiliza regra ambiental,amplia proteção ambiental ou flexibiliza regra ambiental
+carga_tributaria,carga tributária,reduz/isenta tributo,cria/aumenta tributo,reduz/isenta tributo ou cria/aumenta tributo
+controle_autoridades,controle de autoridades,amplia controle e punição de agentes públicos,amplia proteção/prerrogativa (anistia,amplia controle e punição de agentes públicos ou amplia proteção/prerrogativa (anistia
+estado_economia,Estado na economia,amplia o papel do Estado,privatiza/desregula,amplia o papel do Estado ou privatiza/desregula
+gasto_beneficio,gasto e benefício,cria/amplia gasto ou benefício,restringe gasto / regra fiscal,cria/amplia gasto ou benefício ou restringe gasto / regra fiscal
+lgbt,direitos LGBT,reconhece direitos,restringe,reconhece direitos ou restringe
+plataformas,plataformas,regula/responsabiliza,limita a regulação,regula/responsabiliza ou limita a regulação
+punicao,punição,endurece punição,amplia garantias do acusado/preso,endurece punição ou amplia garantias do acusado/preso
+religiao_estado,religião e Estado,amplia presença religiosa,reforça a laicidade,amplia presença religiosa ou reforça a laicidade
+seguranca_privacidade,segurança × privacidade,amplia vigilância,protege dados/privacidade,amplia vigilância ou protege dados/privacidade
+terra,terra,reforça a propriedade privada,amplia acesso à terra / direitos territoriais,reforça a propriedade privada ou amplia acesso à terra / direitos territoriais
+trabalho,trabalho,amplia proteção ao trabalhador,flexibiliza a relação de trabalho,amplia proteção ao trabalhador ou flexibiliza a relação de trabalho

@@ -171,3 +171,9 @@ def test_contrato_do_repositorio_e_valido() -> None:
 def test_carregar_csvs_le_um_arquivo_por_mart(tmp_path: Path) -> None:
     (tmp_path / "votacao.csv").write_text("votacao_id,data,consenso\n2458405-38,2025-02-04,\n", encoding="utf-8")
     assert carregar_csvs(tmp_path) == {"votacao": [{"votacao_id": "2458405-38", "data": "2025-02-04", "consenso": ""}]}
+
+
+def test_amostra_do_repositorio_passa_no_contrato() -> None:
+    raiz = Path(__file__).resolve().parents[2]
+    contrato = carregar_contrato(raiz / "db" / "marts" / "contrato.yaml")
+    assert validar(contrato, carregar_csvs(raiz / "db" / "marts" / "amostra")) == []
