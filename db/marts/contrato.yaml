@@ -49,7 +49,7 @@ marts:
     uma_linha_por: eixo de direção
     chave: [eixo_id]
     colunas:
-      eixo_id: {tipo: inteiro, descricao: Id estável do eixo na taxonomia}
+      eixo_id: {tipo: texto, descricao: "Id estável do eixo na taxonomia (punicao)"}
       nome: {tipo: texto, descricao: "Nome em linguagem comum (gasto e benefício)"}
       polo_positivo: {tipo: texto, descricao: "Polo do sinal +1, como verbo (ampliar)"}
       polo_negativo: {tipo: texto, descricao: "Polo do sinal -1, como verbo (reduzir)"}
@@ -104,7 +104,7 @@ marts:
     chave: [votacao_id, eixo_id]
     colunas:
       votacao_id: {tipo: texto, referencia: votacao.votacao_id, descricao: Votação}
-      eixo_id: {tipo: inteiro, referencia: eixo.eixo_id, descricao: Eixo}
+      eixo_id: {tipo: texto, referencia: eixo.eixo_id, descricao: Eixo}
       sinal: {tipo: inteiro, valores: [1, -1], descricao: "Sim puxa para este polo; Não puxa para o outro. Proposição de sinal misto não entra"}
 
   voto_deputado:
@@ -134,7 +134,7 @@ marts:
       deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
       legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
       governo_id: {tipo: inteiro, referencia: governo.governo_id, descricao: Governo}
-      eixo_id: {tipo: inteiro, referencia: eixo.eixo_id, descricao: Eixo}
+      eixo_id: {tipo: texto, referencia: eixo.eixo_id, descricao: Eixo}
       k_positivo: {tipo: inteiro, descricao: Votos com direção do polo positivo}
       k_negativo: {tipo: inteiro, descricao: Votos com direção do polo negativo}
       n: {tipo: inteiro, descricao: k_positivo + k_negativo}
@@ -165,7 +165,7 @@ marts:
       deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
       legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
       governo_id: {tipo: inteiro, referencia: governo.governo_id, descricao: Governo}
-      eixo_id: {tipo: inteiro, referencia: eixo.eixo_id, descricao: Eixo}
+      eixo_id: {tipo: texto, referencia: eixo.eixo_id, descricao: Eixo}
       tendencia: {tipo: texto, nulo: true, valores: [positivo, negativo], descricao: Polo em que mais votou; vazio no empate}
       n_conflito: {tipo: inteiro, descricao: Votações em que a orientação do lado dele apontou contra a tendência}
       seguiu_tendencia: {tipo: inteiro, descricao: Votações de conflito em que votou pela tendência}
@@ -178,7 +178,7 @@ marts:
       deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
       legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
       votacao_id: {tipo: texto, referencia: votacao.votacao_id, descricao: Votação}
-      eixo_id: {tipo: inteiro, referencia: eixo.eixo_id, descricao: Eixo}
+      eixo_id: {tipo: texto, referencia: eixo.eixo_id, descricao: Eixo}
       seguiu: {tipo: texto, valores: [tendencia, lado, nenhum], descricao: "Com quem ele votou; nenhum quando não votou Sim ou Não (H8.3)"}
 
   autoria_tema_deputado:
@@ -187,7 +187,7 @@ marts:
     colunas:
       deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
       legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
-      tema_id: {tipo: inteiro, descricao: Id estável do tema na taxonomia (H5.5)}
+      tema_id: {tipo: texto, descricao: "Id estável do tema na taxonomia (t145_2) (H5.5)"}
       tema_nome: {tipo: texto, descricao: Nome do tema na versão vigente}
       n_autor: {tipo: inteiro, descricao: Proposições em que é autor principal (ordem 1 e proponente)}
       n_coautor: {tipo: inteiro, descricao: Proposições em que é coautor, contada uma vez por proposição}
