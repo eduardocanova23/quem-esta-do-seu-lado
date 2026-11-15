@@ -80,5 +80,7 @@ Como foi feita (15/11/2026), por script descartável fora do repositório:
 
 Pendências que a amostra mostrou:
 
-- **Link da votação.** A Câmara não tem página por votação que se monte só com o id; o link precisa do id da reunião. A amostra usa a ficha de tramitação da proposição, onde a votação aparece. O link direto entra com `dados.core`.
+- **Link da votação.** A página oficial da votação precisa do id da reunião, e ele vem no próprio `votacoes-<ano>.csv` (`idEvento`). O candidato é `camara.leg.br/presenca-comissoes/votacao-portal?reuniao={idEvento}&itemVotacao={parte do id depois do hífen}`, mas não está conferido: a página se monta no navegador e responde 200 com o mesmo conteúdo até para um item inventado. Confere-se abrindo no navegador. Até lá, a amostra usa a ficha de tramitação da proposição, que mostra a proposição certa (o 200 sozinho não prova nada: id inventado também responde 200).
+- **O rótulo da proposição muda.** O id 106701 era o PL 347/2003 e hoje a API o chama de PL 5809/2025; a descrição da votação de 05/11/2025 ainda diz "PL 347, de 2003". Quem procurar pelo número antigo não acha. Guardar os rótulos anteriores entra com `proposicao` em `dados.core`.
+- **Votação de proposição antiga fica sem rótulo.** 4 votações da amostra têm `proposicao_id` e não têm rótulo, ementa nem resumo: a proposição é de um ano que o script não leu. É o caso "proposição antiga é votada hoje" de [atualizacao.md](atualizacao.md). O validador não pegou porque o rótulo pode ser vazio; falta a ele regra entre colunas (rótulo vazio só quando `proposicao_id` é vazio).
 - **Condição na legislatura.** Sai do primeiro `condicaoEleitoral` do histórico; "efetivado" se algum evento fala em efetivação. A regra definitiva entra com `mandato` em `dados.core`.
