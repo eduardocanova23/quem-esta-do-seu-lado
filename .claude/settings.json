@@ -7,7 +7,9 @@
       "Bash(git status *)",
       "Bash(git diff *)",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(make conferir)",
+      "Bash(make conferir-status)"
     ],
     "deny": [
       "Read(./.env)",
@@ -19,7 +21,8 @@
       "Bash(gh pr create *)",
       "Bash(git add -A*)",
       "Bash(git add .)",
-      "Bash(*python -m pipeline*)"
+      "Bash(*python -m pipeline*)",
+      "Bash(make conferir-dispensar*)"
     ]
   },
   "hooks": {
@@ -62,6 +65,24 @@
           {
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/testes.sh"
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/exige-conferencia.sh"
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/confere-afirmacoes.sh"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/fim-de-sessao.sh"
           }
         ]
       }

@@ -88,3 +88,87 @@ def test_stop_nao_entra_em_laco(tmp_path: Path) -> None:
     # Já segurou uma vez nesta vez do Claude: libera, senão ele nunca termina.
     r = rodar("testes.sh", {"stop_hook_active": True}, projeto_falso(tmp_path, passa=False))
     assert r.returncode == 0
+
+
+# --- exige-conferencia.sh (Stop) ---
+
+
+def projeto_conferencia(tmp_path: Path, conferido: bool) -> Path:
+    """Projeto falso cujo `make conferir-status` diz se o estado atual foi conferido."""
+    receita = "@true" if conferido else "@echo 'db/marts/x.csv mudou e não foi conferido' >&2; exit 1"
+    (tmp_path / "Makefile").write_text(f"conferir-status:\n\t{receita}\n", encoding="utf-8")
+    return tmp_path
+
+
+def test_conferencia_libera_quando_esta_conferido(tmp_path: Path) -> None:
+    r = rodar("exige-conferencia.sh", {"stop_hook_active": False}, projeto_conferencia(tmp_path, conferido=True))
+    assert r.returncode == 0, r.stderr
+
+
+def test_conferencia_segura_dado_nao_conferido(tmp_path: Path) -> None:
+    r = rodar("exige-conferencia.sh", {"stop_hook_active": False}, projeto_conferencia(tmp_path, conferido=False))
+    assert r.returncode == 2
+    assert "/conferir" in r.stderr
+    assert "db/marts/x.csv" in r.stderr
+
+
+def test_conferencia_nao_entra_em_laco(tmp_path: Path) -> None:
+    r = rodar("exige-conferencia.sh", {"stop_hook_active": True}, projeto_conferencia(tmp_path, conferido=False))
+    assert r.returncode == 0
+
+
+# --- confere-afirmacoes.sh (Stop) ---
+
+
+@pytest.mark.parametrize(
+    "mensagem",
+    [
+        "A regra bate com a API.",
+        "Confirmado: o link funciona.",
+        "Os testes passam e está tudo certo.",
+        "O endpoint responde 200.",
+        "A composição bateu 100% com a publicada.",
+        "Verificado no arquivo.",
+    ],
+)
+def test_afirmacao_sem_conferencia_volta_uma_vez(mensagem: str) -> None:
+    r = rodar("confere-afirmacoes.sh", {"stop_hook_active": False, "last_assistant_message": mensagem})
+    assert r.returncode == 2
+    assert "Conferência" in r.stderr
+
+
+@pytest.mark.parametrize(
+    "mensagem",
+    [
+        "Criei o arquivo e fiz o commit.",
+        "A regra bate com a API.\n\n**Conferência**\n- bate: `make test` deu 40 passed",
+        "O link funciona? Não conferido: a página se monta no navegador.",
+    ],
+)
+def test_mensagem_sem_afirmacao_ou_com_conferencia_passa(mensagem: str) -> None:
+    r = rodar("confere-afirmacoes.sh", {"stop_hook_active": False, "last_assistant_message": mensagem})
+    assert r.returncode == 0, r.stderr
+
+
+def test_afirmacoes_nao_entra_em_laco() -> None:
+    r = rodar("confere-afirmacoes.sh", {"stop_hook_active": True, "last_assistant_message": "Tudo bate."})
+    assert r.returncode == 0
+
+
+# --- fim-de-sessao.sh (UserPromptSubmit) ---
+
+
+@pytest.mark.parametrize(
+    "prompt", ["terminamos?", "Acho que acabou por hoje", "pode encerrar a sessão", "vamos fechar a sessão"]
+)
+def test_fim_de_sessao_pede_a_conferencia_completa(prompt: str) -> None:
+    r = rodar("fim-de-sessao.sh", {"prompt": prompt})
+    assert r.returncode == 0
+    assert "/conferir" in r.stdout
+    assert "retrospectiva" in r.stdout
+
+
+def test_prompt_comum_nao_acrescenta_nada() -> None:
+    r = rodar("fim-de-sessao.sh", {"prompt": "pode criar o passo de download"})
+    assert r.returncode == 0
+    assert r.stdout == ""
