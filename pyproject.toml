@@ -20,7 +20,7 @@ required-version = "==0.13.7"
 line-length = 120
 target-version = "py313"
 # Onde estão os módulos do projeto, para separar os imports internos dos externos
-src = ["scripts"]
+src = ["scripts", "."]
 # Só código Python: sem isto o ruff reformata também os blocos de código dentro dos .md de docs/
 include = ["*.py", "*.pyi"]
 
@@ -31,11 +31,11 @@ select = ["E", "W", "F", "I", "B", "UP"]
 [tool.mypy]
 python_version = "3.13"
 strict = true
-files = ["scripts"]
+files = ["scripts", "pipeline"]
 
 [tool.pytest.ini_options]
-testpaths = ["scripts/tests"]
-pythonpath = ["scripts"]
+testpaths = ["scripts/tests", "pipeline/tests"]
+pythonpath = ["scripts", "."]
 
 [dependency-groups]
 dev = [

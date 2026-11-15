@@ -79,15 +79,7 @@ Cada linha guarda `versao_taxonomia`, `modelo`, `versao_prompt` e `hash_entrada`
 
 ## marts
 
-Recálculo total a cada execução, num schema de rascunho, publicado de uma vez depois dos testes de dados. Os nomes abaixo são a lista provisória da pergunta 2; o schema fixo é o marco `dados.contrato_marts`.
-
-| Mart | Uma linha por | Serve |
-| --- | --- | --- |
-| `perfil_deputado` | mandato | Cabeçalho (H1): nome, partidos com datas, condição, UF, "dados até" |
-| `votacao_eixo_deputado` | mandato × votação com eixo | Lista de votações (H2.2, H3, H4): voto, direção, consenso, orientação da bancada, como os colegas votaram |
-| `placar_eixo_deputado` | mandato × eixo | Contagens por polo, obstruções, abstenções, ausências (H2.1, H2.4) |
-| `alinhamento_deputado` | mandato | Alinhamento com Governo e Oposição, total de divergências (H4.4, H8) |
-| `autoria_tema_deputado` | mandato × tema | Autoria e coautoria contra a média da legislatura (H5) |
+Recálculo total a cada execução, num schema de rascunho, publicado de uma vez depois dos testes de dados. O schema de cada mart é o contrato com o site: está em [`db/marts/contrato.yaml`](../../db/marts/contrato.yaml) e explicado no [dicionário](dicionario.md).
 
 ## Como se ligam
 

@@ -1,0 +1,297 @@
+deputado_id,legislatura_id,tema_id,tema_nome,n_autor,n_coautor,media_autor,media_coautor
+204387,57,cat_advogados,advogados,0,1,0.2655,0.1211
+204387,57,cat_agricultores,agricultores e produtores rurais,0,2,0.6227,0.2655
+204387,57,cat_aposentados,aposentados e pensionistas,0,2,0.4099,0.368
+204387,57,cat_medicos,médicos e profissionais de saúde,0,1,0.4239,0.2314
+204387,57,cat_policiais,"policiais, bombeiros e militares",2,6,0.8991,0.6615
+204387,57,manual_0,furto e roubo,2,0,0.264,0.014
+204387,57,manual_1,crimes de trânsito,1,0,0.1149,0.0016
+204387,57,t0_0,acordos internacionais,0,2,0.1165,0.514
+204387,57,t104_0,liberdade religiosa,0,1,0.2422,0.1211
+204387,57,t110_0,direitos trabalhistas e CLT,0,1,0.7811,0.5155
+204387,57,t112_0,saque do FGTS,0,1,0.1444,0.059
+204387,57,t117_0,salário mínimo e piso salarial,0,1,0.1491,0.2904
+204387,57,t120_0,escala 6x1,0,1,0.0575,0.5202
+204387,57,t12_1,imparcialidade de juízes,0,2,0.0652,0.1056
+204387,57,t133_0,comércio de ouro,1,0,0.0171,0.0
+204387,57,t138_0,crédito rural e agricultura familiar,0,2,0.573,0.2267
+204387,57,t140_1,doação de órgãos e sangue,1,0,0.1537,0.0186
+204387,57,t148_0,saúde mental no trabalho,1,0,0.1382,0.1553
+204387,57,t14_0,derrubar atos do governo,0,11,0.7174,1.1894
+204387,57,t154_1,ataques hackers,1,0,0.0839,0.0
+204387,57,t15_0,universidades e institutos federais,0,1,0.2329,0.0497
+204387,57,t161_0,teste do pezinho e exames obrigatórios,0,1,0.2096,0.0093
+204387,57,t163_1,anistia do 8 de janeiro,0,2,0.0404,0.1988
+204387,57,t163_2,terrorismo,1,4,0.1599,0.205
+204387,57,t175_0,punição de gestores públicos,0,1,0.1242,0.0419
+204387,57,t175_1,indenização por acidentes,1,0,0.0512,0.0248
+204387,57,t192_0,dinheiro do SUS,0,2,0.396,0.3602
+204387,57,t205_0,porte de maconha,0,2,0.0171,0.2143
+204387,57,t219_0,privatização de estatais,0,1,0.0683,0.2469
+204387,57,t232_0,estupro,0,2,0.1786,0.1522
+204387,57,t239_0,maioridade penal,1,1,0.0311,0.2314
+204387,57,t247_0,merenda escolar,0,1,0.2298,0.1211
+204387,57,t255_0,inelegibilidade e Ficha Limpa,0,2,0.1242,0.2127
+204387,57,t267_0,indústria nacional e produto nacional,0,1,0.1491,0.1196
+204387,57,t299_0,notificação de violência e doenças,0,1,0.1009,0.0559
+204387,57,t2_0,funcionamento da Justiça,0,2,0.0994,0.4689
+204387,57,t2_1,"delegacias, juizados e conselhos",0,1,0.1273,0.1071
+204387,57,t301_1,combate à corrupção,0,2,0.2919,0.2578
+204387,57,t307_0,militares: carreira e aposentadoria,0,3,0.2578,0.4425
+204387,57,t322_0,Conanda e resoluções sobre crianças,0,2,0.0419,0.1786
+204387,57,t324_0,armas de fogo e CACs,0,2,0.3214,0.3276
+204387,57,t338_0,inclusão escolar,0,1,0.4394,0.0404
+204387,57,t340_0,pessoas com deficiência,0,1,1.2857,0.1087
+204387,57,t346_2,planos de saúde: direitos do usuário,0,1,0.2174,0.0512
+204387,57,t349_0,fundos públicos e loterias,0,2,0.3463,0.5342
+204387,57,t349_1,repasses a estados e municípios,0,2,0.2189,0.5124
+204387,57,t351_0,auxílios emergenciais,0,1,0.1522,0.1677
+204387,57,t353_0,Bolsa Família e BPC,1,0,0.3727,0.0854
+204387,57,t358_0,transparência e prestação de contas,0,3,0.5419,0.6755
+204387,57,t359_0,compartilhamento de dados do governo,0,1,0.1413,0.0994
+204387,57,t35_0,regulamentação de profissões,0,1,0.691,0.1335
+204387,57,t369_0,Lei Rouanet e apoio a artistas,0,2,0.2578,0.3043
+204387,57,t36_0,direitos de passageiros aéreos,0,1,0.2795,0.0699
+204387,57,t370_1,Bolsa Atleta e esporte,0,1,0.1879,0.4876
+204387,57,t376_0,maus-tratos contra animais,0,1,0.4643,0.2935
+204387,57,t37_0,redes sociais e big techs,0,4,0.3835,0.2733
+204387,57,t383_0,invasão de terras,0,3,0.1568,0.1693
+204387,57,t388_0,pacote anticrime,1,2,0.1755,0.1957
+204387,57,t391_0,homicídio e crimes violentos,1,0,0.278,0.0217
+204387,57,t392_1,lei de drogas,2,2,0.1522,0.2236
+204387,57,t395_0,crimes na internet,0,1,0.2764,0.1879
+204387,57,t397_0,redução de penas,2,0,0.0699,0.0311
+204387,57,t397_1,fim de atenuantes de pena,1,0,0.0652,0.0
+204387,57,t397_2,progressão de regime e execução penal,0,5,0.236,0.2686
+204387,57,t398_2,abuso de autoridade,0,1,0.059,0.087
+204387,57,t399_0,aborto,0,2,0.0699,0.2407
+204387,57,t39_0,arcabouço fiscal e teto de gastos,0,2,0.1506,0.5078
+204387,57,t3_0,servidores públicos,0,1,0.8292,0.7019
+204387,57,t402_0,imposto de renda e deduções,1,3,0.5093,0.3121
+204387,57,t404_0,corte e isenção de impostos,0,3,0.559,0.5311
+204387,57,t406_0,isenção de impostos após desastres,0,1,0.0792,0.0466
+204387,57,t407_1,IPVA e impostos de veículos,0,1,0.2547,0.205
+204387,57,t410_0,proteção a policiais,2,2,0.2516,0.0481
+204387,57,t422_2,abuso sexual infantil,0,3,0.514,0.5481
+204387,57,t425_0,crianças e adolescentes,0,1,1.0031,0.3602
+204387,57,t427_0,novas matérias na escola,0,1,0.4767,0.1087
+204387,57,t429_0,educação sexual e ideologia de gênero,0,1,0.0963,0.1009
+204387,57,t42_2,combustíveis e gás de cozinha,0,1,0.1537,0.1739
+204387,57,t43_1,direitos de pessoas trans,0,5,0.2453,0.4115
+204387,57,t46_0,combate ao crime organizado,2,3,0.3214,0.1925
+204387,57,t47_0,PEC da Segurança Pública,0,1,0.0916,0.0543
+204387,57,t47_1,violência policial e uso da força,0,3,0.1398,0.1444
+204387,57,t50_2,descontos indevidos no INSS,0,1,0.1413,0.0885
+204387,57,t52_0,eleições,0,2,0.4689,0.455
+204387,57,t56_0,aborto por estupro,0,3,0.0373,0.2112
+204387,57,t59_0,segurança em escolas,0,1,0.222,0.0295
+204387,57,t60_0,confisco de bens do crime,1,0,0.1165,0.0093
+204387,57,t61_0,cotas,0,1,0.2065,0.1087
+204387,57,t62_0,saída temporária de presos,1,0,0.1211,0.0233
+204387,57,t62_1,prisão preventiva,2,0,0.222,0.0233
+204387,57,t69_0,imunidade parlamentar,0,2,0.0435,0.1087
+204387,57,t74_0,enchentes e ajuda a vítimas de desastres,0,8,0.3929,0.7562
+204387,57,t83_0,bancos,0,1,0.2826,0.2562
+204387,57,t84_1,proteção de crianças e adolescentes,0,2,0.5575,0.1165
+204387,57,t84_2,atos obscenos e apologia ao crime,0,3,0.1382,0.1522
+204387,57,t89_0,discriminação e preconceito,0,2,0.4457,0.7236
+204387,57,t90_0,direitos do consumidor,0,2,1.6522,0.2811
+204387,57,t_bndes,BNDES,0,1,0.0481,0.1134
+74084,57,cat_advogados,advogados,0,1,0.2655,0.1211
+74084,57,cat_agricultores,agricultores e produtores rurais,1,2,0.6227,0.2655
+74084,57,cat_aposentados,aposentados e pensionistas,2,2,0.4099,0.368
+74084,57,cat_atletas,atletas,1,0,0.2003,0.0575
+74084,57,cat_medicos,médicos e profissionais de saúde,1,1,0.4239,0.2314
+74084,57,cat_policiais,"policiais, bombeiros e militares",1,1,0.8991,0.6615
+74084,57,cat_professores,professores,1,0,0.4612,0.3012
+74084,57,cat_rurais,trabalhadores rurais e safristas,1,0,0.0745,0.0078
+74084,57,manual_0,furto e roubo,1,0,0.264,0.014
+74084,57,t104_0,liberdade religiosa,4,1,0.2422,0.1211
+74084,57,t110_0,direitos trabalhistas e CLT,3,1,0.7811,0.5155
+74084,57,t117_0,salário mínimo e piso salarial,0,1,0.1491,0.2904
+74084,57,t126_0,mineração,0,1,0.1584,0.1444
+74084,57,t134_0,"pequenos negócios, MEI e Simples",0,1,0.3152,0.0357
+74084,57,t138_0,crédito rural e agricultura familiar,4,1,0.573,0.2267
+74084,57,t140_1,doação de órgãos e sangue,1,0,0.1537,0.0186
+74084,57,t145_1,validade de laudo médico,1,0,0.0497,0.0016
+74084,57,t148_0,saúde mental no trabalho,1,0,0.1382,0.1553
+74084,57,t148_1,saúde mental no SUS,2,0,0.4115,0.1009
+74084,57,t148_2,depressão e suicídio,1,0,0.0963,0.0031
+74084,57,t14_0,derrubar atos do governo,0,1,0.7174,1.1894
+74084,57,t154_0,golpes e fraudes digitais,1,0,0.2547,0.0062
+74084,57,t155_0,Amazônia: desenvolvimento e Zona Franca,1,1,0.2283,0.0575
+74084,57,t15_0,universidades e institutos federais,1,0,0.2329,0.0497
+74084,57,t161_0,teste do pezinho e exames obrigatórios,3,0,0.2096,0.0093
+74084,57,t164_0,idosos,3,0,0.7484,0.0885
+74084,57,t181_0,IPVA e impostos de aposentados,0,1,0.028,0.0047
+74084,57,t187_0,Pix,0,1,0.0761,0.0357
+74084,57,t193_0,adulteração de alimentos e bebidas,2,0,0.1351,0.0016
+74084,57,t207_0,transporte público e passe livre,1,0,0.3292,0.1506
+74084,57,t219_0,privatização de estatais,0,1,0.0683,0.2469
+74084,57,t224_0,reforma tributária,0,1,0.1491,0.2407
+74084,57,t232_0,estupro,2,0,0.1786,0.1522
+74084,57,t240_0,dinheiro para pesquisa científica,2,0,0.1817,0.0109
+74084,57,t243_1,violência nas escolas,1,0,0.3028,0.0932
+74084,57,t247_0,merenda escolar,5,0,0.2298,0.1211
+74084,57,t24_0,rotas turísticas,1,0,0.1988,0.0326
+74084,57,t259_0,violência contra a mulher,5,0,1.2143,0.6817
+74084,57,t263_0,cursos de qualificação profissional,4,1,0.4829,0.0466
+74084,57,t265_0,assistência estudantil,2,0,0.1304,0.0202
+74084,57,t267_0,indústria nacional e produto nacional,0,1,0.1491,0.1196
+74084,57,t26_0,reconhecimento de esportes e tradições,1,0,0.059,0.0016
+74084,57,t27_0,"Sudene, Codevasf e regiões",0,1,0.1227,0.0233
+74084,57,t284_0,antissemitismo,1,0,0.0109,0.0559
+74084,57,t28_0,registro de imóveis,1,0,0.2686,0.0202
+74084,57,t2_0,funcionamento da Justiça,1,0,0.0994,0.4689
+74084,57,t302_0,selos verdes e de qualidade,3,0,0.2826,0.0248
+74084,57,t306_0,feminicídio,0,1,0.1584,0.1289
+74084,57,t307_0,militares: carreira e aposentadoria,0,1,0.2578,0.4425
+74084,57,t322_0,Conanda e resoluções sobre crianças,0,1,0.0419,0.1786
+74084,57,t335_0,atendimento prioritário,1,0,0.2997,0.0606
+74084,57,t337_0,"fibromialgia, TDAH e deficiência oculta",7,0,0.1599,0.0031
+74084,57,t338_0,inclusão escolar,1,0,0.4394,0.0404
+74084,57,t339_0,autismo,5,0,0.9037,0.0885
+74084,57,t340_0,pessoas com deficiência,4,0,1.2857,0.1087
+74084,57,t341_0,Estatuto da Pessoa com Deficiência,4,0,0.2329,0.0031
+74084,57,t342_1,diagnóstico precoce de dislexia e câncer,2,0,0.0885,0.0031
+74084,57,t344_0,saúde da mulher,4,0,0.472,0.0497
+74084,57,t345_0,remédios no SUS,1,0,0.455,0.0435
+74084,57,t346_2,planos de saúde: direitos do usuário,1,0,0.2174,0.0512
+74084,57,t349_0,fundos públicos e loterias,1,0,0.3463,0.5342
+74084,57,t349_1,repasses a estados e municípios,0,1,0.2189,0.5124
+74084,57,t351_0,auxílios emergenciais,0,1,0.1522,0.1677
+74084,57,t354_0,benefícios para pessoas com deficiência,2,1,0.2795,0.1273
+74084,57,t354_1,incentivo fiscal para contratar,3,0,0.1553,0.0217
+74084,57,t354_2,isenção para ONGs e entidades,0,1,0.1584,0.2174
+74084,57,t358_2,transparência de preços e contratos,1,1,0.1165,0.0497
+74084,57,t359_0,compartilhamento de dados do governo,0,1,0.1413,0.0994
+74084,57,t35_0,regulamentação de profissões,2,0,0.691,0.1335
+74084,57,t367_0,apostas online (bets),2,1,0.427,0.4783
+74084,57,t369_0,Lei Rouanet e apoio a artistas,1,1,0.2578,0.3043
+74084,57,t370_1,Bolsa Atleta e esporte,2,1,0.1879,0.4876
+74084,57,t371_0,crédito para mulheres empreendedoras,2,0,0.073,0.0248
+74084,57,t371_2,políticas para mulheres,4,0,0.1988,0.1584
+74084,57,t37_0,redes sociais e big techs,0,2,0.3835,0.2733
+74084,57,t380_1,população de rua,1,0,0.1009,0.0124
+74084,57,t386_1,crimes de fraude e jogo ilegal,0,1,0.1522,0.0575
+74084,57,t390_0,cadastro de agressores e pedófilos,2,0,0.1025,0.0109
+74084,57,t395_0,crimes na internet,2,1,0.2764,0.1879
+74084,57,t397_2,progressão de regime e execução penal,0,1,0.236,0.2686
+74084,57,t399_0,aborto,1,0,0.0699,0.2407
+74084,57,t39_0,arcabouço fiscal e teto de gastos,1,1,0.1506,0.5078
+74084,57,t402_0,imposto de renda e deduções,0,2,0.5093,0.3121
+74084,57,t403_0,cesta básica,2,0,0.0606,0.0543
+74084,57,t404_0,corte e isenção de impostos,2,3,0.559,0.5311
+74084,57,t406_0,isenção de impostos após desastres,0,1,0.0792,0.0466
+74084,57,t407_0,IR isento para aposentados e doentes,1,1,0.1568,0.0109
+74084,57,t407_1,IPVA e impostos de veículos,0,1,0.2547,0.205
+74084,57,t407_2,incentivos fiscais para empresas,2,2,0.4565,0.1599
+74084,57,t408_0,porte de arma por profissão,0,1,0.104,0.0264
+74084,57,t410_0,proteção a policiais,1,1,0.2516,0.0481
+74084,57,t416_0,violência obstétrica,1,0,0.059,0.0016
+74084,57,t422_2,abuso sexual infantil,1,2,0.514,0.5481
+74084,57,t425_0,crianças e adolescentes,8,2,1.0031,0.3602
+74084,57,t427_0,novas matérias na escola,1,0,0.4767,0.1087
+74084,57,t429_0,educação sexual e ideologia de gênero,1,0,0.0963,0.1009
+74084,57,t42_2,combustíveis e gás de cozinha,0,1,0.1537,0.1739
+74084,57,t43_1,direitos de pessoas trans,0,1,0.2453,0.4115
+74084,57,t46_0,combate ao crime organizado,0,3,0.3214,0.1925
+74084,57,t47_2,Forças Armadas na segurança pública,1,0,0.0264,0.0062
+74084,57,t50_0,aposentadoria e benefícios do INSS,0,2,0.4099,0.1273
+74084,57,t50_2,descontos indevidos no INSS,0,1,0.1413,0.0885
+74084,57,t52_0,eleições,1,0,0.4689,0.455
+74084,57,t54_0,licença-maternidade e paternidade,1,0,0.177,0.0357
+74084,57,t54_1,creches,1,0,0.0916,0.0031
+74084,57,t54_2,home office para cuidadores,2,0,0.1335,0.0248
+74084,57,t55_0,reconhecimento facial,1,0,0.0932,0.0016
+74084,57,t57_0,escola sem partido,2,0,0.0683,0.0109
+74084,57,t57_1,homeschooling,2,0,0.014,0.0047
+74084,57,t59_0,segurança em escolas,2,0,0.222,0.0295
+74084,57,t59_2,segurança em transporte público,1,0,0.1258,0.059
+74084,57,t5_2,doenças raras,5,1,0.2516,0.0326
+74084,57,t62_1,prisão preventiva,1,1,0.222,0.0233
+74084,57,t64_0,terras indígenas e marco temporal,0,1,0.1584,0.073
+74084,57,t64_2,quilombolas e povos tradicionais,0,1,0.3261,0.1165
+74084,57,t74_0,enchentes e ajuda a vítimas de desastres,0,4,0.3929,0.7562
+74084,57,t83_0,bancos,0,1,0.2826,0.2562
+74084,57,t84_1,proteção de crianças e adolescentes,3,1,0.5575,0.1165
+74084,57,t84_2,atos obscenos e apologia ao crime,0,1,0.1382,0.1522
+74084,57,t86_0,reforma da previdência,0,1,0.0311,0.3463
+74084,57,t88_1,crianças na internet,1,1,0.2857,0.0295
+74084,57,t88_2,influenciadores digitais,1,0,0.0745,0.0016
+74084,57,t89_0,discriminação e preconceito,0,1,0.4457,0.7236
+74084,57,t89_1,assédio no trabalho,1,0,0.132,0.0093
+74084,57,t8_0,desburocratização,0,1,0.3587,0.0497
+74084,57,t90_0,direitos do consumidor,3,1,1.6522,0.2811
+74084,57,t97_0,regras e multas de trânsito,2,1,0.7034,0.2252
+188097,57,cat_agentes_saude,agentes comunitários de saúde,1,0,0.0404,0.0062
+188097,57,cat_artistas,artistas e músicos,1,0,0.1693,0.0047
+188097,57,t0_0,acordos internacionais,0,2,0.1165,0.514
+188097,57,t110_0,direitos trabalhistas e CLT,0,2,0.7811,0.5155
+188097,57,t118_1,luz para comércio e agro,1,1,0.163,0.0419
+188097,57,t120_0,escala 6x1,0,2,0.0575,0.5202
+188097,57,t126_0,mineração,0,1,0.1584,0.1444
+188097,57,t148_0,saúde mental no trabalho,0,1,0.1382,0.1553
+188097,57,t154_2,bloqueio de celular roubado,1,0,0.0404,0.0093
+188097,57,t15_2,cargos públicos,1,0,0.0978,0.3012
+188097,57,t207_0,transporte público e passe livre,0,1,0.3292,0.1506
+188097,57,t219_0,privatização de estatais,0,1,0.0683,0.2469
+188097,57,t247_0,merenda escolar,0,1,0.2298,0.1211
+188097,57,t259_0,violência contra a mulher,0,1,1.2143,0.6817
+188097,57,t301_0,reforma administrativa,0,1,0.0295,0.2143
+188097,57,t301_1,combate à corrupção,0,1,0.2919,0.2578
+188097,57,t301_2,gestão pública e estatais,0,1,0.2717,0.295
+188097,57,t339_0,autismo,1,0,0.9037,0.0885
+188097,57,t340_0,pessoas com deficiência,1,0,1.2857,0.1087
+188097,57,t341_0,Estatuto da Pessoa com Deficiência,1,0,0.2329,0.0031
+188097,57,t344_0,saúde da mulher,1,0,0.472,0.0497
+188097,57,t346_1,cobertura de planos de saúde,1,0,0.1724,0.0109
+188097,57,t346_2,planos de saúde: direitos do usuário,1,0,0.2174,0.0512
+188097,57,t349_0,fundos públicos e loterias,0,2,0.3463,0.5342
+188097,57,t352_0,royalties e compensação a municípios,0,1,0.0823,0.0512
+188097,57,t35_0,regulamentação de profissões,0,1,0.691,0.1335
+188097,57,t367_0,apostas online (bets),1,3,0.427,0.4783
+188097,57,t369_0,Lei Rouanet e apoio a artistas,1,1,0.2578,0.3043
+188097,57,t369_2,desenvolvimento da Região Norte,0,1,0.1273,0.0357
+188097,57,t370_1,Bolsa Atleta e esporte,0,1,0.1879,0.4876
+188097,57,t371_2,políticas para mulheres,0,1,0.1988,0.1584
+188097,57,t386_1,crimes de fraude e jogo ilegal,0,1,0.1522,0.0575
+188097,57,t395_0,crimes na internet,0,1,0.2764,0.1879
+188097,57,t39_0,arcabouço fiscal e teto de gastos,1,2,0.1506,0.5078
+188097,57,t3_0,servidores públicos,0,1,0.8292,0.7019
+188097,57,t402_0,imposto de renda e deduções,0,1,0.5093,0.3121
+188097,57,t404_0,corte e isenção de impostos,0,1,0.559,0.5311
+188097,57,t407_2,incentivos fiscais para empresas,1,0,0.4565,0.1599
+188097,57,t410_2,EPI e segurança no trabalho,1,0,0.1227,0.0047
+188097,57,t417_0,reeducação de agressores,0,1,0.0326,0.118
+188097,57,t418_0,taxação dos super-ricos e heranças,0,1,0.0295,0.0388
+188097,57,t425_0,crianças e adolescentes,1,0,1.0031,0.3602
+188097,57,t42_2,combustíveis e gás de cozinha,0,1,0.1537,0.1739
+188097,57,t431_0,trabalho escravo e terceirização,1,0,0.1165,0.045
+188097,57,t43_1,direitos de pessoas trans,0,1,0.2453,0.4115
+188097,57,t4_1,verba extra para emergências,1,0,0.0419,0.132
+188097,57,t59_2,segurança em transporte público,0,1,0.1258,0.059
+188097,57,t69_0,imunidade parlamentar,1,0,0.0435,0.1087
+188097,57,t6_1,patrimônio cultural imaterial,0,1,0.1755,0.0435
+188097,57,t84_1,proteção de crianças e adolescentes,2,0,0.5575,0.1165
+188097,57,t88_1,crianças na internet,1,0,0.2857,0.0295
+188097,57,t89_0,discriminação e preconceito,0,3,0.4457,0.7236
+188097,57,t90_0,direitos do consumidor,2,1,1.6522,0.2811
+188097,57,t95_0,"telefonia, internet e cancelamento",2,0,0.2469,0.0186
+188097,57,t96_0,campanhas de saúde,1,0,0.2981,0.0497
+236284,57,cat_policiais,"policiais, bombeiros e militares",1,0,0.8991,0.6615
+236284,57,t120_0,escala 6x1,1,0,0.0575,0.5202
+236284,57,t134_0,"pequenos negócios, MEI e Simples",1,0,0.3152,0.0357
+236284,57,t151_0,trabalho em aplicativos,1,0,0.2438,0.0637
+236284,57,t154_0,golpes e fraudes digitais,1,0,0.2547,0.0062
+236284,57,t173_0,armas para vigilantes,1,0,0.0807,0.0016
+236284,57,t193_0,adulteração de alimentos e bebidas,1,0,0.1351,0.0016
+236284,57,t344_0,saúde da mulher,1,0,0.472,0.0497
+236284,57,t358_0,transparência e prestação de contas,1,0,0.5419,0.6755
+236284,57,t367_0,apostas online (bets),1,0,0.427,0.4783
+236284,57,t36_0,direitos de passageiros aéreos,1,0,0.2795,0.0699
+236284,57,t388_0,pacote anticrime,1,0,0.1755,0.1957
+236284,57,t3_0,servidores públicos,1,0,0.8292,0.7019
+236284,57,t46_0,combate ao crime organizado,1,0,0.3214,0.1925
+236284,57,t90_0,direitos do consumidor,2,0,1.6522,0.2811
+236284,57,t95_0,"telefonia, internet e cancelamento",1,0,0.2469,0.0186

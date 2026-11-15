@@ -31,7 +31,7 @@ frentes:
   dados:
     objetivo: coleta incremental e idempotente, pronta para o Airflow sem reescrever nada
     ativa: true
-    proximo_passo: fixar em docs/dados/dicionario.md o schema dos marts da pergunta 2, coluna a coluna, a partir de modelo.md e metricas.md
+    proximo_passo: criar pipeline/passos.py e o primeiro passo (arquivos em lote do dia para raw), com teste de idempotência
     marcos:
       - id: modelo
         criterio: modelo de dados e tabela de atualização revisados
@@ -40,6 +40,7 @@ frentes:
       - id: contrato_marts
         criterio: schema dos marts da pergunta 2 fixado, com amostra de dados para o site
         depende_de: [dados.modelo, produto.metricas]
+        status: feito
       - id: core
         criterio: proposições, votos e orientações atualizados com make atualizar, a partir de pipeline/passos.py; teste incremental = completo passa
         depende_de: [dados.modelo]

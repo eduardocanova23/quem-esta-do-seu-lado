@@ -1,0 +1,195 @@
+# Contrato dos marts da pergunta 2: o que o site recebe, coluna a coluna.
+#
+# Fonte única. docs/dados/dicionario.md explica cada mart; pipeline/qualidade/contrato.py confere a amostra
+# (no CI) e os marts de verdade (antes de publicar) contra este arquivo.
+#
+# Tipos: texto, inteiro, real, data (AAAA-MM-DD), data_hora (AAAA-MM-DDTHH:MM:SS), booleano (true/false).
+# nulo: true quando a coluna pode vir vazia. Coluna de chave nunca é nula.
+# Mudar este arquivo é mudar o contrato: sobe a versão e atualiza o dicionário no mesmo PR.
+
+versao: 1
+
+marts:
+  publicacao:
+    uma_linha_por: legislatura publicada
+    chave: [legislatura_id]
+    colunas:
+      legislatura_id: {tipo: inteiro, descricao: Número da legislatura (57)}
+      legislatura_inicio: {tipo: data, descricao: Primeiro dia da legislatura}
+      legislatura_fim: {tipo: data, descricao: Último dia da legislatura}
+      dados_ate: {tipo: data, descricao: "Data lógica da última coleta incluída; vira o 'dados até DD/MM/AAAA' (H6.2)"}
+      gerado_em: {tipo: data_hora, descricao: Quando os marts foram montados}
+      versao_contrato: {tipo: inteiro, descricao: Versão deste arquivo usada na montagem}
+      versao_taxonomia: {tipo: texto, descricao: Versão da taxonomia de temas e eixos}
+
+  governo:
+    uma_linha_por: governo dentro de uma legislatura
+    chave: [governo_id]
+    colunas:
+      governo_id: {tipo: inteiro, descricao: Id do governo (dados/referencia/governos.csv)}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      presidente: {tipo: texto, descricao: Nome do presidente da República}
+      inicio: {tipo: data, descricao: Primeiro dia do governo dentro da legislatura}
+      fim: {tipo: data, nulo: true, descricao: Último dia; vazio se ainda em curso}
+
+  metrica_status:
+    uma_linha_por: métrica × legislatura
+    chave: [legislatura_id, metrica]
+    colunas:
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      metrica:
+        tipo: texto
+        valores: [direcao_eixo, consenso, divergencia, ausencia, alinhamento, conflito, autoria]
+        descricao: Métrica de docs/produto/metricas.md
+      publicavel: {tipo: booleano, descricao: "false quando o teste de sensibilidade reprovou: a página mostra só o voto a voto"}
+      motivo: {tipo: texto, nulo: true, descricao: Por que não é publicável, em linguagem comum}
+      secao_metodologia: {tipo: texto, descricao: "Âncora da seção em 'como calculamos' (H6.1: o build falha sem ela)"}
+
+  eixo:
+    uma_linha_por: eixo de direção
+    chave: [eixo_id]
+    colunas:
+      eixo_id: {tipo: texto, descricao: "Id estável do eixo na taxonomia (punicao)"}
+      nome: {tipo: texto, descricao: "Nome em linguagem comum (gasto e benefício)"}
+      polo_positivo: {tipo: texto, descricao: "Polo do sinal +1, como verbo (ampliar)"}
+      polo_negativo: {tipo: texto, descricao: "Polo do sinal -1, como verbo (reduzir)"}
+      descricao: {tipo: texto, descricao: O que o eixo mede, em uma frase}
+
+  perfil_deputado:
+    uma_linha_por: mandato (deputado × legislatura)
+    chave: [deputado_id, legislatura_id]
+    colunas:
+      deputado_id: {tipo: inteiro, descricao: Id da Câmara}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      slug: {tipo: texto, descricao: "Parte estável do endereço da página, sem a legislatura (H1.1)"}
+      nome_parlamentar: {tipo: texto, descricao: Nome usado na Câmara}
+      nome_civil: {tipo: texto, descricao: Nome de registro, para a busca}
+      uf: {tipo: texto, descricao: UF pela qual exerceu o mandato}
+      condicao: {tipo: texto, valores: [titular, suplente, efetivado], descricao: Condição na legislatura (H1.4)}
+      url_foto: {tipo: texto, nulo: true, descricao: Foto oficial}
+      url_camara: {tipo: texto, descricao: Página oficial do deputado na Câmara}
+
+  filiacao_deputado:
+    uma_linha_por: período de filiação dentro do mandato
+    chave: [deputado_id, legislatura_id, inicio]
+    colunas:
+      deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      partido_id: {tipo: inteiro, descricao: Id do partido na Câmara}
+      partido_sigla: {tipo: texto, descricao: Sigla do partido no período}
+      inicio: {tipo: data, descricao: Primeiro dia no partido dentro da legislatura}
+      fim: {tipo: data, nulo: true, descricao: Último dia; vazio se é a filiação vigente}
+
+  votacao:
+    uma_linha_por: votação nominal de Plenário que entra em alguma métrica
+    chave: [votacao_id]
+    colunas:
+      votacao_id: {tipo: texto, descricao: "Id da Câmara (2458405-38)"}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      governo_id: {tipo: inteiro, referencia: governo.governo_id, descricao: Governo na data}
+      data: {tipo: data, descricao: Dia da votação}
+      tipo: {tipo: texto, valores: [merito, outro], descricao: "Mérito entra nos eixos; as outras só no alinhamento"}
+      proposicao_id: {tipo: inteiro, nulo: true, descricao: Proposição cujo texto foi votado}
+      proposicao_rotulo: {tipo: texto, nulo: true, descricao: "Sigla, número e ano (PL 1234/2023)"}
+      resumo: {tipo: texto, nulo: true, descricao: "O que a proposição faz, em linguagem comum (H2.2); vazio sem ficha"}
+      ementa: {tipo: texto, nulo: true, descricao: Ementa oficial, mostrada quando não há resumo}
+      aprovada: {tipo: booleano, nulo: true, descricao: Resultado; vazio quando a Câmara não informa}
+      orientacao_governo: {tipo: texto, nulo: true, valores: [Sim, Não, Obstrução, Liberado], descricao: Orientação do Governo}
+      orientacao_oposicao: {tipo: texto, nulo: true, valores: [Sim, Não, Obstrução, Liberado], descricao: Orientação da Oposição}
+      consenso: {tipo: booleano, nulo: true, descricao: "Governo e Oposição orientaram o mesmo voto; vazio se um deles não orientou Sim ou Não"}
+      url_camara: {tipo: texto, descricao: Página oficial da votação (H6.3)}
+
+  votacao_eixo:
+    uma_linha_por: votação de mérito × eixo com sinal definido
+    chave: [votacao_id, eixo_id]
+    colunas:
+      votacao_id: {tipo: texto, referencia: votacao.votacao_id, descricao: Votação}
+      eixo_id: {tipo: texto, referencia: eixo.eixo_id, descricao: Eixo}
+      sinal: {tipo: inteiro, valores: [1, -1], descricao: "Sim puxa para este polo; Não puxa para o outro. Proposição de sinal misto não entra"}
+
+  voto_deputado:
+    uma_linha_por: mandato × votação
+    chave: [deputado_id, legislatura_id, votacao_id]
+    colunas:
+      deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      votacao_id: {tipo: texto, referencia: votacao.votacao_id, descricao: Votação}
+      voto:
+        tipo: texto
+        valores: [Sim, Não, Abstenção, Obstrução, Artigo 17, Ausente]
+        descricao: "O que ele fez; Ausente só quando estava em exercício e não votou (metricas.md, Ausência)"
+      partido_sigla: {tipo: texto, nulo: true, descricao: Partido na data da votação; vazio se sem partido}
+      bancada_tipo: {tipo: texto, nulo: true, valores: [partido, federacao, bloco], descricao: De onde veio a orientação comparada}
+      bancada_nome: {tipo: texto, nulo: true, descricao: "Quem orientou, em linguagem comum (o bloco de União, PP, PSD...)"}
+      bancada_orientacao: {tipo: texto, nulo: true, valores: [Sim, Não, Obstrução, Liberado], descricao: Orientação da bancada}
+      divergiu: {tipo: booleano, nulo: true, descricao: "Lado do voto diferente do lado da orientação; vazio quando não se compara"}
+      colegas_sim: {tipo: inteiro, nulo: true, descricao: Colegas de partido que votaram Sim}
+      colegas_nao: {tipo: inteiro, nulo: true, descricao: Colegas de partido que votaram Não}
+      colegas_outros: {tipo: inteiro, nulo: true, descricao: Colegas de partido com abstenção ou obstrução}
+
+  placar_eixo_deputado:
+    uma_linha_por: mandato × governo × eixo
+    chave: [deputado_id, legislatura_id, governo_id, eixo_id]
+    colunas:
+      deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      governo_id: {tipo: inteiro, referencia: governo.governo_id, descricao: Governo}
+      eixo_id: {tipo: texto, referencia: eixo.eixo_id, descricao: Eixo}
+      k_positivo: {tipo: inteiro, descricao: Votos com direção do polo positivo}
+      k_negativo: {tipo: inteiro, descricao: Votos com direção do polo negativo}
+      n: {tipo: inteiro, descricao: k_positivo + k_negativo}
+      n_consenso: {tipo: inteiro, descricao: Quantas das n foram votações de consenso (H2.3)}
+      n_abstencao: {tipo: inteiro, descricao: Abstenções em votações do eixo}
+      n_obstrucao: {tipo: inteiro, descricao: Obstruções em votações do eixo}
+      n_ausencia: {tipo: inteiro, descricao: Ausências em votações do eixo}
+
+  alinhamento_deputado:
+    uma_linha_por: mandato × governo
+    chave: [deputado_id, legislatura_id, governo_id]
+    colunas:
+      deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      governo_id: {tipo: inteiro, referencia: governo.governo_id, descricao: Governo}
+      governo_k: {tipo: inteiro, descricao: Votos Sim ou Não iguais à orientação do Governo}
+      governo_n: {tipo: inteiro, descricao: Votos Sim ou Não em votações em que o Governo orientou Sim ou Não}
+      oposicao_k: {tipo: inteiro, descricao: Votos Sim ou Não iguais à orientação da Oposição}
+      oposicao_n: {tipo: inteiro, descricao: Votos Sim ou Não em votações em que a Oposição orientou Sim ou Não}
+      divergencia_k: {tipo: inteiro, descricao: Votos com lado diferente da orientação da bancada}
+      divergencia_n: {tipo: inteiro, descricao: Votos Sim, Não ou Obstrução em votações em que a bancada orientou Sim, Não ou Obstrução}
+      lado: {tipo: texto, nulo: true, valores: [base, oposicao], descricao: "Base se governo_k/governo_n passa de 50%; vazio se governo_n = 0"}
+
+  conflito_eixo_deputado:
+    uma_linha_por: mandato × governo × eixo
+    chave: [deputado_id, legislatura_id, governo_id, eixo_id]
+    colunas:
+      deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      governo_id: {tipo: inteiro, referencia: governo.governo_id, descricao: Governo}
+      eixo_id: {tipo: texto, referencia: eixo.eixo_id, descricao: Eixo}
+      tendencia: {tipo: texto, nulo: true, valores: [positivo, negativo], descricao: Polo em que mais votou; vazio no empate}
+      n_conflito: {tipo: inteiro, descricao: Votações em que a orientação do lado dele apontou contra a tendência}
+      seguiu_tendencia: {tipo: inteiro, descricao: Votações de conflito em que votou pela tendência}
+      seguiu_lado: {tipo: inteiro, descricao: Votações de conflito em que votou com o lado}
+
+  conflito_votacao_deputado:
+    uma_linha_por: mandato × votação de conflito × eixo
+    chave: [deputado_id, legislatura_id, votacao_id, eixo_id]
+    colunas:
+      deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      votacao_id: {tipo: texto, referencia: votacao.votacao_id, descricao: Votação}
+      eixo_id: {tipo: texto, referencia: eixo.eixo_id, descricao: Eixo}
+      seguiu: {tipo: texto, valores: [tendencia, lado, nenhum], descricao: "Com quem ele votou; nenhum quando não votou Sim ou Não (H8.3)"}
+
+  autoria_tema_deputado:
+    uma_linha_por: mandato × tema em que é autor ou coautor
+    chave: [deputado_id, legislatura_id, tema_id]
+    colunas:
+      deputado_id: {tipo: inteiro, referencia: perfil_deputado.deputado_id, descricao: Id da Câmara}
+      legislatura_id: {tipo: inteiro, referencia: publicacao.legislatura_id, descricao: Legislatura}
+      tema_id: {tipo: texto, descricao: "Id estável do tema na taxonomia (t145_2) (H5.5)"}
+      tema_nome: {tipo: texto, descricao: Nome do tema na versão vigente}
+      n_autor: {tipo: inteiro, descricao: Proposições em que é autor principal (ordem 1 e proponente)}
+      n_coautor: {tipo: inteiro, descricao: Proposições em que é coautor, contada uma vez por proposição}
+      media_autor: {tipo: real, descricao: Média de proposições como autor principal por deputado da legislatura no tema}
+      media_coautor: {tipo: real, descricao: Média de proposições como coautor por deputado da legislatura no tema}

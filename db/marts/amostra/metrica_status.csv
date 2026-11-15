@@ -1,0 +1,8 @@
+legislatura_id,metrica,publicavel,motivo,secao_metodologia
+57,direcao_eixo,true,,direcao-do-voto
+57,consenso,false,O teste de sensibilidade ainda não rodou (marco analise.metodologia1),votacao-de-consenso
+57,divergencia,false,O teste de sensibilidade ainda não rodou (marco analise.metodologia1),divergencia-da-bancada
+57,ausencia,false,O teste de sensibilidade ainda não rodou (marco analise.metodologia1),ausencia
+57,alinhamento,false,O teste de sensibilidade ainda não rodou (marco analise.metodologia1),alinhamento-com-o-governo-e-com-a-oposicao
+57,conflito,false,O teste de sensibilidade ainda não rodou (marco analise.metodologia1),votacoes-de-conflito
+57,autoria,true,,autoria-por-tema
