@@ -7,4 +7,4 @@
 
 Regras: nunca importa o `pipeline/`; formatação de números e modelos de frase em `src/lib/`, testados; testes em `tests/` e `e2e/`.
 
-Vazia até o ADR de framework e o marco `site.esqueleto`.
+Framework: Astro com ilhas em React ([ADR 0003](../docs/decisoes/0003-framework-do-site.md)). Vazia até o marco `site.esqueleto`.

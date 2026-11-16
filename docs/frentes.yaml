@@ -79,7 +79,7 @@ frentes:
   infra:
     objetivo: um merge no main publica o site sozinho
     ativa: true
-    proximo_passo: escrever o ADR do framework, com um spike que mede o build de ~30 mil páginas com volume sintético da 57ª (ADR 0002)
+    proximo_passo: escrever o ADR do banco; antes, avisar o Eduardo e consultar o vault do Capivara v1 sobre o Neon da v1
     marcos:
       - id: adrs
         criterio: ADRs de entrega, framework, banco, hospedagem e busca escritos
