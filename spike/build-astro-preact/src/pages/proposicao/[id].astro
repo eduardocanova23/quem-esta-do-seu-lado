@@ -1,0 +1,17 @@
+---
+import proposicoes from "../../dados/proposicoes.json";
+
+export function getStaticPaths() {
+  return proposicoes.map((p: any) => ({ params: { id: p.id }, props: { p } }));
+}
+const { p } = Astro.props;
+---
+<html lang="pt-BR">
+  <head><meta charset="utf-8" /><title>{p.rotulo}</title></head>
+  <body>
+    <h1>{p.rotulo}</h1>
+    <p>{p.resumo}</p>
+    <p>{p.ementa}</p>
+    <ul>{p.autores.map((a: string) => <li><a href={`/deputado/${a}/`}>{a}</a></li>)}</ul>
+  </body>
+</html>
