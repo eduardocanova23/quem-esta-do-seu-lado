@@ -1,6 +1,6 @@
 # 0004: Postgres em Docker no servidor Hetzner
 
-Status: proposto, 2026-11-16. Issue #47. Espera o aceite do Eduardo.
+Status: aceito, 2026-11-16. Issue #47. Proposto pelo Claude e aceito pelo Eduardo ("aceito como está").
 
 ## Contexto
 
