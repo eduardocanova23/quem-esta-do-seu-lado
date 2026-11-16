@@ -1,6 +1,6 @@
 # 0002: site gerado no build e servido por CDN; só a busca tem servidor
 
-Status: proposto, 2026-11-16. Issue #42.
+Status: aceito, 2026-11-16. Issue #42.
 
 ## Contexto
 
