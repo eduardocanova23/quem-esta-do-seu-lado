@@ -1,4 +1,4 @@
-# Conferência: feat/passos-coleta
+# Conferência: feat/40-passos-coleta
 
 Sessão de 16/11/2026: desenho, spec (`d6a089d`) e plano (`0391b52`) do `pipeline/passos.py` e da coleta dos arquivos em lote. Depois veio o código (Tarefas 1 a 5 do plano), a revisão final por um revisor novo e a passada de correções.
 
