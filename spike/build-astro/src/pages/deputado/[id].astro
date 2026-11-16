@@ -1,0 +1,27 @@
+---
+import { readFileSync } from "node:fs";
+import indice from "../../dados/indice.json";
+import Placar from "../../componentes/Placar.tsx";
+
+export function getStaticPaths() {
+  return indice.map((id: string) => ({ params: { id } }));
+}
+const { id } = Astro.params;
+const d = JSON.parse(readFileSync(`src/dados/deputados/${id}.json`, "utf-8"));
+---
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>{d.nome} ({d.partido}-{d.uf})</title>
+    <meta property="og:title" content={`${d.nome} (${d.partido}-${d.uf}), 57ª legislatura`} />
+  </head>
+  <body>
+    <h1>{d.nome}</h1>
+    <Placar client:visible placar={d.placar} />
+    <table>
+      {d.votos.map((v: any) => (
+        <tr><td>{v.data}</td><td>{v.rotulo}</td><td>{v.resumo}</td><td>{v.voto}</td><td>{v.bancada} {v.orientacao}</td><td>{v.colegas.join("/")}</td></tr>
+      ))}
+    </table>
+  </body>
+</html>
