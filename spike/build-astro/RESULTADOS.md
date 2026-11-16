@@ -34,4 +34,14 @@ Como cada número saiu:
 - No Astro, o JS da página de deputado é quase todo o runtime da ilha: 57 KB do react-dom contra 4 KB do Preact. A escolha de runtime da ilha é independente da escolha do framework.
 - Tempo de build está longe do gatilho de 30 min em qualquer candidato.
 
+## As bibliotecas de componentes rodam nas ilhas?
+
+Página `/teste/` com um ComboBox do React Aria (react-aria-components 1.22.1, a peça da busca), um Dialog do Radix (@radix-ui/react-dialog 1.3.1, a base do shadcn) e a ilha do placar.
+
+- **Astro + React:** `teste_ilhas.py` abre a página num Chromium headless (Playwright) servida por um servidor estático: filtra o combobox, escolhe uma opção, abre e fecha o diálogo com Esc e recalcula o placar. 5 de 5 passos, nenhum erro de console, nenhuma requisição depois de carregar. JS da página: 118 KB brotli (react-dom, React Aria e Radix juntos).
+- **Mutação do teste:** a mesma página sem os `<script>` (2 no original, 0 na cópia) derruba 4 dos 5 passos; o "fecha com Esc" passa à toa, sem diálogo aberto.
+- **Astro + Preact com `compat: true`:** o build quebra ao montar o HTML. React Aria sozinho: `[object Object] is not a valid HTML tag name`. Radix sozinho: `Cannot read properties of null (reading 'useRef')`. Tentei `vite.ssr.noExternal` para as bibliotecas; não bastou. Parei aí pelo prazo do spike: pode haver configuração que resolva (não conferido), mas não funciona como vem.
+
+O Chromium do Playwright pediu 17 bibliotecas do sistema que a máquina não tem. Em vez de `sudo`, os `.deb` oficiais do Ubuntu 22.04 foram baixados com `apt-get download`, extraídos numa pasta do scratchpad e passados por `LD_LIBRARY_PATH`. No CI, o `playwright install --with-deps` resolve.
+
 Telemetria: o primeiro build do Astro rodou com a telemetria anônima ligada; foi desligada (`astro telemetry disable`). O Next rodou com `NEXT_TELEMETRY_DISABLED=1`.

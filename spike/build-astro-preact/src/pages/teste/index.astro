@@ -1,0 +1,10 @@
+---
+import Pecas from "../../componentes/Pecas.tsx";
+import Placar from "../../componentes/Placar.tsx";
+const placar = [{ eixo: "punicao", k_pos: 7, k_neg: 2, n: 9 }];
+---
+<html lang="pt-BR"><head><meta charset="utf-8" /><title>teste</title></head>
+<body>
+  <Pecas client:load />
+  <Placar client:load placar={placar} />
+</body></html>
