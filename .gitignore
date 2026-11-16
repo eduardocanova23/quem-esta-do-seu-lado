@@ -12,3 +12,6 @@ __pycache__/
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
+
+# Dados do pipeline (raw e saídas locais): centenas de MB por dia, nunca no git
+dados/

@@ -7,12 +7,12 @@ repos:
       - id: check-yaml
       - id: check-merge-conflict
       # Dado não é texto para formatar: em 15/11/2026 o trailing-whitespace apagou espaços dentro de 26
-      # ementas da amostra, no commit, sem ninguém ver. Dado só muda pelo gerador.
+      # ementas da amostra, no commit, sem ninguém ver. Dado só muda pelo gerador; fixture guarda os bytes da fonte.
       - id: end-of-file-fixer
-        exclude: '^db/.*\.(csv|json)$'
+        exclude: '^(db|pipeline/tests/fixtures)/.*\.(csv|json)$'
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
-        exclude: '^db/.*\.(csv|json)$'
+        exclude: '^(db|pipeline/tests/fixtures)/.*\.(csv|json)$'
 
   # Hooks locais: usam as versões do uv.lock e o gitleaks de scripts/instalar_gitleaks.sh,
   # as mesmas do `make ci`. Hooks remotos fixariam uma segunda versão de cada ferramenta.
