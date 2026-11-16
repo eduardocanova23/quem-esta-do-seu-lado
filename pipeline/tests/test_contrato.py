@@ -177,3 +177,80 @@ def test_amostra_do_repositorio_passa_no_contrato() -> None:
     raiz = Path(__file__).resolve().parents[2]
     contrato = carregar_contrato(raiz / "db" / "marts" / "contrato.yaml")
     assert validar(contrato, carregar_csvs(raiz / "db" / "marts" / "amostra")) == []
+
+
+# --- regras entre colunas ---
+
+REGRAS = yaml.safe_load("""
+versao: 2
+marts:
+  votacao:
+    uma_linha_por: votação
+    chave: [votacao_id]
+    colunas:
+      votacao_id: {tipo: texto, descricao: id}
+      proposicao_id: {tipo: inteiro, nulo: true, descricao: proposição}
+      rotulo: {tipo: texto, nulo: true, descricao: rótulo}
+      ementa: {tipo: texto, nulo: true, descricao: ementa}
+      governo: {tipo: texto, nulo: true, descricao: orientação do governo}
+      oposicao: {tipo: texto, nulo: true, descricao: orientação da oposição}
+      consenso: {tipo: booleano, nulo: true, descricao: iguais}
+    regras:
+      - juntos: [rotulo, ementa]
+      - exige: {se: proposicao_id, entao: [rotulo]}
+      - vazio_sse: {coluna: consenso, algum_fora: {governo: [Sim, Não], oposicao: [Sim, Não]}}
+""")
+
+
+def linha(**kw: str) -> dict[str, str]:
+    base = {
+        "votacao_id": "1-1",
+        "proposicao_id": "10",
+        "rotulo": "PL 1/2025",
+        "ementa": "Altera a lei",
+        "governo": "Sim",
+        "oposicao": "Não",
+        "consenso": "false",
+    }
+    return {**base, **kw}
+
+
+def test_regras_caminho_feliz() -> None:
+    linhas = [
+        linha(),
+        linha(votacao_id="1-2", proposicao_id="", rotulo="", ementa="", governo="Liberado", consenso=""),
+        linha(votacao_id="1-3", oposicao="", consenso=""),
+    ]
+    assert validar(REGRAS, {"votacao": linhas}) == []
+
+
+def test_juntos_pega_uma_vazia_e_outra_nao() -> None:
+    erros = validar(REGRAS, {"votacao": [linha(ementa="")]})
+    assert any("juntos" in e and "linha 1" in e for e in erros), erros
+
+
+def test_exige_pega_proposicao_sem_rotulo() -> None:
+    erros = validar(REGRAS, {"votacao": [linha(rotulo="", ementa="")]})
+    assert any("exige" in e and "proposicao_id" in e for e in erros), erros
+
+
+def test_vazio_sse_pega_vazio_sem_motivo() -> None:
+    erros = validar(REGRAS, {"votacao": [linha(consenso="")]})
+    assert any("vazio_sse" in e and "consenso" in e for e in erros), erros
+
+
+def test_vazio_sse_pega_preenchido_quando_devia_ser_vazio() -> None:
+    erros = validar(REGRAS, {"votacao": [linha(governo="Liberado", consenso="true")]})
+    assert any("vazio_sse" in e and "consenso" in e for e in erros), erros
+
+
+def test_regra_com_coluna_inexistente_e_erro_do_contrato() -> None:
+    contrato = yaml.safe_load(yaml.safe_dump(REGRAS))
+    contrato["marts"]["votacao"]["regras"].append({"juntos": ["rotulo", "nao_existe"]})
+    assert any("nao_existe" in e for e in validar_contrato(contrato))
+
+
+def test_regra_de_tipo_desconhecido_e_erro_do_contrato() -> None:
+    contrato = yaml.safe_load(yaml.safe_dump(REGRAS))
+    contrato["marts"]["votacao"]["regras"].append({"talvez": ["rotulo"]})
+    assert any("talvez" in e for e in validar_contrato(contrato))

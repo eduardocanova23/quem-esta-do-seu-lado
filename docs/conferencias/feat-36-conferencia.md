@@ -67,4 +67,4 @@ Semente `random.seed(20261115)`, 4 linhas sorteadas de `voto_deputado.csv` e 1 c
 | voto_deputado.bancada_nome | 8 de 3225 | As mesmas 8 |
 | voto_deputado.bancada_orientacao | 819 de 3225 | 8 sem bancada; 799 de blocos que aparecem sem orientar, quase todas dos blocos que juntaram PL e PT em 2025 (`Bl PlFdrPTUniPp...`, `Bl PlFdrPtUniPp...`) e do bloco seguinte; 6 de partido e 6 de federação vazios na fonte |
 | voto_deputado.divergiu | 1120 de 3225 | Exatamente as 1120 em que o voto ou a orientação fica fora de Sim, Não e Obstrução: 799 orientações vazias, 231 Liberado, 88 ausências e 2 abstenções |
-| conflito_eixo_deputado.tendencia | 3 de 46 | Os 3 com `n_conflito = 0`: sem votação de conflito no eixo, não há tendência |
+| conflito_eixo_deputado.tendencia | 3 de 46 | Empate no eixo: 74084 tem 3 a 3 em `estado_economia` e em `controle_autoridades`, e 236284 tem 0 a 0 em `punicao` (`placar_eixo_deputado`). Sem tendência não há conflito, por isso `n_conflito = 0`. Corrigido em 15/11 na #38: a primeira versão desta linha invertia a causa |

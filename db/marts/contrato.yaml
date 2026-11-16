@@ -7,7 +7,7 @@
 # nulo: true quando a coluna pode vir vazia. Coluna de chave nunca é nula.
 # Mudar este arquivo é mudar o contrato: sobe a versão e atualiza o dicionário no mesmo PR.
 
-versao: 1
+versao: 2
 
 marts:
   publicacao:
@@ -98,6 +98,11 @@ marts:
       orientacao_oposicao: {tipo: texto, nulo: true, valores: [Sim, Não, Obstrução, Liberado], descricao: Orientação da Oposição}
       consenso: {tipo: booleano, nulo: true, descricao: "Governo e Oposição orientaram o mesmo voto; vazio se um deles não orientou Sim ou Não"}
       url_camara: {tipo: texto, descricao: Página oficial da votação (H6.3)}
+    regras:
+      - exige: {se: proposicao_id, entao: [proposicao_rotulo, ementa]}
+      - exige: {se: resumo, entao: [proposicao_id]}
+      - juntos: [proposicao_rotulo, ementa]
+      - vazio_sse: {coluna: consenso, algum_fora: {orientacao_governo: [Sim, Não], orientacao_oposicao: [Sim, Não]}}
 
   votacao_eixo:
     uma_linha_por: votação de mérito × eixo com sinal definido
@@ -126,6 +131,10 @@ marts:
       colegas_sim: {tipo: inteiro, nulo: true, descricao: Colegas de partido que votaram Sim}
       colegas_nao: {tipo: inteiro, nulo: true, descricao: Colegas de partido que votaram Não}
       colegas_outros: {tipo: inteiro, nulo: true, descricao: Colegas de partido com abstenção ou obstrução}
+    regras:
+      - juntos: [bancada_tipo, bancada_nome]
+      - exige: {se: bancada_orientacao, entao: [bancada_tipo]}
+      - vazio_sse: {coluna: divergiu, algum_fora: {voto: [Sim, Não, Obstrução], bancada_orientacao: [Sim, Não, Obstrução]}}
 
   placar_eixo_deputado:
     uma_linha_por: mandato × governo × eixo

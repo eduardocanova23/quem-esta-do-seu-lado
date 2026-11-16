@@ -64,6 +64,34 @@ def carregar_csvs(pasta: Path) -> Tabelas:
     return tabelas
 
 
+REGRAS = ("juntos", "exige", "vazio_sse")
+
+
+def _colunas_da_regra(tipo: str, arg: Any) -> list[str]:
+    if tipo == "juntos":
+        return list(arg)
+    if tipo == "exige":
+        return [arg["se"], *arg["entao"]]
+    return [arg["coluna"], *arg["algum_fora"]]
+
+
+def _quebra_regra(tipo: str, arg: Any, linha: Linha) -> str | None:
+    """Por que a linha quebra a regra entre colunas, ou None se não quebra. Vazio é ''."""
+    if tipo == "juntos":
+        vazias = [c for c in arg if linha.get(c, "") == ""]
+        return f"vazias {vazias}, preenchidas as outras" if vazias and len(vazias) < len(arg) else None
+    if tipo == "exige":
+        faltam = [c for c in arg["entao"] if linha.get(c, "") == ""]
+        return f"{arg['se']} preenchida e {faltam} vazias" if linha.get(arg["se"], "") != "" and faltam else None
+    fora = [c for c, ok in arg["algum_fora"].items() if linha.get(c, "") not in [str(x) for x in ok]]
+    vazia = linha.get(arg["coluna"], "") == ""
+    if vazia and not fora:
+        return f"{arg['coluna']} vazia, mas {list(arg['algum_fora'])} estão todas nos valores esperados"
+    if not vazia and fora:
+        return f"{arg['coluna']} preenchida, mas {fora} fora dos valores esperados"
+    return None
+
+
 def validar_contrato(contrato: dict[str, Any]) -> list[str]:
     """Erros do próprio contrato: chave, tipo, descrição e referência."""
     erros: list[str] = []
@@ -89,6 +117,14 @@ def validar_contrato(contrato: dict[str, Any]) -> list[str]:
                 alvo_mart, _, alvo_col = ref.partition(".")
                 if alvo_col not in (marts.get(alvo_mart) or {}).get("colunas", {}):
                     erros.append(f"{nome}.{c}: referência para coluna inexistente: {ref}")
+        for regra in mart.get("regras") or []:
+            ((tipo, arg),) = regra.items()
+            if tipo not in REGRAS:
+                erros.append(f"{nome}: regra '{tipo}' não existe; use {', '.join(REGRAS)}")
+                continue
+            for c in _colunas_da_regra(tipo, arg):
+                if c not in colunas:
+                    erros.append(f"{nome}: regra {tipo} usa coluna inexistente: {c}")
     return erros
 
 
@@ -128,6 +164,11 @@ def validar(contrato: dict[str, Any], tabelas: Tabelas) -> list[str]:
                     erros.append(f"{nome} linha {i}: {c} '{v}' não é {spec['tipo']}")
                 if "valores" in spec and v not in [str(x) for x in spec["valores"]]:
                     erros.append(f"{nome} linha {i}: {c} '{v}' fora de {spec['valores']}")
+            for regra in marts[nome].get("regras") or []:
+                ((tipo, arg),) = regra.items()
+                motivo = _quebra_regra(tipo, arg, linha) if tipo in REGRAS else None
+                if motivo:
+                    erros.append(f"{nome} linha {i}: regra {tipo}: {motivo}")
             chave = tuple(linha.get(c, "") for c in marts[nome]["chave"])
             if chave in chaves:
                 erros.append(f"{nome}: chave repetida {chave}")
