@@ -180,7 +180,7 @@ O banco é o produto, e ele é desenhado de trás para frente: para cada tabela,
 
 | Camada | Guarda | Como atualiza |
 | --- | --- | --- |
-| `raw` | Cópia exata do que veio (arquivo, resposta da API, matéria), com data de coleta, URL e hash, em JSON e parquet fora do Postgres, como a v1 já fazia | Só acrescenta. Permite reprocessar sem baixar de novo e saber o que a Câmara dizia em tal dia, sem gastar o espaço do banco |
+| `raw` | Cópia exata do que veio (arquivo, resposta da API, matéria), com data de coleta, URL e hash, fora do Postgres: arquivo em lote como veio (CSV com gzip) e resposta da API em JSON | Só acrescenta. Permite reprocessar sem baixar de novo e saber o que a Câmara dizia em tal dia, sem gastar o espaço do banco |
 | `core` | Entidades limpas com as chaves da Câmara: deputado, filiação, legislatura, proposição, autoria, tramitação, votação, voto, orientação, órgão | Upsert idempotente: rodar duas vezes dá o mesmo resultado |
 | `ia` | Ficha, embedding, temas, eixo e sinal | Calcula só o que falta. Cada linha guarda versão da taxonomia, modelo, versão do prompt e hash do texto de entrada |
 | `marts` | Tabelas prontas para as telas: placar por deputado e eixo, partido × tema, atividade por semana, curvas de sobrevivência | Recálculo total a cada execução, publicado de uma vez |
@@ -674,7 +674,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - docs/produto/: perguntas, diretrizes, personas, histórias e não-objetivos. Leia antes de mexer em qualquer tela.
 - docs/decisoes/: ADRs. Não contrarie um ADR sem propor outro.
 - docs/dados/atualizacao.md: toda tabela nova ganha uma linha aqui antes do schema.
-- pipeline/passos.py: a lista de passos da coleta e de quem depende de quem (nasce com o marco dados.core).
+- pipeline/passos.py: a lista de passos da coleta e de quem depende de quem.
 - Notebook e experimento não entram aqui: vão para o repositório do laboratório.
 
 ## Comandos
@@ -682,7 +682,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Rota: make rota
 - Testes rápidos: make test
 - Tudo, como no CI: make ci
-- Atualizar os dados: make atualizar (nasce com o marco dados.core)
+- Atualizar os dados: make atualizar (DATA=AAAA-MM-DD; sem DATA, hoje em Brasília)
 - Ambiente local: docker compose -f infra/compose.yml up -d
 
 ## Git

@@ -1,4 +1,4 @@
-.PHONY: setup rota rota-check lint tipos test segredos ci conferir conferir-status conferir-dispensar
+.PHONY: setup rota rota-check lint tipos test segredos ci atualizar conferir conferir-status conferir-dispensar
 
 # Prepara a máquina: ambiente do uv.lock, gitleaks e hook do pre-commit
 setup:
@@ -24,6 +24,10 @@ tipos:
 
 test:
 	uv run --locked pytest
+
+# Roda os passos de pipeline/passos.py para DATA (AAAA-MM-DD); sem DATA, hoje em Brasília
+atualizar:
+	uv run --locked python -m pipeline.passos --data $(or $(DATA),$(shell TZ=America/Sao_Paulo date +%F))
 
 # Varre o histórico inteiro do git, não só o que está em staging
 segredos:

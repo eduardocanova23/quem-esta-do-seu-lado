@@ -28,7 +28,7 @@ Hoje cobre as tabelas da pergunta 2. Os nomes são provisórios até o `modelo.m
 
 ### raw: cópia exata do que veio
 
-Fora do Postgres, em parquet (arquivos em lote) e JSON (API), com data de coleta, URL e hash.
+Fora do Postgres: os arquivos em lote como vieram, em CSV comprimido com gzip (`dados/raw/arquivos/<data>/`, com um `manifesto.json` por data), e a API em JSON, com data de coleta, URL e hash. A Câmara não publica parquet (`.../parquet/votacoesVotos-2025.parquet` dá 404 em 16/11/2026), e converter deixaria de ser cópia exata. O hash é dos bytes originais, antes do gzip. **Medido na primeira coleta (16/11/2026, anos quentes 2023 a 2026, 34 arquivos):** 695,9 MB de CSV viram 61,6 MB com gzip (11,3 vezes menor), em 3min42s e com 30 MB de memória. Como a Câmara refaz os arquivos toda madrugada, conte com até ~60 MB por dia enquanto os arquivos mudarem; a retenção do raw é tarefa própria quando o disco pedir.
 
 | Tabela | Fonte | Frequência | Chave natural | Estratégia | Janela | Dispara |
 | --- | --- | --- | --- | --- | --- | --- |
