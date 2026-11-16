@@ -1,7 +1,7 @@
 # web/
 
 **Faz:** o site. As páginas são geradas depois do pipeline e servidas por CDN.
-**Recebe:** os marts do dia (no build) e a `api/` (por HTTP, para busca e filtros).
+**Recebe:** os marts do dia, em arquivo, no build; e a `api/`, por HTTP, só para a busca. Filtros, lado e ranking rodam no navegador sobre JSON gerado no build ([ADR 0002](../docs/decisoes/0002-forma-de-entrega-do-site.md)).
 **Entrega:** HTML estático por página, com ilhas interativas só onde há interação.
 **Quem chama:** o visitante, pela CDN; a DAG `publicacao` dispara o build.
 
