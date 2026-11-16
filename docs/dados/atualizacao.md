@@ -28,7 +28,7 @@ Hoje cobre as tabelas da pergunta 2. Os nomes são provisórios até o `modelo.m
 
 ### raw: cópia exata do que veio
 
-Fora do Postgres, em parquet (arquivos em lote) e JSON (API), com data de coleta, URL e hash.
+Fora do Postgres: os arquivos em lote como vieram, em CSV comprimido com gzip (`dados/raw/arquivos/<data>/`, com um `manifesto.json` por data), e a API em JSON, com data de coleta, URL e hash. A Câmara não publica parquet (`.../parquet/votacoesVotos-2025.parquet` dá 404 em 16/11/2026), e converter deixaria de ser cópia exata. O hash é dos bytes originais, antes do gzip.
 
 | Tabela | Fonte | Frequência | Chave natural | Estratégia | Janela | Dispara |
 | --- | --- | --- | --- | --- | --- | --- |

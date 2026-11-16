@@ -17,7 +17,7 @@ Hoje cobre a pergunta 2. A regra de atualização de cada tabela está em [atual
 
 | Camada | Onde mora | Guarda | Quem escreve |
 | --- | --- | --- | --- |
-| `raw` | Fora do Postgres: parquet (arquivos em lote) e JSON (API), um diretório por data lógica | Cópia exata do que veio, com URL, data de coleta e hash | Pipeline, só acrescenta |
+| `raw` | Fora do Postgres: CSV original comprimido com gzip (arquivos em lote) e JSON (API), um diretório por data lógica | Cópia exata do que veio, com URL, data de coleta e hash | Pipeline, só acrescenta |
 | `core` | Schema `core` | Entidades limpas com as chaves da Câmara e as tabelas derivadas por regra | Pipeline, upsert idempotente |
 | `ia` | Schema `ia` | O que vem de modelo: temas e direção por eixo, com versão | Pipeline, só o que falta |
 | `marts` | Schemas `marts` (publicado) e `marts_rascunho` | Tabelas prontas para as telas | Pipeline monta no rascunho; a publicação troca os dois schemas de nome numa transação |

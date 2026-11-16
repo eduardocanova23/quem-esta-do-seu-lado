@@ -7,7 +7,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - docs/produto/: perguntas, diretrizes, personas, histórias e não-objetivos. Leia antes de mexer em qualquer tela.
 - docs/decisoes/: ADRs. Não contrarie um ADR sem propor outro.
 - docs/dados/atualizacao.md: toda tabela nova ganha uma linha aqui antes do schema.
-- pipeline/passos.py: a lista de passos da coleta e de quem depende de quem (nasce com o marco dados.core).
+- pipeline/passos.py: a lista de passos da coleta e de quem depende de quem.
 - Notebook e experimento não entram aqui: vão para o repositório do laboratório.
 
 ## Comandos
@@ -15,7 +15,7 @@ Método: docs/metodo.md. Rota: docs/frentes.yaml (make rota). Tarefa parada no m
 - Rota: make rota
 - Testes rápidos: make test
 - Tudo, como no CI: make ci
-- Atualizar os dados: make atualizar (nasce com o marco dados.core)
+- Atualizar os dados: make atualizar (DATA=AAAA-MM-DD; sem DATA, hoje em Brasília)
 - Ambiente local: docker compose -f infra/compose.yml up -d
 
 ## Git

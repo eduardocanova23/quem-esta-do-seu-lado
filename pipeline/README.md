@@ -7,4 +7,4 @@
 
 Um módulo por etapa: `coleta/`, `transformacao/`, `ia/`, `qualidade/`, `publicacao/`. Transformação em funções puras, entrada e saída nas bordas. Testes em `tests/`, com respostas reais e pequenas da Câmara em `tests/fixtures/`.
 
-Vazia até o marco `dados.core`.
+**Hoje:** `passos.py` (a lista de passos que o `make atualizar` roda e as DAGs vão ler) e `coleta/arquivos.py`, que grava os arquivos em lote do dia em `dados/raw/arquivos/<data>/` (CSV original com gzip e `manifesto.json`). Só baixa quando a data lógica é hoje: a fonte não guarda o passado.
