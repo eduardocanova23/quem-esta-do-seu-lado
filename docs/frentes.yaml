@@ -30,8 +30,7 @@ frentes:
 
   dados:
     objetivo: coleta incremental e idempotente, pronta para o Airflow sem reescrever nada
-    ativa: true
-    proximo_passo: criar pipeline/passos.py e o primeiro passo (arquivos em lote do dia para raw), com teste de idempotência
+    proximo_passo: depois do ADR do banco, escrever o primeiro passo do core (legislatura e deputado) a partir do raw, com teste de idempotência
     marcos:
       - id: modelo
         criterio: modelo de dados e tabela de atualização revisados
@@ -41,9 +40,13 @@ frentes:
         criterio: schema dos marts da pergunta 2 fixado, com amostra de dados para o site
         depende_de: [dados.modelo, produto.metricas]
         status: feito
+      - id: raw
+        criterio: pipeline/passos.py e o passo dos arquivos em lote do dia para raw, idempotente, com make atualizar
+        depende_de: [dados.modelo]
+        status: feito
       - id: core
         criterio: proposições, votos e orientações atualizados com make atualizar, a partir de pipeline/passos.py; teste incremental = completo passa
-        depende_de: [dados.modelo]
+        depende_de: [dados.raw, infra.adrs]
       - id: tramitacao
         criterio: tramitações coletadas por delta
         depende_de: [dados.core]
@@ -75,6 +78,7 @@ frentes:
 
   infra:
     objetivo: um merge no main publica o site sozinho
+    ativa: true
     proximo_passo: escrever o ADR da forma de entrega do site
     marcos:
       - id: adrs
