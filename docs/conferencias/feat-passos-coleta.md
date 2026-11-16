@@ -1,6 +1,6 @@
 # Conferência: feat/passos-coleta
 
-Sessão de 16/11/2026: desenho, spec (`d6a089d`) e plano (`0391b52`) do `pipeline/passos.py` e da coleta dos arquivos em lote. Ainda sem código; a conferência do código e dos dados vem com o PR.
+Sessão de 16/11/2026: desenho, spec (`d6a089d`) e plano (`0391b52`) do `pipeline/passos.py` e da coleta dos arquivos em lote. Depois veio o código (Tarefas 1 a 5 do plano), a revisão final por um revisor novo e a passada de correções.
 
 ## Afirmações
 
@@ -24,4 +24,7 @@ Sessão de 16/11/2026: desenho, spec (`d6a089d`) e plano (`0391b52`) do `pipelin
 | `dados/` no `.gitignore` ignora só a pasta da raiz | **Errado na 1ª versão**: `dados/` casava com `docs/dados/`. Corrigido para `/dados/`; `test_so_a_pasta_da_raiz` falhou antes e passa depois; `git check-ignore docs/dados/novo.md` → exit 1 | conferido |
 | `make ci` verde na branch | `exit=0`: rota-check, ruff, mypy (21 arquivos), `105 passed`, `no leaks found`; depois do fix do `.gitignore`, `pytest` → `106 passed` | conferido |
 | Data passada não faz requisição nem cria pasta | `make atualizar DATA=2026-11-15` → `erro: … a fonte não guarda o passado`, exit 2; `ls dados` → não existe | conferido |
+| Um 404 passageiro em todos os anos de um conjunto não trava mais o dia | A revisão reproduziu a trava (0 pedidos na retomada). `test_ausente_passageiro_retoma` falhou antes da correção e passa depois | conferido |
+| 404 em ano anterior ao de D é falha, não ausência | `test_404_em_ano_passado_e_erro` falhou antes (o manifesto dizia `ausente` para 2024) e passa depois | conferido |
+| Duas coletas ao mesmo tempo no mesmo raw: a segunda sai sem pedir nada | `test_execucao_simultanea_recusada` (trava com `fcntl.flock` em `raw/arquivos/.trava`) falhou antes e passa depois; suíte `109 passed`. A trava usa `fcntl`, que só existe em Linux e macOS, e o pipeline roda em Linux | conferido |
 | O passo baixa os 34 arquivos reais de hoje e o gzip reduz o raw | `make atualizar` ao vivo em andamento | não conferido |
