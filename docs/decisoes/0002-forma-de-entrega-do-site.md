@@ -11,7 +11,7 @@ O que já está decidido e pesa aqui:
 - **Os dados mudam uma vez por dia**, depois do `make atualizar` (e, na Fase 5, da DAG de publicação).
 - **A v1 não sabia se aguentava muitos usuários**, porque isso nunca foi medido nem projetado (método, tabela das lições).
 - **H3.6: o lado escolhido nunca sai do navegador.** Nenhuma requisição o carrega. Como o ranking da pergunta 3 é "a pergunta 2 aplicada a todos" (perguntas.md), ele depende do lado e tem de ser calculado no navegador, a partir de dado que é o mesmo para todo mundo.
-- **H7.1 e H7.2: o endereço é o mesmo para todos, e a prévia do link no WhatsApp sai no build.** O robô que monta a prévia não roda JavaScript, então cada endereço precisa responder com HTML completo.
+- **H7.1 e H7.2: o endereço é o mesmo para todos, e a prévia do link no WhatsApp sai no build.** O robô que monta a prévia não roda JavaScript (não conferido; o teste de H7.2 confere), então cada endereço precisa responder com HTML completo.
 - **A caixa de busca acha deputado, partido, tema e proposição desde a primeira publicação** (decisão de 13/11/2026). Busca por texto livre não dá para pré-gerar.
 
 Volumes da 57ª, contados no raw de 16/11/2026 (`dados/raw/arquivos/2026-11-16/`, anos 2023 a 2026):
@@ -19,7 +19,7 @@ Volumes da 57ª, contados no raw de 16/11/2026 (`dados/raw/arquivos/2026-11-16/`
 | O quê | Quantos | Vira página em |
 | --- | --- | --- |
 | Deputados com voto registrado (titulares e suplentes) | 644 | Fatia 1 |
-| Votações com voto nominal | 1.604 | Fatia 1 (listas) |
+| Votações com voto nominal de Plenário (de 1.604 nominais; as de comissão ficam fora da fatia 1) | 1.128 | Fatia 1 (listas) |
 | Proposições de PL, PLP, PEC, PDL e MPV | 26.598 | Fatia 3 |
 
 Ou seja, da ordem de 30 mil páginas por legislatura, todas refeitas a cada atualização.
