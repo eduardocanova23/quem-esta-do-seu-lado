@@ -1,6 +1,6 @@
 # Conferência: docs/44-adr-framework
 
-Sessão de 16/11/2026: spike da issue #44 (branch `spike/44-build-astro`, commits `5bd1ed8` a `bf6e5a1`, só local) e ADR 0003. A branch não mexe em `db/marts`, `pipeline` nem em dado gerado; a seção Dados não se aplica. Medições na máquina do Eduardo (WSL2, 8 núcleos, 3,8 GB).
+Sessão de 16/11/2026: spike da issue #44 (branch `spike/44-build-astro`, commits `5bd1ed8` a `bf6e5a1`, enviada ao GitHub e nunca juntada ao main) e ADR 0003. A branch não mexe em `db/marts`, `pipeline` nem em dado gerado; a seção Dados não se aplica. Medições na máquina do Eduardo (WSL2, 8 núcleos, 3,8 GB).
 
 ## Afirmações
 
