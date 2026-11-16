@@ -43,7 +43,7 @@ _Análise de 03/11/2026 com os dados do DAG de temas v1.1 (57ª legislatura). É
 - A persona tem um polo preferido por eixo (`out/lentes.yaml` na v1). O placar é a concordância do voto com esse polo: "em punição, votou na sua direção em 7 de 9 votações".
 - O sentido que o usuário quer é escolhido na hora e nunca é salvo (decisão do vault "Perfil do usuário é opcional e o sentido político nunca é guardado").
 - **Disciplina partidária:** o voto mostra sobretudo a orientação do partido. O que fala da pessoa é quando ela **diverge da bancada**. Isso vai em destaque, não só o placar bruto.
-- **Ausência e obstrução** ficam fora do placar, porque quem falta muito parece neutro quando está ausente. Elas aparecem à parte.
+- **Dois placares lado a lado:** "na sua direção" conta só os votos dados ("7 de 9"); o **saldo** divide (a favor − contra) pelo total de votações do eixo em que ele estava no mandato, com ausência, abstenção e obstrução valendo 0. Quem falta muito fica perto de zero. Ausências e obstruções também aparecem à parte, com o próprio nome.
 - **Dois sinais separados:**
   - "como vota": poucos votos, mas que pesam;
   - "o que propõe": autoria com sinal, muito volume, mas propor é barato e há muita proposição simbólica.
@@ -52,8 +52,10 @@ _Análise de 03/11/2026 com os dados do DAG de temas v1.1 (57ª legislatura). É
 ### 3. Aliado × inimigo: dá, mas o ranking cru engana
 
 - Deputado com 2 votos, ambos do seu lado, vira "100%" e vai para o topo. Por isso:
-  - o placar é **encolhido para uma referência** (a média do partido dele) quando há poucos votos: pouca evidência fica perto do partido até provar o contrário;
-  - há um **n mínimo**, e a soma usa só os eixos da lente, com o peso que a persona der.
+  - o ranking mostra os dois placares da pergunta 2 com o n à vista ("2 de 2" e "saldo +2 em 8"), e nenhum placar conta voto que o deputado não deu;
+  - o saldo põe o peso da falta: quem votou 2 vezes em 8 votações fica longe do topo;
+  - a soma usa só os eixos da lente, com o peso que a persona der.
+  - **Em aberto:** quem tem poucas votações porque assumiu tarde (suplente) tem `T` pequeno, e "saldo +2 em 2" empata com "+8 em 8". O desempate entra na metodologia da pergunta 3.
 - **Empates por partido:** as bancadas votam juntas, então o ranking vira blocos partidários, e dentro deles a diferença vem das faltas e das poucas dissidências. A apresentação mais honesta: **"partidos mais alinhados com você" e, dentro de cada um, quem foge da linha.**
 - Nenhum eixo tem correlação |r| ≥ 0,9 com o governismo, então os eixos não se reduzem a governo × oposição. Mesmo assim, uma persona que se importa com muitos eixos tende a ter um ranking parecido com o de governismo.
 
@@ -63,11 +65,11 @@ _Análise de 03/11/2026 com os dados do DAG de temas v1.1 (57ª legislatura). É
 | --- | --- | --- |
 | 1. Priorizados × abandonados | Sim | Coletar a tramitação; usar avanço e sobrevivência, não média; apensadas |
 | 2. Deputado do meu lado | Sim, nos eixos com volume (gasto, tributo, punição, ambiente, trabalho) | Poucos votos por eixo; o voto mostra o partido mais que a pessoa |
-| 3. Aliado × inimigo | Sim, com n mínimo e encolhimento | Vira blocos partidários |
+| 3. Aliado × inimigo | Sim, com o n à vista e o saldo sobre o total de votações | Vira blocos partidários |
 
 ## Por onde começar
 
-**A pergunta 2, restrita aos cinco eixos com volume**, sempre com o n à vista. Ela usa só o que já existe (`deputado_tema_eixo.parquet` e `lentes.yaml`), sem LLM e sem coleta nova. Também é a base da pergunta 3: o ranking é a pergunta 2 aplicada a todos, mais o encolhimento. A pergunta 1 depende de coletar a tramitação antes.
+**A pergunta 2, restrita aos cinco eixos com volume**, sempre com o n à vista. Ela usa só o que já existe (`deputado_tema_eixo.parquet` e `lentes.yaml`), sem LLM e sem coleta nova. Também é a base da pergunta 3: o ranking é a pergunta 2 aplicada a todos, ordenado pelo saldo. A pergunta 1 depende de coletar a tramitação antes.
 
 O protótipo em Streamlit da v1 (`definitivo/dag_temas/pergunta2.py` e `app_deputado.py`) serve de especificação de comportamento. O estado dele e os exemplos de 03/11 ficam na nota do vault.
 

@@ -91,7 +91,8 @@ Perfis: eleitor curioso ●, quem acompanha uma causa ●.
 - **H3.4** Com poucas votações, a frase vem do mesmo jeito, com o n à vista: "votou na sua direção em 1 de 1". `site`
 - **H3.5** Sem nenhum eixo escolhido, não aparece placar. `site`
 - **H3.6** O lado escolhido nunca sai do navegador: nenhuma requisição o carrega, e ele não vai para cookie, `localStorage`, endereço da página nem métrica de acesso. Fechar a página apaga a escolha. `site` e `e2e`
-- **H3.7** A pergunta 2 mostra o placar cru (k de n) com o n à vista. O placar ajustado, puxado para o partido, é ferramenta de ranking da pergunta 3 e não aparece aqui. `site`
+- **H3.7** O placar conta só os votos que o deputado deu (k de n), com o n à vista. `métrica`
+- **H3.8** Ao lado de "na sua direção", a página mostra o saldo sobre todas as votações do eixo em que ele estava no mandato: "saldo +2 em 8: 2 na sua direção, 0 contra, 6 ausências". Ausência, abstenção e obstrução valem 0 no saldo. `métrica` para k, c e T, `site` para a frase.
 
 ### H4. Ver quando ele foge da bancada
 

@@ -83,7 +83,7 @@ Em negrito, as perguntas em que o perfil é público principal. A matriz complet
   - todo número tem "como calculamos" ([metricas.md](metricas.md));
   - aparecem a data de atualização, o n, a legislatura e o link para a fonte na Câmara;
   - o endereço é estável e dá para citar.
-- **Desiste quando:** um número muda sem aviso, quando o ranking não tem n mínimo ou quando vê uma comparação entre legislaturas, que é proibida.
+- **Desiste quando:** um número muda sem aviso, quando o ranking esconde o n ou quando vê uma comparação entre legislaturas, que é proibida.
 - **Exemplo:** o caso de 03/11 em [perguntas.md](perguntas.md): "Kim Kataguiri divergiu do partido 30 vezes" é o tipo de frase que vira manchete e por isso precisa de fonte e n.
 
 ## Estudante ou professor
