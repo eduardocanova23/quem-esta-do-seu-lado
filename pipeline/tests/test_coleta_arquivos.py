@@ -156,3 +156,38 @@ def test_queda_e_retomada(servidor: Servidor, tmp_path: Path) -> None:
 def test_main_codigo_de_saida(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     assert main(["--data", "2026-11-15", "--raiz", str(tmp_path)]) == 1
     assert "erro:" in capsys.readouterr().err
+
+
+def test_ausente_passageiro_retoma(servidor: Servidor, tmp_path: Path) -> None:
+    """Um 404 de minutos (a Câmara refazendo os arquivos) não pode travar o dia: a retomada pergunta de novo."""
+    servir_tudo(servidor)
+    guardadas = {ano: servidor.rotas.pop(caminho("votacoes", ano)) for ano in ANOS}
+    with pytest.raises(FalhaDeColeta):
+        rodar(servidor, tmp_path, D16)
+    servidor.rotas.update({caminho("votacoes", ano): rota for ano, rota in guardadas.items()})
+    servidor.pedidos.clear()
+    rodar(servidor, tmp_path, D16)
+    assert caminho("votacoes", 2026) in servidor.pedidos
+    assert all(e["status"] == "novo" for e in entradas(tmp_path, D16) if e["conjunto"] == "votacoes")
+
+
+def test_404_em_ano_passado_e_erro(servidor: Servidor, tmp_path: Path) -> None:
+    """Ausente é só o ano de D, que pode não ter arquivo ainda; ano passado com 404 é falha, não ausência."""
+    servir_tudo(servidor)
+    del servidor.rotas[caminho("votacoesVotos", 2024)]
+    with pytest.raises(FalhaDeColeta, match="votacoesVotos-2024"):
+        rodar(servidor, tmp_path, D16)
+    assert not (tmp_path / "arquivos" / "2026-11-16" / "manifesto.json").exists()
+
+
+def test_execucao_simultanea_recusada(servidor: Servidor, tmp_path: Path) -> None:
+    """Duas execuções ao mesmo tempo escreveriam no mesmo .parcial; a segunda tem de sair sem tocar em nada."""
+    import fcntl
+
+    servir_tudo(servidor)
+    (tmp_path / "arquivos").mkdir(parents=True)
+    with open(tmp_path / "arquivos" / ".trava", "w") as trava:
+        fcntl.flock(trava, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        with pytest.raises(FalhaDeColeta, match="outra coleta"):
+            rodar(servidor, tmp_path, D16)
+    assert servidor.pedidos == []

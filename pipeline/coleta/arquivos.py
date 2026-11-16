@@ -8,10 +8,14 @@ Regras (docs/superpowers/specs/2026-11-16-passos-coleta-arquivos-design.md):
 - A data com manifesto.json já foi processada: rodar de novo não faz nada (idempotência).
 - Arquivo com o mesmo sha256 da última coleta não ganha cópia: a entrada aponta para a data onde ele está.
 - manifesto.parcial.json guarda o que já chegou inteiro; uma queda retoma dali. Só o manifesto.json final
-  diz que a data foi processada.
+  diz que a data foi processada. O que estava ausente é pedido de novo na retomada: um 404 de minutos, enquanto a
+  Câmara refaz os arquivos, não pode travar o dia.
+- Ausente só vale para o ano de D (o ano novo pode ainda não ter arquivo). 404 em ano passado é falha.
+- Uma execução por vez (trava em raw/arquivos/.trava): duas escrevendo no mesmo .parcial misturariam os bytes.
 """
 
 import argparse
+import fcntl
 import gzip
 import json
 import os
@@ -84,8 +88,10 @@ def _coletar_um(
     try:
         baixado = baixar(endereco, parcial, esperas=esperas)
     except Ausente:
-        if ano is None:
-            raise FalhaDeColeta(f"{endereco}: 404 num conjunto sem ano") from None
+        if ano != data.year:
+            raise FalhaDeColeta(
+                f"{endereco}: 404 num arquivo que tem de existir (só o ano de {data.year} pode faltar)"
+            ) from None
         vazio = dict.fromkeys(("sha256", "bytes", "etag", "last_modified", "em"))
         return entrada | vazio | {"status": "ausente", "coletado_em": agora().isoformat(timespec="seconds")}
     anterior = historico.ultima(conjunto, ano)
@@ -125,6 +131,27 @@ def coletar(
     if data > hoje:
         raise DataInvalida(f"{data.isoformat()} é data futura (hoje é {hoje.isoformat()})")
 
+    (raiz / "arquivos").mkdir(parents=True, exist_ok=True)
+    with open(raiz / "arquivos" / ".trava", "w") as trava:
+        try:
+            fcntl.flock(trava, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise FalhaDeColeta("outra coleta está rodando neste raw; espere ela terminar") from None
+        if final.exists():  # a outra execução pode ter terminado enquanto esta esperava
+            return Resumo(0, 0, 0, nada_a_fazer=True)
+        return _coletar_travado(data, raiz, pasta, final, base, agora, anos_frios, esperas)
+
+
+def _coletar_travado(
+    data: date,
+    raiz: Path,
+    pasta: Path,
+    final: Path,
+    base: str,
+    agora: Callable[[], datetime],
+    anos_frios: Sequence[int],
+    esperas: Sequence[float],
+) -> Resumo:
     pasta.mkdir(parents=True, exist_ok=True)
     parcial = pasta / "manifesto.parcial.json"
     feitas: dict[tuple[str, int | None], Entrada] = {}
@@ -134,7 +161,7 @@ def coletar(
     historico = _Historico(raiz, data)
 
     def um(conjunto: str, ano: int | None) -> Entrada:
-        if (conjunto, ano) not in feitas:
+        if (conjunto, ano) not in feitas or feitas[(conjunto, ano)]["status"] == "ausente":
             feitas[(conjunto, ano)] = _coletar_um(conjunto, ano, pasta, data, base, agora, historico, esperas)
             _gravar_json(parcial, list(feitas.values()))
         return feitas[(conjunto, ano)]
