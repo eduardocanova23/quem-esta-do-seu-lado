@@ -32,4 +32,5 @@ Não se aplica: a branch não gera nem transforma dado.
 ## Retrospectiva
 
 - Primeira versão do texto dizia que a 59ª legislatura alcança o teto de 100 mil arquivos do Workers; com ~30 mil por legislatura, quem passa é a 60ª. Corrigido antes do commit.
+- O Eduardo estranhou "60ª legislatura" no resumo: o teto só pesa em 2035, e eu tinha apresentado como argumento forte. O ADR aceito diz que o custo é o que decide e que o teto pesa pouco.
 - O mapa dizia "só a seta da busca chega a um servidor"; com o Nginx de origem, página fora do cache também chega. Corrigido para "só a busca chega ao banco".

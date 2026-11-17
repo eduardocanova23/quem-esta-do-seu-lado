@@ -1,6 +1,6 @@
 # 0005: site, API de busca e Postgres no servidor Hetzner, atrás do Cloudflare
 
-Status: proposto, 2026-11-17. Issue #50. Proposto pelo Claude; espera o Eduardo.
+Status: aceito, 2026-11-17. Issue #50. Proposto pelo Claude e aceito pelo Eduardo ("Aceito o ADR").
 
 ## Contexto
 
@@ -54,7 +54,7 @@ Nota de 1 (atende mal) a 3 (atende bem). As notas são julgamento meu sobre a ta
 
 **A. O site, a API de busca e o Postgres ficam no servidor Hetzner. O Nginx serve o site e encaminha `/api/` para a API, e o Cloudflare, no plano grátis, fica na frente como DNS, HTTPS e CDN.**
 
-1. **Por que não o Workers (B), que ficou perto:** ele ganha em dois critérios, a volta de versão e o site no ar com o servidor caído. O segundo vale menos do que parece: com o servidor caído, a busca cai junto em qualquer opção, e a caixa de busca é a primeira coisa da página inicial. Em troca, B custa US$ 5 por mês para sempre e põe um teto de 100 mil arquivos que a 60ª legislatura passa (~30 mil por legislatura). A regra 8 do método manda decidir pelo tamanho que já se sabe que vem: as legislaturas vêm, uma a cada quatro anos.
+1. **Por que não o Workers (B), que ficou perto:** ele ganha em dois critérios, a volta de versão e o site no ar com o servidor caído. O segundo vale menos do que parece: com o servidor caído, a busca cai junto em qualquer opção, e a caixa de busca é a primeira coisa da página inicial. Em troca, B custa US$ 5 por mês para sempre, e esse é o argumento que decide. O teto de 100 mil arquivos pesa pouco: com ~30 mil páginas por legislatura, só a 60ª (2035 a 2039) passaria dele, se o site guardar todas as legislaturas desde a 57ª.
 2. **Por que não o GitHub Pages (C):** os termos proíbem o uso para negócio online, o que fecha a porta da camada paga, e ele não deixa definir cabeçalhos HTTP.
 3. **O preço da escolha é a disponibilidade:** o site depende de um servidor só. O Cloudflare amortece (as páginas mais acessadas ficam no cache), mas não substitui. Se o servidor cair muitas vezes, B passa a valer a diferença (ver Quando revisitar). Mudar para B depois não refaz nada: a pasta do build é a mesma, muda só o destino do `rsync`.
 4. **O domínio é decisão do Eduardo** e entra no marco `infra.deploy`. Um `.com.br` custa R$ 40 por ano no Registro.br (fonte secundária, não conferido no Registro.br). Os servidores de nome do domínio passam a ser os do Cloudflare.
