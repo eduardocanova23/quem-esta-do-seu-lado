@@ -14,6 +14,7 @@ Hoje cobre a pergunta 2. As histórias que usam cada métrica estão em [histori
 - **Todo número mostra o n.** "2 de 2", "7 de 9", nunca só "100%" ou "78%". É o n à vista que deixa mostrar qualquer contagem, por menor que seja.
 - **Nenhuma métrica vira nota.** Nada de "bom", "ruim", selo ou cor de semáforo ([não-objetivos](nao-objetivos.md)).
 - **Nenhum corte esconde atuação.** Se o deputado votou, o voto aparece e conta, desde o primeiro dia de mandato.
+- **Só conta voto dado.** Nenhum placar soma voto que o deputado não deu, seja estimado ou emprestado de partido, bancada ou outro deputado.
 
 ## Que votações entram
 
@@ -59,7 +60,18 @@ A base de quase tudo. Cada proposição com eixo tem sinal `s`: `+1` se puxa par
 - **Fórmula:** `k` = votos cuja direção é o polo escolhido; `n` = votos Sim ou Não no eixo.
 - **Sem mínimo,** pelo mesmo motivo: "votou na sua direção em 1 de 1".
 - **Calculado no navegador.** O lado escolhido nunca sai dele (H3.6).
-- **Histórias:** H3.3, H3.4.
+- **Histórias:** H3.3, H3.4, H3.7.
+
+### Saldo sobre as votações do eixo, com lado escolhido
+
+"Das 8 votações de punição em que estava no mandato: 2 na sua direção, 0 contra e 6 ausências. Saldo: +2 em 8."
+
+- **Fórmula:** `k` = votos na direção do polo escolhido; `c = n − k` = votos na direção oposta; `T` = votações do eixo em que estava no exercício do mandato, ou seja, `n` + abstenções + obstruções + ausências. Saldo = `(k − c) / T`, de −1 a +1. A tela mostra a conta, "+2 em 8", e não o decimal.
+- **Por que dois placares:** "na sua direção" responde "quando vota, vota comigo?"; o saldo responde "posso contar com ele?". Ausência, abstenção e obstrução valem 0: não somam para o seu lado nem contra. Quem falta muito fica perto de zero, longe tanto de quem vota sempre com você quanto de quem vota sempre contra.
+- **Aparece sempre ao lado de "na sua direção",** nunca sozinho, com `k`, `c`, as ausências e `T` à vista.
+- **Ressalva:** `T` depende da ausência, que ainda é aproximada pela janela de 15 dias ([Ausência](#ausência)). A janela entra no teste de sensibilidade também pelo saldo. Obstrução vale 0 aqui, como nos eixos; se o teste mudar isso nos eixos, muda aqui também.
+- **Calculado no navegador** (H3.6).
+- **Histórias:** H3.8. Também é a base do ranking da pergunta 3.
 
 ### Votação de consenso (no lugar de "quase unânime")
 
@@ -149,10 +161,6 @@ Registrou "Obstrução" em vez de votar. É uma tática para impedir que a vota�
 - **Sem nota de coerência.** A página mostra cada votação: a tendência, a orientação do lado, a da bancada e o voto.
 - **Histórias:** H8.3, H8.4.
 
-### Placar ajustado
-
-Não aparece na pergunta 2 (H3.7). Fica registrado para a pergunta 3: `(k + m·p) / (n + m)`, com `p` = taxa dos colegas de partido no eixo e `m = 5`. Ali o ajuste é necessário, porque um ranking sem ele põe no topo quem votou 2 vezes. Na página de um deputado só, o n à vista cumpre esse papel.
-
 ### Fora: escala ideológica
 
 Uma escala esquerda × direita calculada pelos votos seria um rótulo político sobre o deputado e esbarra no não-objetivo de "nota ou selo". Os eixos dizem a direção assunto por assunto, e as votações de conflito mostram quando o lado pesou mais que o assunto.
@@ -170,7 +178,7 @@ O teste roda com dado real, antes da metodologia ser assinada (marco `analise.me
 | Obstrução nos eixos | À parte; como Não (direção `−s`) | Quantos deputados mudam de polo dominante em algum eixo e em quantas votações a obstrução foi da bancada inteira no mesmo dia |
 | Lado (base ou oposição) | 40%, 50%, 60% de alinhamento com o Governo | Quantos deputados mudam de lado |
 | Tendência no eixo | Com e sem a votação de conflito | Quantas votações de conflito mudam |
-| Ausência | Janela de 7, 15 e 30 dias | Quantas ausências mudam |
+| Ausência | Janela de 7, 15 e 30 dias | Quantas ausências mudam e quantos deputados mudam de saldo |
 
 Se a variação mudar a posição de muitos deputados, a página não publica o número resumido daquela métrica, só o voto a voto, até haver outra definição.
 

@@ -137,7 +137,7 @@ Pergunta nova entra no arquivo com o perfil que a faz, a prioridade e o dado que
 >
 > - Dado um eixo, a página diz "votou na sua direção em 7 de 9 votações", sempre com o n à vista, e lista as votações ao lado.
 > - Destaca as votações em que ele divergiu da bancada.
-> - Ausências e obstruções aparecem à parte, fora do placar.
+> - Ao lado, o saldo sobre todas as votações do eixo: (a favor − contra) / total, com ausência e obstrução valendo 0. Elas também aparecem à parte, com o próprio nome.
 > - A direção escolhida pelo usuário não é gravada em lugar nenhum.
 
 **4. MVP e não-objetivos.** O MVP começa pela pergunta 2 nos cinco eixos com volume de votos (gasto e benefício, carga tributária, punição, ambiente, trabalho), como a nota recomenda. Ela usa só dados que já existem, e o protótipo em Streamlit (`app_deputado.py`) serve de especificação de comportamento. Candidatos a ficar fora do MVP, numa lista que o Claude lê em toda sessão: nuvens de palavras e de adjetivos, resumo por IA, login e camada paga, Senado e o clipping do DO, que já virou projeto próprio.
@@ -145,7 +145,7 @@ Pergunta nova entra no arquivo com o perfil que a faz, a prioridade e o dado que
 **5. Dicionário de métricas.** Todo número exibido tem nome, definição em uma frase, fórmula, denominador, tabelas de origem e ressalvas, e a tela mostra essa definição em "como calculamos". É o que separa o app dos painéis confusos. Dois casos difíceis já foram analisados no vault:
 
 - **Quais temas andam e quais param.** A média de tempo engana: as paradas não têm tempo final, e ela subestima justamente os temas abandonados. Use volume por tema, taxa de avanço (parecer aprovado, urgência, votação, sanção) e a curva de Kaplan–Meier por tema, com as paradas como censuradas. "Abandonado" é relativo a uma taxa base baixíssima: 1.148 de 26.512 proposições (≈4%) foram deliberadas no Plenário.
-- **Ranking de aliados.** Deputado com 2 votos, ambos a favor, vira "100%" e sobe para o topo. O placar é encolhido para a média do partido quando há poucos votos, exige n mínimo e aparece como "partidos mais alinhados com você e, dentro de cada um, quem foge da linha".
+- **Ranking de aliados.** Deputado com 2 votos, ambos a favor, vira "100%" e sobe para o topo. O ranking não soma voto que o deputado não deu: mostra "na sua direção" (k de n, só votos dados) e o saldo, (a favor − contra) dividido por todas as votações do eixo em que ele estava no mandato, que põe o peso da falta. Aparece como "partidos mais alinhados com você e, dentro de cada um, quem foge da linha".
 
 **6. Requisitos não funcionais.** Cada um com número, para virar teste:
 
