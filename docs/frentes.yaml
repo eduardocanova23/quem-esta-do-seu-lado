@@ -79,7 +79,7 @@ frentes:
   infra:
     objetivo: um merge no main publica o site sozinho
     ativa: true
-    proximo_passo: escrever o ADR de hospedagem (site estático, API de busca e o Postgres do ADR 0004 no Hetzner)
+    proximo_passo: escrever o ADR da busca (BGE-M3 no servidor, embedding por API ou só busca textual do Postgres), com spike que mede acerto no conjunto de teste, latência e RAM
     marcos:
       - id: adrs
         criterio: ADRs de entrega, framework, banco, hospedagem e busca escritos
