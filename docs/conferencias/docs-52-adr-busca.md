@@ -1,6 +1,6 @@
 # Conferência: docs/52-adr-busca
 
-Sessão de 18/11/2026: ADR 0006 (busca), proposto, a partir do spike em `camara-lab/spike_busca/` (branch `spike/52-busca`, commits `8276f90`, `563ae80`, `de85357`). A branch não mexe em `db/marts`, `pipeline` nem em dado gerado; a seção Dados não se aplica. Os arquivos citados como `saida/...` estão em `camara-lab/spike_busca/saida/` (fora do git, como manda o lab).
+Sessão de 18/11/2026: ADR 0006 (busca), proposto e aceito pelo Eduardo em 19/11, a partir do spike em `camara-lab/spike_busca/` (branch `spike/52-busca`, commits `8276f90`, `563ae80`, `de85357`). A branch não mexe em `db/marts`, `pipeline` nem em dado gerado; a seção Dados não se aplica. Os arquivos citados como `saida/...` estão em `camara-lab/spike_busca/saida/` (fora do git, como manda o lab).
 
 ## Afirmações
 

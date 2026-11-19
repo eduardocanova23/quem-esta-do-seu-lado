@@ -1,6 +1,6 @@
 # 0006: busca híbrida com o BGE-M3 em int8 dentro da API, no servidor
 
-Status: proposto, 2026-11-18. Issue #52. Proposto pelo Claude a partir do spike da issue.
+Status: aceito, 2026-11-19. Issue #52. Proposto pelo Claude a partir do spike da issue e aceito pelo Eduardo ("aceito").
 
 ## Contexto
 

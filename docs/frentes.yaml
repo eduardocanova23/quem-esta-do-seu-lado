@@ -79,11 +79,12 @@ frentes:
   infra:
     objetivo: um merge no main publica o site sozinho
     ativa: true
-    proximo_passo: escrever o ADR da busca (BGE-M3 no servidor, embedding por API ou só busca textual do Postgres), com spike que mede acerto no conjunto de teste, latência e RAM
+    proximo_passo: escolher e registrar o domínio (decisão do Eduardo, ADR 0005), e com ele abrir a zona no Cloudflare; no servidor, Docker e swap de 2 GB (ADR 0006)
     marcos:
       - id: adrs
         criterio: ADRs de entrega, framework, banco, hospedagem e busca escritos
         depende_de: [fundacao.repo]
+        status: feito
       - id: deploy
         criterio: merge no main publica o site; backup restaurado uma vez
         depende_de: [infra.adrs]
